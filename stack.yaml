@@ -1,8 +1,23 @@
-resolver: lts-19.17
+resolver: lts-20.26
 
 packages:
 - dapr-core
 - dapr-actor
+- dapr-proto
 - dapr-http-client
 - dapr-http-server
 - dapr-grpc-client
+
+extra-deps:
+- git: git@github.com:awakesecurity/proto3-suite.git
+  commit: 5beaf4ab206b5c82a2161dd0850e91b3663135ec
+- git: git@github.com:awakesecurity/proto3-wire.git
+  commit: ee6ca644eef86cc5f31da85fb48e10b20ab0e1a1
+- git: git@github.com:awakesecurity/gRPC-haskell.git
+  commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+  subdirs:
+  - .
+  - core
+- large-generics-0.2.1
+- large-records-0.4
+- bytestring-0.10.12.1@sha256:82dba4c2de4fdd8b419ed28aec2c14cfe4a3f43d1d6e2263ab26962e7398048e,6254

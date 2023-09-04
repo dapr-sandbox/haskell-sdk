@@ -3,10 +3,79 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    commit: 5beaf4ab206b5c82a2161dd0850e91b3663135ec
+    git: git@github.com:awakesecurity/proto3-suite.git
+    name: proto3-suite
+    pantry-tree:
+      sha256: b85d9dd10369518b7fa5a808cf96010f04d2c046b8fc2de3d94cc265db428f87
+      size: 6587
+    version: 0.6.0
+  original:
+    commit: 5beaf4ab206b5c82a2161dd0850e91b3663135ec
+    git: git@github.com:awakesecurity/proto3-suite.git
+- completed:
+    commit: ee6ca644eef86cc5f31da85fb48e10b20ab0e1a1
+    git: git@github.com:awakesecurity/proto3-wire.git
+    name: proto3-wire
+    pantry-tree:
+      sha256: d758e1818e58986a71221e50c17ed61a76241bc541c768cfd4938399b632f89c
+      size: 1788
+    version: 1.4.1
+  original:
+    commit: ee6ca644eef86cc5f31da85fb48e10b20ab0e1a1
+    git: git@github.com:awakesecurity/proto3-wire.git
+- completed:
+    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    name: grpc-haskell
+    pantry-tree:
+      sha256: ce3601df5bd8cbce5db00bf9e69656eb613ac5d43e101608a73be892aff5a3da
+      size: 7507
+    subdir: .
+    version: 0.3.0
+  original:
+    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    subdir: .
+- completed:
+    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    name: grpc-haskell-core
+    pantry-tree:
+      sha256: 1798e22245f3eea6b38cee22f1a96eb0600c8b2f23a387cf5a10e434dc20b1bd
+      size: 2532
+    subdir: core
+    version: 0.5.0
+  original:
+    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    subdir: core
+- completed:
+    hackage: large-generics-0.2.1@sha256:b62959dd068b38a42857af502980e66f0bc5c15d301d9939cf5fe2a662918658,2729
+    pantry-tree:
+      sha256: d0067319f8edd559de9055776c83ead9fce3ab28d7d7499ffa4f407e82221fd7
+      size: 1976
+  original:
+    hackage: large-generics-0.2.1
+- completed:
+    hackage: large-records-0.4@sha256:bbc93411f08294913beed13b3a16202b0d16c6b4870168878d872d53cb423bee,4131
+    pantry-tree:
+      sha256: 3c631e188be5b443f04c43cddc1670eebaf12d4357a02f6613ace06d8f7d9842
+      size: 2908
+  original:
+    hackage: large-records-0.4
+- completed:
+    hackage: bytestring-0.10.12.1@sha256:82dba4c2de4fdd8b419ed28aec2c14cfe4a3f43d1d6e2263ab26962e7398048e,6254
+    pantry-tree:
+      sha256: 119f151ee88539f3287276f087f2576b46a1792247e4dac288a930359710f70e
+      size: 2140
+  original:
+    hackage: bytestring-0.10.12.1@sha256:82dba4c2de4fdd8b419ed28aec2c14cfe4a3f43d1d6e2263ab26962e7398048e,6254
 snapshots:
 - completed:
-    size: 619161
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/17.yaml
-    sha256: 7f47507fd037228a8d23cf830f5844e1f006221acebdd7cb49f2f5fb561e0546
-  original: lts-19.17
+    sha256: 5a59b2a405b3aba3c00188453be172b85893cab8ebc352b1ef58b0eae5d248a2
+    size: 650475
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/20/26.yaml
+  original: lts-20.26
