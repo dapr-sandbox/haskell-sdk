@@ -27,29 +27,29 @@ packages:
     commit: ee6ca644eef86cc5f31da85fb48e10b20ab0e1a1
     git: git@github.com:awakesecurity/proto3-wire.git
 - completed:
-    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
     git: git@github.com:awakesecurity/gRPC-haskell.git
     name: grpc-haskell
     pantry-tree:
-      sha256: ce3601df5bd8cbce5db00bf9e69656eb613ac5d43e101608a73be892aff5a3da
-      size: 7507
+      sha256: 3aba0dc4035b820dd347625d93aff47363f6111d40eab33adf15bf1c42cd806c
+      size: 7563
     subdir: .
     version: 0.3.0
   original:
-    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
     git: git@github.com:awakesecurity/gRPC-haskell.git
     subdir: .
 - completed:
-    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
     git: git@github.com:awakesecurity/gRPC-haskell.git
     name: grpc-haskell-core
     pantry-tree:
-      sha256: 1798e22245f3eea6b38cee22f1a96eb0600c8b2f23a387cf5a10e434dc20b1bd
+      sha256: b5e38573a3ac2435bcef7c64628f69ab6a4f85ec156e5da22ce3013fd88b8b63
       size: 2532
     subdir: core
     version: 0.5.0
   original:
-    commit: d20c20d63c170b5eaf5725f03f7b7060352af402
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
     git: git@github.com:awakesecurity/gRPC-haskell.git
     subdir: core
 - completed:
@@ -66,13 +66,6 @@ packages:
       size: 2908
   original:
     hackage: large-records-0.4
-- completed:
-    hackage: bytestring-0.10.12.1@sha256:82dba4c2de4fdd8b419ed28aec2c14cfe4a3f43d1d6e2263ab26962e7398048e,6254
-    pantry-tree:
-      sha256: 119f151ee88539f3287276f087f2576b46a1792247e4dac288a930359710f70e
-      size: 2140
-  original:
-    hackage: bytestring-0.10.12.1@sha256:82dba4c2de4fdd8b419ed28aec2c14cfe4a3f43d1d6e2263ab26962e7398048e,6254
 snapshots:
 - completed:
     sha256: 5a59b2a405b3aba3c00188453be172b85893cab8ebc352b1ef58b0eae5d248a2

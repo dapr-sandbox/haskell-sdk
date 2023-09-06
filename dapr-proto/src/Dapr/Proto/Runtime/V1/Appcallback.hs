@@ -39,231 +39,11 @@ import qualified GHC.Generics as Hs
 import qualified Google.Protobuf.Wrappers.Polymorphic as HsProtobuf
        (Wrapped(..))
 import qualified Unsafe.Coerce as Hs
-import Network.GRPC.HighLevel.Generated as HsGRPC
-import Network.GRPC.HighLevel.Client as HsGRPC
-import Network.GRPC.HighLevel.Server as HsGRPC hiding (serverLoop)
-import Network.GRPC.HighLevel.Server.Unregistered as HsGRPC
-       (serverLoop)
+
 import qualified Dapr.Proto.Common.V1.Common
 import qualified Google.Protobuf.Empty
 import qualified Google.Protobuf.Struct
- 
-data AppCallback request response = AppCallback{appCallbackOnInvoke
-                                                ::
-                                                request 'HsGRPC.Normal
-                                                  Dapr.Proto.Common.V1.Common.InvokeRequest
-                                                  Dapr.Proto.Common.V1.Common.InvokeResponse
-                                                  ->
-                                                  Hs.IO
-                                                    (response 'HsGRPC.Normal
-                                                       Dapr.Proto.Common.V1.Common.InvokeResponse),
-                                                appCallbackListTopicSubscriptions ::
-                                                request 'HsGRPC.Normal Google.Protobuf.Empty.Empty
-                                                  Dapr.Proto.Runtime.V1.Appcallback.ListTopicSubscriptionsResponse
-                                                  ->
-                                                  Hs.IO
-                                                    (response 'HsGRPC.Normal
-                                                       Dapr.Proto.Runtime.V1.Appcallback.ListTopicSubscriptionsResponse),
-                                                appCallbackOnTopicEvent ::
-                                                request 'HsGRPC.Normal
-                                                  Dapr.Proto.Runtime.V1.Appcallback.TopicEventRequest
-                                                  Dapr.Proto.Runtime.V1.Appcallback.TopicEventResponse
-                                                  ->
-                                                  Hs.IO
-                                                    (response 'HsGRPC.Normal
-                                                       Dapr.Proto.Runtime.V1.Appcallback.TopicEventResponse),
-                                                appCallbackListInputBindings ::
-                                                request 'HsGRPC.Normal Google.Protobuf.Empty.Empty
-                                                  Dapr.Proto.Runtime.V1.Appcallback.ListInputBindingsResponse
-                                                  ->
-                                                  Hs.IO
-                                                    (response 'HsGRPC.Normal
-                                                       Dapr.Proto.Runtime.V1.Appcallback.ListInputBindingsResponse),
-                                                appCallbackOnBindingEvent ::
-                                                request 'HsGRPC.Normal
-                                                  Dapr.Proto.Runtime.V1.Appcallback.BindingEventRequest
-                                                  Dapr.Proto.Runtime.V1.Appcallback.BindingEventResponse
-                                                  ->
-                                                  Hs.IO
-                                                    (response 'HsGRPC.Normal
-                                                       Dapr.Proto.Runtime.V1.Appcallback.BindingEventResponse)}
-                                  deriving Hs.Generic
- 
-appCallbackServer ::
-                    AppCallback HsGRPC.ServerRequest HsGRPC.ServerResponse ->
-                      HsGRPC.ServiceOptions -> Hs.IO ()
-appCallbackServer
-  AppCallback{appCallbackOnInvoke = appCallbackOnInvoke,
-              appCallbackListTopicSubscriptions =
-                appCallbackListTopicSubscriptions,
-              appCallbackOnTopicEvent = appCallbackOnTopicEvent,
-              appCallbackListInputBindings = appCallbackListInputBindings,
-              appCallbackOnBindingEvent = appCallbackOnBindingEvent}
-  (ServiceOptions serverHost serverPort useCompression
-     userAgentPrefix userAgentSuffix initialMetadata sslConfig logger
-     serverMaxReceiveMessageLength serverMaxMetadataSize)
-  = (HsGRPC.serverLoop
-       HsGRPC.defaultOptions{HsGRPC.optNormalHandlers =
-                               [(HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.AppCallback/OnInvoke")
-                                   (HsGRPC.convertGeneratedServerHandler appCallbackOnInvoke)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.AppCallback/ListTopicSubscriptions")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      appCallbackListTopicSubscriptions)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.AppCallback/OnTopicEvent")
-                                   (HsGRPC.convertGeneratedServerHandler appCallbackOnTopicEvent)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.AppCallback/ListInputBindings")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      appCallbackListInputBindings)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.AppCallback/OnBindingEvent")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      appCallbackOnBindingEvent))],
-                             HsGRPC.optClientStreamHandlers = [],
-                             HsGRPC.optServerStreamHandlers = [],
-                             HsGRPC.optBiDiStreamHandlers = [], optServerHost = serverHost,
-                             optServerPort = serverPort, optUseCompression = useCompression,
-                             optUserAgentPrefix = userAgentPrefix,
-                             optUserAgentSuffix = userAgentSuffix,
-                             optInitialMetadata = initialMetadata, optSSLConfig = sslConfig,
-                             optLogger = logger,
-                             optMaxReceiveMessageLength = serverMaxReceiveMessageLength,
-                             optMaxMetadataSize = serverMaxMetadataSize})
- 
-appCallbackClient ::
-                    HsGRPC.Client ->
-                      Hs.IO (AppCallback HsGRPC.ClientRequest HsGRPC.ClientResult)
-appCallbackClient client
-  = (Hs.pure AppCallback) <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.AppCallback/OnInvoke")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.AppCallback/ListTopicSubscriptions")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.AppCallback/OnTopicEvent")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.AppCallback/ListInputBindings")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.AppCallback/OnBindingEvent")))
- 
-data AppCallbackHealthCheck request
-     response = AppCallbackHealthCheck{appCallbackHealthCheckHealthCheck
-                                       ::
-                                       request 'HsGRPC.Normal Google.Protobuf.Empty.Empty
-                                         Dapr.Proto.Runtime.V1.Appcallback.HealthCheckResponse
-                                         ->
-                                         Hs.IO
-                                           (response 'HsGRPC.Normal
-                                              Dapr.Proto.Runtime.V1.Appcallback.HealthCheckResponse)}
-              deriving Hs.Generic
- 
-appCallbackHealthCheckServer ::
-                               AppCallbackHealthCheck HsGRPC.ServerRequest HsGRPC.ServerResponse
-                                 -> HsGRPC.ServiceOptions -> Hs.IO ()
-appCallbackHealthCheckServer
-  AppCallbackHealthCheck{appCallbackHealthCheckHealthCheck =
-                           appCallbackHealthCheckHealthCheck}
-  (ServiceOptions serverHost serverPort useCompression
-     userAgentPrefix userAgentSuffix initialMetadata sslConfig logger
-     serverMaxReceiveMessageLength serverMaxMetadataSize)
-  = (HsGRPC.serverLoop
-       HsGRPC.defaultOptions{HsGRPC.optNormalHandlers =
-                               [(HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.AppCallbackHealthCheck/HealthCheck")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      appCallbackHealthCheckHealthCheck))],
-                             HsGRPC.optClientStreamHandlers = [],
-                             HsGRPC.optServerStreamHandlers = [],
-                             HsGRPC.optBiDiStreamHandlers = [], optServerHost = serverHost,
-                             optServerPort = serverPort, optUseCompression = useCompression,
-                             optUserAgentPrefix = userAgentPrefix,
-                             optUserAgentSuffix = userAgentSuffix,
-                             optInitialMetadata = initialMetadata, optSSLConfig = sslConfig,
-                             optLogger = logger,
-                             optMaxReceiveMessageLength = serverMaxReceiveMessageLength,
-                             optMaxMetadataSize = serverMaxMetadataSize})
- 
-appCallbackHealthCheckClient ::
-                               HsGRPC.Client ->
-                                 Hs.IO
-                                   (AppCallbackHealthCheck HsGRPC.ClientRequest HsGRPC.ClientResult)
-appCallbackHealthCheckClient client
-  = (Hs.pure AppCallbackHealthCheck) <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.AppCallbackHealthCheck/HealthCheck")))
- 
-data AppCallbackAlpha request
-     response = AppCallbackAlpha{appCallbackAlphaOnBulkTopicEventAlpha1
-                                 ::
-                                 request 'HsGRPC.Normal
-                                   Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkRequest
-                                   Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkResponse
-                                   ->
-                                   Hs.IO
-                                     (response 'HsGRPC.Normal
-                                        Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkResponse)}
-              deriving Hs.Generic
- 
-appCallbackAlphaServer ::
-                         AppCallbackAlpha HsGRPC.ServerRequest HsGRPC.ServerResponse ->
-                           HsGRPC.ServiceOptions -> Hs.IO ()
-appCallbackAlphaServer
-  AppCallbackAlpha{appCallbackAlphaOnBulkTopicEventAlpha1 =
-                     appCallbackAlphaOnBulkTopicEventAlpha1}
-  (ServiceOptions serverHost serverPort useCompression
-     userAgentPrefix userAgentSuffix initialMetadata sslConfig logger
-     serverMaxReceiveMessageLength serverMaxMetadataSize)
-  = (HsGRPC.serverLoop
-       HsGRPC.defaultOptions{HsGRPC.optNormalHandlers =
-                               [(HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.AppCallbackAlpha/OnBulkTopicEventAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      appCallbackAlphaOnBulkTopicEventAlpha1))],
-                             HsGRPC.optClientStreamHandlers = [],
-                             HsGRPC.optServerStreamHandlers = [],
-                             HsGRPC.optBiDiStreamHandlers = [], optServerHost = serverHost,
-                             optServerPort = serverPort, optUseCompression = useCompression,
-                             optUserAgentPrefix = userAgentPrefix,
-                             optUserAgentSuffix = userAgentSuffix,
-                             optInitialMetadata = initialMetadata, optSSLConfig = sslConfig,
-                             optLogger = logger,
-                             optMaxReceiveMessageLength = serverMaxReceiveMessageLength,
-                             optMaxMetadataSize = serverMaxMetadataSize})
- 
-appCallbackAlphaClient ::
-                         HsGRPC.Client ->
-                           Hs.IO (AppCallbackAlpha HsGRPC.ClientRequest HsGRPC.ClientResult)
-appCallbackAlphaClient client
-  = (Hs.pure AppCallbackAlpha) <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.AppCallbackAlpha/OnBulkTopicEventAlpha1")))
- 
+
 data TopicEventRequest = TopicEventRequest{topicEventRequestId ::
                                            Hs.Text,
                                            topicEventRequestSource :: Hs.Text,
@@ -277,14 +57,14 @@ data TopicEventRequest = TopicEventRequest{topicEventRequestId ::
                                            topicEventRequestExtensions ::
                                            Hs.Maybe Google.Protobuf.Struct.Struct}
                        deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventRequest
- 
+
 instance HsProtobuf.Named TopicEventRequest where
         nameOf _ = (Hs.fromString "TopicEventRequest")
- 
+
 instance HsProtobuf.HasDefault TopicEventRequest
- 
+
 instance HsProtobuf.Message TopicEventRequest where
         encodeMessage _
           TopicEventRequest{topicEventRequestId = topicEventRequestId,
@@ -428,7 +208,7 @@ instance HsProtobuf.Message TopicEventRequest where
                 (HsProtobufAST.Single "extensions")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicEventRequest where
         toJSONPB (TopicEventRequest f1 f2 f3 f4 f5 f7 f6 f8 f9 f10)
           = (HsJSONPB.object
@@ -474,7 +254,7 @@ instance HsJSONPB.ToJSONPB TopicEventRequest where
                   (Hs.coerce @(Hs.Maybe Google.Protobuf.Struct.Struct)
                      @(HsProtobuf.Nested Google.Protobuf.Struct.Struct)
                      (f10))])
- 
+
 instance HsJSONPB.FromJSONPB TopicEventRequest where
         parseJSONPB
           = (HsJSONPB.withObject "TopicEventRequest"
@@ -512,14 +292,14 @@ instance HsJSONPB.FromJSONPB TopicEventRequest where
                        @(HsProtobuf.Nested Google.Protobuf.Struct.Struct)
                        @(Hs.Maybe Google.Protobuf.Struct.Struct)
                        (obj .: "extensions"))))
- 
+
 instance HsJSONPB.ToJSON TopicEventRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicEventRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicEventRequest where
         declareNamedSchema _
           = do let declare_id = HsJSONPB.declareSchemaRef
@@ -599,20 +379,20 @@ instance HsJSONPB.ToSchema TopicEventRequest where
                                                         ("path", topicEventRequestPath),
                                                         ("extensions",
                                                          topicEventRequestExtensions)]}})
- 
+
 newtype TopicEventResponse = TopicEventResponse{topicEventResponseStatus
                                                 ::
                                                 HsProtobuf.Enumerated
                                                   Dapr.Proto.Runtime.V1.Appcallback.TopicEventResponse_TopicEventResponseStatus}
                              deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventResponse
- 
+
 instance HsProtobuf.Named TopicEventResponse where
         nameOf _ = (Hs.fromString "TopicEventResponse")
- 
+
 instance HsProtobuf.HasDefault TopicEventResponse
- 
+
 instance HsProtobuf.Message TopicEventResponse where
         encodeMessage _
           TopicEventResponse{topicEventResponseStatus =
@@ -632,25 +412,25 @@ instance HsProtobuf.Message TopicEventResponse where
                 (HsProtobufAST.Single "status")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicEventResponse where
         toJSONPB (TopicEventResponse f1)
           = (HsJSONPB.object ["status" .= f1])
         toEncodingPB (TopicEventResponse f1)
           = (HsJSONPB.pairs ["status" .= f1])
- 
+
 instance HsJSONPB.FromJSONPB TopicEventResponse where
         parseJSONPB
           = (HsJSONPB.withObject "TopicEventResponse"
                (\ obj -> (Hs.pure TopicEventResponse) <*> obj .: "status"))
- 
+
 instance HsJSONPB.ToJSON TopicEventResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicEventResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicEventResponse where
         declareNamedSchema _
           = do let declare_status = HsJSONPB.declareSchemaRef
@@ -667,30 +447,30 @@ instance HsJSONPB.ToSchema TopicEventResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("status", topicEventResponseStatus)]}})
- 
+
 data TopicEventResponse_TopicEventResponseStatus = TopicEventResponse_TopicEventResponseStatusSUCCESS
                                                  | TopicEventResponse_TopicEventResponseStatusRETRY
                                                  | TopicEventResponse_TopicEventResponseStatusDROP
                                                  deriving (Hs.Show, Hs.Eq, Hs.Generic, Hs.NFData)
- 
+
 instance HsProtobuf.Named
          TopicEventResponse_TopicEventResponseStatus where
         nameOf _
           = (Hs.fromString "TopicEventResponse_TopicEventResponseStatus")
- 
+
 instance HsProtobuf.HasDefault
          TopicEventResponse_TopicEventResponseStatus
- 
+
 instance Hs.Bounded TopicEventResponse_TopicEventResponseStatus
          where
         minBound = TopicEventResponse_TopicEventResponseStatusSUCCESS
         maxBound = TopicEventResponse_TopicEventResponseStatusDROP
- 
+
 instance Hs.Ord TopicEventResponse_TopicEventResponseStatus where
         compare x y
           = Hs.compare (HsProtobuf.fromProtoEnum x)
               (HsProtobuf.fromProtoEnum y)
- 
+
 instance HsProtobuf.ProtoEnum
          TopicEventResponse_TopicEventResponseStatus where
         toProtoEnumMay 0
@@ -705,12 +485,12 @@ instance HsProtobuf.ProtoEnum
         fromProtoEnum (TopicEventResponse_TopicEventResponseStatusRETRY)
           = 1
         fromProtoEnum (TopicEventResponse_TopicEventResponseStatusDROP) = 2
- 
+
 instance HsJSONPB.ToJSONPB
          TopicEventResponse_TopicEventResponseStatus where
         toJSONPB x _ = HsJSONPB.enumFieldString x
         toEncodingPB x _ = HsJSONPB.enumFieldEncoding x
- 
+
 instance HsJSONPB.FromJSONPB
          TopicEventResponse_TopicEventResponseStatus where
         parseJSONPB (HsJSONPB.String "SUCCESS")
@@ -723,19 +503,19 @@ instance HsJSONPB.FromJSONPB
           = (HsJSONPB.typeMismatch
                "TopicEventResponse_TopicEventResponseStatus"
                v)
- 
+
 instance HsJSONPB.ToJSON
          TopicEventResponse_TopicEventResponseStatus where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON
          TopicEventResponse_TopicEventResponseStatus where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsProtobuf.Finite
          TopicEventResponse_TopicEventResponseStatus
- 
+
 data TopicEventCERequest = TopicEventCERequest{topicEventCERequestId
                                                :: Hs.Text,
                                                topicEventCERequestSource :: Hs.Text,
@@ -746,14 +526,14 @@ data TopicEventCERequest = TopicEventCERequest{topicEventCERequestId
                                                topicEventCERequestExtensions ::
                                                Hs.Maybe Google.Protobuf.Struct.Struct}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventCERequest
- 
+
 instance HsProtobuf.Named TopicEventCERequest where
         nameOf _ = (Hs.fromString "TopicEventCERequest")
- 
+
 instance HsProtobuf.HasDefault TopicEventCERequest
- 
+
 instance HsProtobuf.Message TopicEventCERequest where
         encodeMessage _
           TopicEventCERequest{topicEventCERequestId = topicEventCERequestId,
@@ -858,7 +638,7 @@ instance HsProtobuf.Message TopicEventCERequest where
                 (HsProtobufAST.Single "extensions")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicEventCERequest where
         toJSONPB (TopicEventCERequest f1 f2 f3 f4 f5 f6 f7)
           = (HsJSONPB.object
@@ -894,7 +674,7 @@ instance HsJSONPB.ToJSONPB TopicEventCERequest where
                   (Hs.coerce @(Hs.Maybe Google.Protobuf.Struct.Struct)
                      @(HsProtobuf.Nested Google.Protobuf.Struct.Struct)
                      (f7))])
- 
+
 instance HsJSONPB.FromJSONPB TopicEventCERequest where
         parseJSONPB
           = (HsJSONPB.withObject "TopicEventCERequest"
@@ -923,14 +703,14 @@ instance HsJSONPB.FromJSONPB TopicEventCERequest where
                        @(HsProtobuf.Nested Google.Protobuf.Struct.Struct)
                        @(Hs.Maybe Google.Protobuf.Struct.Struct)
                        (obj .: "extensions"))))
- 
+
 instance HsJSONPB.ToJSON TopicEventCERequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicEventCERequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicEventCERequest where
         declareNamedSchema _
           = do let declare_id = HsJSONPB.declareSchemaRef
@@ -991,7 +771,7 @@ instance HsJSONPB.ToSchema TopicEventCERequest where
                                                         ("data", topicEventCERequestData),
                                                         ("extensions",
                                                          topicEventCERequestExtensions)]}})
- 
+
 data TopicEventBulkRequestEntry = TopicEventBulkRequestEntry{topicEventBulkRequestEntryEntryId
                                                              :: Hs.Text,
                                                              topicEventBulkRequestEntryEvent ::
@@ -1002,14 +782,14 @@ data TopicEventBulkRequestEntry = TopicEventBulkRequestEntry{topicEventBulkReque
                                                              topicEventBulkRequestEntryMetadata ::
                                                              Hs.Map Hs.Text Hs.Text}
                                 deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventBulkRequestEntry
- 
+
 instance HsProtobuf.Named TopicEventBulkRequestEntry where
         nameOf _ = (Hs.fromString "TopicEventBulkRequestEntry")
- 
+
 instance HsProtobuf.HasDefault TopicEventBulkRequestEntry
- 
+
 instance HsProtobuf.Message TopicEventBulkRequestEntry where
         encodeMessage _
           TopicEventBulkRequestEntry{topicEventBulkRequestEntryEntryId =
@@ -1091,7 +871,7 @@ instance HsProtobuf.Message TopicEventBulkRequestEntry where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicEventBulkRequestEntry where
         toJSONPB (TopicEventBulkRequestEntry f1 f2_or_f3 f4 f5)
           = (HsJSONPB.object
@@ -1141,7 +921,7 @@ instance HsJSONPB.ToJSONPB TopicEventBulkRequestEntry where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB TopicEventBulkRequestEntry where
         parseJSONPB
           = (HsJSONPB.withObject "TopicEventBulkRequestEntry"
@@ -1169,14 +949,14 @@ instance HsJSONPB.FromJSONPB TopicEventBulkRequestEntry where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON TopicEventBulkRequestEntry where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicEventBulkRequestEntry where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicEventBulkRequestEntry where
         declareNamedSchema _
           = do let declare_entry_id = HsJSONPB.declareSchemaRef
@@ -1216,16 +996,16 @@ instance HsJSONPB.ToSchema TopicEventBulkRequestEntry where
                                                          topicEventBulkRequestEntryContentType),
                                                         ("metadata",
                                                          topicEventBulkRequestEntryMetadata)]}})
- 
+
 data TopicEventBulkRequestEntryEvent = TopicEventBulkRequestEntryEventBytes Hs.ByteString
                                      | TopicEventBulkRequestEntryEventCloudEvent Dapr.Proto.Runtime.V1.Appcallback.TopicEventCERequest
                                      deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventBulkRequestEntryEvent
- 
+
 instance HsProtobuf.Named TopicEventBulkRequestEntryEvent where
         nameOf _ = (Hs.fromString "TopicEventBulkRequestEntryEvent")
- 
+
 instance HsJSONPB.ToSchema TopicEventBulkRequestEntryEvent where
         declareNamedSchema _
           = do let declare_bytes = HsJSONPB.declareSchemaRef
@@ -1254,7 +1034,7 @@ instance HsJSONPB.ToSchema TopicEventBulkRequestEntryEvent where
                                                          topicEventBulkRequestEntryEventCloudEvent)],
                                                    HsJSONPB._schemaMinProperties = Hs.Just 1,
                                                    HsJSONPB._schemaMaxProperties = Hs.Just 1}})
- 
+
 data TopicEventBulkRequest = TopicEventBulkRequest{topicEventBulkRequestId
                                                    :: Hs.Text,
                                                    topicEventBulkRequestEntries ::
@@ -1267,14 +1047,14 @@ data TopicEventBulkRequest = TopicEventBulkRequest{topicEventBulkRequestId
                                                    topicEventBulkRequestType :: Hs.Text,
                                                    topicEventBulkRequestPath :: Hs.Text}
                            deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventBulkRequest
- 
+
 instance HsProtobuf.Named TopicEventBulkRequest where
         nameOf _ = (Hs.fromString "TopicEventBulkRequest")
- 
+
 instance HsProtobuf.HasDefault TopicEventBulkRequest
- 
+
 instance HsProtobuf.Message TopicEventBulkRequest where
         encodeMessage _
           TopicEventBulkRequest{topicEventBulkRequestId =
@@ -1381,7 +1161,7 @@ instance HsProtobuf.Message TopicEventBulkRequest where
                 (HsProtobufAST.Single "path")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicEventBulkRequest where
         toJSONPB (TopicEventBulkRequest f1 f2 f3 f4 f5 f6 f7)
           = (HsJSONPB.object
@@ -1421,7 +1201,7 @@ instance HsJSONPB.ToJSONPB TopicEventBulkRequest where
                 "type" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f6)),
                 "path" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f7))])
- 
+
 instance HsJSONPB.FromJSONPB TopicEventBulkRequest where
         parseJSONPB
           = (HsJSONPB.withObject "TopicEventBulkRequest"
@@ -1451,14 +1231,14 @@ instance HsJSONPB.FromJSONPB TopicEventBulkRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "path"))))
- 
+
 instance HsJSONPB.ToJSON TopicEventBulkRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicEventBulkRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicEventBulkRequest where
         declareNamedSchema _
           = do let declare_id = HsJSONPB.declareSchemaRef
@@ -1517,21 +1297,21 @@ instance HsJSONPB.ToSchema TopicEventBulkRequest where
                                                          topicEventBulkRequestPubsubName),
                                                         ("type", topicEventBulkRequestType),
                                                         ("path", topicEventBulkRequestPath)]}})
- 
+
 data TopicEventBulkResponseEntry = TopicEventBulkResponseEntry{topicEventBulkResponseEntryEntryId
                                                                :: Hs.Text,
                                                                topicEventBulkResponseEntryStatus ::
                                                                HsProtobuf.Enumerated
                                                                  Dapr.Proto.Runtime.V1.Appcallback.TopicEventResponse_TopicEventResponseStatus}
                                  deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventBulkResponseEntry
- 
+
 instance HsProtobuf.Named TopicEventBulkResponseEntry where
         nameOf _ = (Hs.fromString "TopicEventBulkResponseEntry")
- 
+
 instance HsProtobuf.HasDefault TopicEventBulkResponseEntry
- 
+
 instance HsProtobuf.Message TopicEventBulkResponseEntry where
         encodeMessage _
           TopicEventBulkResponseEntry{topicEventBulkResponseEntryEntryId =
@@ -1567,7 +1347,7 @@ instance HsProtobuf.Message TopicEventBulkResponseEntry where
                 (HsProtobufAST.Single "status")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicEventBulkResponseEntry where
         toJSONPB (TopicEventBulkResponseEntry f1 f2)
           = (HsJSONPB.object
@@ -1579,7 +1359,7 @@ instance HsJSONPB.ToJSONPB TopicEventBulkResponseEntry where
                ["entry_id" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "status" .= f2])
- 
+
 instance HsJSONPB.FromJSONPB TopicEventBulkResponseEntry where
         parseJSONPB
           = (HsJSONPB.withObject "TopicEventBulkResponseEntry"
@@ -1588,14 +1368,14 @@ instance HsJSONPB.FromJSONPB TopicEventBulkResponseEntry where
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "entry_id"))
                     <*> obj .: "status"))
- 
+
 instance HsJSONPB.ToJSON TopicEventBulkResponseEntry where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicEventBulkResponseEntry where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicEventBulkResponseEntry where
         declareNamedSchema _
           = do let declare_entry_id = HsJSONPB.declareSchemaRef
@@ -1619,20 +1399,20 @@ instance HsJSONPB.ToSchema TopicEventBulkResponseEntry where
                                                          topicEventBulkResponseEntryEntryId),
                                                         ("status",
                                                          topicEventBulkResponseEntryStatus)]}})
- 
+
 newtype TopicEventBulkResponse = TopicEventBulkResponse{topicEventBulkResponseStatuses
                                                         ::
                                                         Hs.Vector
                                                           Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkResponseEntry}
                                  deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicEventBulkResponse
- 
+
 instance HsProtobuf.Named TopicEventBulkResponse where
         nameOf _ = (Hs.fromString "TopicEventBulkResponse")
- 
+
 instance HsProtobuf.HasDefault TopicEventBulkResponse
- 
+
 instance HsProtobuf.Message TopicEventBulkResponse where
         encodeMessage _
           TopicEventBulkResponse{topicEventBulkResponseStatuses =
@@ -1658,7 +1438,7 @@ instance HsProtobuf.Message TopicEventBulkResponse where
                 (HsProtobufAST.Single "statuses")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicEventBulkResponse where
         toJSONPB (TopicEventBulkResponse f1)
           = (HsJSONPB.object
@@ -1674,7 +1454,7 @@ instance HsJSONPB.ToJSONPB TopicEventBulkResponse where
                      @(Hs.Vector Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkResponseEntry)
                      @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkResponseEntry)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB TopicEventBulkResponse where
         parseJSONPB
           = (HsJSONPB.withObject "TopicEventBulkResponse"
@@ -1684,14 +1464,14 @@ instance HsJSONPB.FromJSONPB TopicEventBulkResponse where
                        @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkResponseEntry)
                        @(Hs.Vector Dapr.Proto.Runtime.V1.Appcallback.TopicEventBulkResponseEntry)
                        (obj .: "statuses"))))
- 
+
 instance HsJSONPB.ToJSON TopicEventBulkResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicEventBulkResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicEventBulkResponse where
         declareNamedSchema _
           = do let declare_statuses = HsJSONPB.declareSchemaRef
@@ -1712,21 +1492,21 @@ instance HsJSONPB.ToSchema TopicEventBulkResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("statuses",
                                                          topicEventBulkResponseStatuses)]}})
- 
+
 data BindingEventRequest = BindingEventRequest{bindingEventRequestName
                                                :: Hs.Text,
                                                bindingEventRequestData :: Hs.ByteString,
                                                bindingEventRequestMetadata ::
                                                Hs.Map Hs.Text Hs.Text}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BindingEventRequest
- 
+
 instance HsProtobuf.Named BindingEventRequest where
         nameOf _ = (Hs.fromString "BindingEventRequest")
- 
+
 instance HsProtobuf.HasDefault BindingEventRequest
- 
+
 instance HsProtobuf.Message BindingEventRequest where
         encodeMessage _
           BindingEventRequest{bindingEventRequestName =
@@ -1776,7 +1556,7 @@ instance HsProtobuf.Message BindingEventRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BindingEventRequest where
         toJSONPB (BindingEventRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -1800,7 +1580,7 @@ instance HsJSONPB.ToJSONPB BindingEventRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB BindingEventRequest where
         parseJSONPB
           = (HsJSONPB.withObject "BindingEventRequest"
@@ -1817,14 +1597,14 @@ instance HsJSONPB.FromJSONPB BindingEventRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON BindingEventRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BindingEventRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BindingEventRequest where
         declareNamedSchema _
           = do let declare_name = HsJSONPB.declareSchemaRef
@@ -1858,7 +1638,7 @@ instance HsJSONPB.ToSchema BindingEventRequest where
                                                         ("data", bindingEventRequestData),
                                                         ("metadata",
                                                          bindingEventRequestMetadata)]}})
- 
+
 data BindingEventResponse = BindingEventResponse{bindingEventResponseStoreName
                                                  :: Hs.Text,
                                                  bindingEventResponseStates ::
@@ -1869,14 +1649,14 @@ data BindingEventResponse = BindingEventResponse{bindingEventResponseStoreName
                                                  HsProtobuf.Enumerated
                                                    Dapr.Proto.Runtime.V1.Appcallback.BindingEventResponse_BindingEventConcurrency}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BindingEventResponse
- 
+
 instance HsProtobuf.Named BindingEventResponse where
         nameOf _ = (Hs.fromString "BindingEventResponse")
- 
+
 instance HsProtobuf.HasDefault BindingEventResponse
- 
+
 instance HsProtobuf.Message BindingEventResponse where
         encodeMessage _
           BindingEventResponse{bindingEventResponseStoreName =
@@ -1959,7 +1739,7 @@ instance HsProtobuf.Message BindingEventResponse where
                 (HsProtobufAST.Single "concurrency")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BindingEventResponse where
         toJSONPB (BindingEventResponse f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -1993,7 +1773,7 @@ instance HsJSONPB.ToJSONPB BindingEventResponse where
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f4)),
                 "concurrency" .= f5])
- 
+
 instance HsJSONPB.FromJSONPB BindingEventResponse where
         parseJSONPB
           = (HsJSONPB.withObject "BindingEventResponse"
@@ -2016,14 +1796,14 @@ instance HsJSONPB.FromJSONPB BindingEventResponse where
                        @(Hs.ByteString)
                        (obj .: "data"))
                     <*> obj .: "concurrency"))
- 
+
 instance HsJSONPB.ToJSON BindingEventResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BindingEventResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BindingEventResponse where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -2070,29 +1850,29 @@ instance HsJSONPB.ToSchema BindingEventResponse where
                                                         ("data", bindingEventResponseData),
                                                         ("concurrency",
                                                          bindingEventResponseConcurrency)]}})
- 
+
 data BindingEventResponse_BindingEventConcurrency = BindingEventResponse_BindingEventConcurrencySEQUENTIAL
                                                   | BindingEventResponse_BindingEventConcurrencyPARALLEL
                                                   deriving (Hs.Show, Hs.Eq, Hs.Generic, Hs.NFData)
- 
+
 instance HsProtobuf.Named
          BindingEventResponse_BindingEventConcurrency where
         nameOf _
           = (Hs.fromString "BindingEventResponse_BindingEventConcurrency")
- 
+
 instance HsProtobuf.HasDefault
          BindingEventResponse_BindingEventConcurrency
- 
+
 instance Hs.Bounded BindingEventResponse_BindingEventConcurrency
          where
         minBound = BindingEventResponse_BindingEventConcurrencySEQUENTIAL
         maxBound = BindingEventResponse_BindingEventConcurrencyPARALLEL
- 
+
 instance Hs.Ord BindingEventResponse_BindingEventConcurrency where
         compare x y
           = Hs.compare (HsProtobuf.fromProtoEnum x)
               (HsProtobuf.fromProtoEnum y)
- 
+
 instance HsProtobuf.ProtoEnum
          BindingEventResponse_BindingEventConcurrency where
         toProtoEnumMay 0
@@ -2104,12 +1884,12 @@ instance HsProtobuf.ProtoEnum
           (BindingEventResponse_BindingEventConcurrencySEQUENTIAL) = 0
         fromProtoEnum
           (BindingEventResponse_BindingEventConcurrencyPARALLEL) = 1
- 
+
 instance HsJSONPB.ToJSONPB
          BindingEventResponse_BindingEventConcurrency where
         toJSONPB x _ = HsJSONPB.enumFieldString x
         toEncodingPB x _ = HsJSONPB.enumFieldEncoding x
- 
+
 instance HsJSONPB.FromJSONPB
          BindingEventResponse_BindingEventConcurrency where
         parseJSONPB (HsJSONPB.String "SEQUENTIAL")
@@ -2120,32 +1900,32 @@ instance HsJSONPB.FromJSONPB
           = (HsJSONPB.typeMismatch
                "BindingEventResponse_BindingEventConcurrency"
                v)
- 
+
 instance HsJSONPB.ToJSON
          BindingEventResponse_BindingEventConcurrency where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON
          BindingEventResponse_BindingEventConcurrency where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsProtobuf.Finite
          BindingEventResponse_BindingEventConcurrency
- 
+
 newtype ListTopicSubscriptionsResponse = ListTopicSubscriptionsResponse{listTopicSubscriptionsResponseSubscriptions
                                                                         ::
                                                                         Hs.Vector
                                                                           Dapr.Proto.Runtime.V1.Appcallback.TopicSubscription}
                                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData ListTopicSubscriptionsResponse
- 
+
 instance HsProtobuf.Named ListTopicSubscriptionsResponse where
         nameOf _ = (Hs.fromString "ListTopicSubscriptionsResponse")
- 
+
 instance HsProtobuf.HasDefault ListTopicSubscriptionsResponse
- 
+
 instance HsProtobuf.Message ListTopicSubscriptionsResponse where
         encodeMessage _
           ListTopicSubscriptionsResponse{listTopicSubscriptionsResponseSubscriptions
@@ -2170,7 +1950,7 @@ instance HsProtobuf.Message ListTopicSubscriptionsResponse where
                 (HsProtobufAST.Single "subscriptions")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB ListTopicSubscriptionsResponse where
         toJSONPB (ListTopicSubscriptionsResponse f1)
           = (HsJSONPB.object
@@ -2186,7 +1966,7 @@ instance HsJSONPB.ToJSONPB ListTopicSubscriptionsResponse where
                      @(Hs.Vector Dapr.Proto.Runtime.V1.Appcallback.TopicSubscription)
                      @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Appcallback.TopicSubscription)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB ListTopicSubscriptionsResponse where
         parseJSONPB
           = (HsJSONPB.withObject "ListTopicSubscriptionsResponse"
@@ -2196,14 +1976,14 @@ instance HsJSONPB.FromJSONPB ListTopicSubscriptionsResponse where
                        @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Appcallback.TopicSubscription)
                        @(Hs.Vector Dapr.Proto.Runtime.V1.Appcallback.TopicSubscription)
                        (obj .: "subscriptions"))))
- 
+
 instance HsJSONPB.ToJSON ListTopicSubscriptionsResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON ListTopicSubscriptionsResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema ListTopicSubscriptionsResponse where
         declareNamedSchema _
           = do let declare_subscriptions = HsJSONPB.declareSchemaRef
@@ -2225,7 +2005,7 @@ instance HsJSONPB.ToSchema ListTopicSubscriptionsResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("subscriptions",
                                                          listTopicSubscriptionsResponseSubscriptions)]}})
- 
+
 data TopicSubscription = TopicSubscription{topicSubscriptionPubsubName
                                            :: Hs.Text,
                                            topicSubscriptionTopic :: Hs.Text,
@@ -2237,14 +2017,14 @@ data TopicSubscription = TopicSubscription{topicSubscriptionPubsubName
                                            Hs.Maybe
                                              Dapr.Proto.Runtime.V1.Appcallback.BulkSubscribeConfig}
                        deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicSubscription
- 
+
 instance HsProtobuf.Named TopicSubscription where
         nameOf _ = (Hs.fromString "TopicSubscription")
- 
+
 instance HsProtobuf.HasDefault TopicSubscription
- 
+
 instance HsProtobuf.Message TopicSubscription where
         encodeMessage _
           TopicSubscription{topicSubscriptionPubsubName =
@@ -2343,7 +2123,7 @@ instance HsProtobuf.Message TopicSubscription where
                 (HsProtobufAST.Single "bulk_subscribe")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicSubscription where
         toJSONPB (TopicSubscription f1 f2 f3 f5 f6 f7)
           = (HsJSONPB.object
@@ -2389,7 +2169,7 @@ instance HsJSONPB.ToJSONPB TopicSubscription where
                      @(Hs.Maybe Dapr.Proto.Runtime.V1.Appcallback.BulkSubscribeConfig)
                      @(HsProtobuf.Nested Dapr.Proto.Runtime.V1.Appcallback.BulkSubscribeConfig)
                      (f7))])
- 
+
 instance HsJSONPB.FromJSONPB TopicSubscription where
         parseJSONPB
           = (HsJSONPB.withObject "TopicSubscription"
@@ -2418,14 +2198,14 @@ instance HsJSONPB.FromJSONPB TopicSubscription where
                        @(HsProtobuf.Nested Dapr.Proto.Runtime.V1.Appcallback.BulkSubscribeConfig)
                        @(Hs.Maybe Dapr.Proto.Runtime.V1.Appcallback.BulkSubscribeConfig)
                        (obj .: "bulk_subscribe"))))
- 
+
 instance HsJSONPB.ToJSON TopicSubscription where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicSubscription where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicSubscription where
         declareNamedSchema _
           = do let declare_pubsub_name = HsJSONPB.declareSchemaRef
@@ -2484,19 +2264,19 @@ instance HsJSONPB.ToSchema TopicSubscription where
                                                          topicSubscriptionDeadLetterTopic),
                                                         ("bulk_subscribe",
                                                          topicSubscriptionBulkSubscribe)]}})
- 
+
 data TopicRoutes = TopicRoutes{topicRoutesRules ::
                                Hs.Vector Dapr.Proto.Runtime.V1.Appcallback.TopicRule,
                                topicRoutesDefault :: Hs.Text}
                  deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicRoutes
- 
+
 instance HsProtobuf.Named TopicRoutes where
         nameOf _ = (Hs.fromString "TopicRoutes")
- 
+
 instance HsProtobuf.HasDefault TopicRoutes
- 
+
 instance HsProtobuf.Message TopicRoutes where
         encodeMessage _
           TopicRoutes{topicRoutesRules = topicRoutesRules,
@@ -2532,7 +2312,7 @@ instance HsProtobuf.Message TopicRoutes where
                 (HsProtobufAST.Single "default")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicRoutes where
         toJSONPB (TopicRoutes f1 f2)
           = (HsJSONPB.object
@@ -2550,7 +2330,7 @@ instance HsJSONPB.ToJSONPB TopicRoutes where
                      (f1)),
                 "default" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB TopicRoutes where
         parseJSONPB
           = (HsJSONPB.withObject "TopicRoutes"
@@ -2563,14 +2343,14 @@ instance HsJSONPB.FromJSONPB TopicRoutes where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "default"))))
- 
+
 instance HsJSONPB.ToJSON TopicRoutes where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicRoutes where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicRoutes where
         declareNamedSchema _
           = do let declare_rules = HsJSONPB.declareSchemaRef
@@ -2596,18 +2376,18 @@ instance HsJSONPB.ToSchema TopicRoutes where
                                                      HsJSONPB.insOrdFromList
                                                        [("rules", topicRoutesRules),
                                                         ("default", topicRoutesDefault)]}})
- 
+
 data TopicRule = TopicRule{topicRuleMatch :: Hs.Text,
                            topicRulePath :: Hs.Text}
                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TopicRule
- 
+
 instance HsProtobuf.Named TopicRule where
         nameOf _ = (Hs.fromString "TopicRule")
- 
+
 instance HsProtobuf.HasDefault TopicRule
- 
+
 instance HsProtobuf.Message TopicRule where
         encodeMessage _
           TopicRule{topicRuleMatch = topicRuleMatch,
@@ -2639,7 +2419,7 @@ instance HsProtobuf.Message TopicRule where
                 (HsProtobufAST.Single "path")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TopicRule where
         toJSONPB (TopicRule f1 f2)
           = (HsJSONPB.object
@@ -2653,7 +2433,7 @@ instance HsJSONPB.ToJSONPB TopicRule where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "path" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB TopicRule where
         parseJSONPB
           = (HsJSONPB.withObject "TopicRule"
@@ -2664,14 +2444,14 @@ instance HsJSONPB.FromJSONPB TopicRule where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "path"))))
- 
+
 instance HsJSONPB.ToJSON TopicRule where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TopicRule where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TopicRule where
         declareNamedSchema _
           = do let declare_match = HsJSONPB.declareSchemaRef
@@ -2695,20 +2475,20 @@ instance HsJSONPB.ToSchema TopicRule where
                                                      HsJSONPB.insOrdFromList
                                                        [("match", topicRuleMatch),
                                                         ("path", topicRulePath)]}})
- 
+
 data BulkSubscribeConfig = BulkSubscribeConfig{bulkSubscribeConfigEnabled
                                                :: Hs.Bool,
                                                bulkSubscribeConfigMaxMessagesCount :: Hs.Int32,
                                                bulkSubscribeConfigMaxAwaitDurationMs :: Hs.Int32}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BulkSubscribeConfig
- 
+
 instance HsProtobuf.Named BulkSubscribeConfig where
         nameOf _ = (Hs.fromString "BulkSubscribeConfig")
- 
+
 instance HsProtobuf.HasDefault BulkSubscribeConfig
- 
+
 instance HsProtobuf.Message BulkSubscribeConfig where
         encodeMessage _
           BulkSubscribeConfig{bulkSubscribeConfigEnabled =
@@ -2750,7 +2530,7 @@ instance HsProtobuf.Message BulkSubscribeConfig where
                 (HsProtobufAST.Single "max_await_duration_ms")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BulkSubscribeConfig where
         toJSONPB (BulkSubscribeConfig f1 f2 f3)
           = (HsJSONPB.object
@@ -2760,7 +2540,7 @@ instance HsJSONPB.ToJSONPB BulkSubscribeConfig where
           = (HsJSONPB.pairs
                ["enabled" .= f1, "max_messages_count" .= f2,
                 "max_await_duration_ms" .= f3])
- 
+
 instance HsJSONPB.FromJSONPB BulkSubscribeConfig where
         parseJSONPB
           = (HsJSONPB.withObject "BulkSubscribeConfig"
@@ -2768,14 +2548,14 @@ instance HsJSONPB.FromJSONPB BulkSubscribeConfig where
                   (Hs.pure BulkSubscribeConfig) <*> obj .: "enabled" <*>
                     obj .: "max_messages_count"
                     <*> obj .: "max_await_duration_ms"))
- 
+
 instance HsJSONPB.ToJSON BulkSubscribeConfig where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BulkSubscribeConfig where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BulkSubscribeConfig where
         declareNamedSchema _
           = do let declare_enabled = HsJSONPB.declareSchemaRef
@@ -2804,18 +2584,18 @@ instance HsJSONPB.ToSchema BulkSubscribeConfig where
                                                          bulkSubscribeConfigMaxMessagesCount),
                                                         ("max_await_duration_ms",
                                                          bulkSubscribeConfigMaxAwaitDurationMs)]}})
- 
+
 newtype ListInputBindingsResponse = ListInputBindingsResponse{listInputBindingsResponseBindings
                                                               :: Hs.Vector Hs.Text}
                                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData ListInputBindingsResponse
- 
+
 instance HsProtobuf.Named ListInputBindingsResponse where
         nameOf _ = (Hs.fromString "ListInputBindingsResponse")
- 
+
 instance HsProtobuf.HasDefault ListInputBindingsResponse
- 
+
 instance HsProtobuf.Message ListInputBindingsResponse where
         encodeMessage _
           ListInputBindingsResponse{listInputBindingsResponseBindings =
@@ -2838,7 +2618,7 @@ instance HsProtobuf.Message ListInputBindingsResponse where
                 (HsProtobufAST.Single "bindings")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB ListInputBindingsResponse where
         toJSONPB (ListInputBindingsResponse f1)
           = (HsJSONPB.object
@@ -2852,7 +2632,7 @@ instance HsJSONPB.ToJSONPB ListInputBindingsResponse where
                   (Hs.coerce @(Hs.Vector Hs.Text)
                      @(HsProtobuf.UnpackedVec (HsProtobuf.String Hs.Text))
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB ListInputBindingsResponse where
         parseJSONPB
           = (HsJSONPB.withObject "ListInputBindingsResponse"
@@ -2862,14 +2642,14 @@ instance HsJSONPB.FromJSONPB ListInputBindingsResponse where
                        @(HsProtobuf.UnpackedVec (HsProtobuf.String Hs.Text))
                        @(Hs.Vector Hs.Text)
                        (obj .: "bindings"))))
- 
+
 instance HsJSONPB.ToJSON ListInputBindingsResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON ListInputBindingsResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema ListInputBindingsResponse where
         declareNamedSchema _
           = do let declare_bindings = HsJSONPB.declareSchemaRef
@@ -2890,38 +2670,38 @@ instance HsJSONPB.ToSchema ListInputBindingsResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("bindings",
                                                          listInputBindingsResponseBindings)]}})
- 
+
 data HealthCheckResponse = HealthCheckResponse{}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData HealthCheckResponse
- 
+
 instance HsProtobuf.Named HealthCheckResponse where
         nameOf _ = (Hs.fromString "HealthCheckResponse")
- 
+
 instance HsProtobuf.HasDefault HealthCheckResponse
- 
+
 instance HsProtobuf.Message HealthCheckResponse where
         encodeMessage _ HealthCheckResponse{} = (Hs.mconcat [])
         decodeMessage _ = (Hs.pure HealthCheckResponse)
         dotProto _ = []
- 
+
 instance HsJSONPB.ToJSONPB HealthCheckResponse where
         toJSONPB (HealthCheckResponse) = (HsJSONPB.object [])
         toEncodingPB (HealthCheckResponse) = (HsJSONPB.pairs [])
- 
+
 instance HsJSONPB.FromJSONPB HealthCheckResponse where
         parseJSONPB
           = (HsJSONPB.withObject "HealthCheckResponse"
                (\ obj -> (Hs.pure HealthCheckResponse)))
- 
+
 instance HsJSONPB.ToJSON HealthCheckResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON HealthCheckResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema HealthCheckResponse where
         declareNamedSchema _
           = do Hs.return
@@ -2933,4 +2713,3 @@ instance HsJSONPB.ToSchema HealthCheckResponse where
                                                                  Hs.Just HsJSONPB.SwaggerObject},
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList []}})
-

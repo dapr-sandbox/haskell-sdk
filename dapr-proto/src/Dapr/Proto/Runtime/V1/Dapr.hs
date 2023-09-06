@@ -39,837 +39,25 @@ import qualified GHC.Generics as Hs
 import qualified Google.Protobuf.Wrappers.Polymorphic as HsProtobuf
        (Wrapped(..))
 import qualified Unsafe.Coerce as Hs
-import Network.GRPC.HighLevel.Generated as HsGRPC
-import Network.GRPC.HighLevel.Client as HsGRPC
-import Network.GRPC.HighLevel.Server as HsGRPC hiding (serverLoop)
-import Network.GRPC.HighLevel.Server.Unregistered as HsGRPC
-       (serverLoop)
+
 import qualified Google.Protobuf.Any
 import qualified Dapr.Proto.Common.V1.Common
 import qualified Google.Protobuf.Empty
 import qualified Google.Protobuf.Timestamp
- 
-data Dapr request response = Dapr{daprInvokeService ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.InvokeServiceRequest
-                                    Dapr.Proto.Common.V1.Common.InvokeResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Common.V1.Common.InvokeResponse),
-                                  daprGetState ::
-                                  request 'HsGRPC.Normal Dapr.Proto.Runtime.V1.Dapr.GetStateRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetStateResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetStateResponse),
-                                  daprGetBulkState ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.GetBulkStateRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetBulkStateResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetBulkStateResponse),
-                                  daprSaveState ::
-                                  request 'HsGRPC.Normal Dapr.Proto.Runtime.V1.Dapr.SaveStateRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprQueryStateAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.QueryStateRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.QueryStateResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.QueryStateResponse),
-                                  daprDeleteState ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.DeleteStateRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprDeleteBulkState ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.DeleteBulkStateRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprExecuteStateTransaction ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.ExecuteStateTransactionRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprPublishEvent ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.PublishEventRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprBulkPublishEventAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.BulkPublishRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.BulkPublishResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.BulkPublishResponse),
-                                  daprInvokeBinding ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.InvokeBindingRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.InvokeBindingResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.InvokeBindingResponse),
-                                  daprGetSecret ::
-                                  request 'HsGRPC.Normal Dapr.Proto.Runtime.V1.Dapr.GetSecretRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetSecretResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetSecretResponse),
-                                  daprGetBulkSecret ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.GetBulkSecretRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetBulkSecretResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetBulkSecretResponse),
-                                  daprRegisterActorTimer ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.RegisterActorTimerRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprUnregisterActorTimer ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.UnregisterActorTimerRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprRegisterActorReminder ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.RegisterActorReminderRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprUnregisterActorReminder ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.UnregisterActorReminderRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprRenameActorReminder ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.RenameActorReminderRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprGetActorState ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.GetActorStateRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetActorStateResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetActorStateResponse),
-                                  daprExecuteActorStateTransaction ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.ExecuteActorStateTransactionRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprInvokeActor ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.InvokeActorRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.InvokeActorResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.InvokeActorResponse),
-                                  daprGetConfigurationAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.GetConfigurationRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetConfigurationResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetConfigurationResponse),
-                                  daprGetConfiguration ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.GetConfigurationRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetConfigurationResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetConfigurationResponse),
-                                  daprSubscribeConfigurationAlpha1 ::
-                                  request 'HsGRPC.ServerStreaming
-                                    Dapr.Proto.Runtime.V1.Dapr.SubscribeConfigurationRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubscribeConfigurationResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.ServerStreaming
-                                         Dapr.Proto.Runtime.V1.Dapr.SubscribeConfigurationResponse),
-                                  daprSubscribeConfiguration ::
-                                  request 'HsGRPC.ServerStreaming
-                                    Dapr.Proto.Runtime.V1.Dapr.SubscribeConfigurationRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubscribeConfigurationResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.ServerStreaming
-                                         Dapr.Proto.Runtime.V1.Dapr.SubscribeConfigurationResponse),
-                                  daprUnsubscribeConfigurationAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.UnsubscribeConfigurationRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.UnsubscribeConfigurationResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.UnsubscribeConfigurationResponse),
-                                  daprUnsubscribeConfiguration ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.UnsubscribeConfigurationRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.UnsubscribeConfigurationResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.UnsubscribeConfigurationResponse),
-                                  daprTryLockAlpha1 ::
-                                  request 'HsGRPC.Normal Dapr.Proto.Runtime.V1.Dapr.TryLockRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.TryLockResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.TryLockResponse),
-                                  daprUnlockAlpha1 ::
-                                  request 'HsGRPC.Normal Dapr.Proto.Runtime.V1.Dapr.UnlockRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.UnlockResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.UnlockResponse),
-                                  daprEncryptAlpha1 ::
-                                  request 'HsGRPC.BiDiStreaming
-                                    Dapr.Proto.Runtime.V1.Dapr.EncryptRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.EncryptResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.BiDiStreaming
-                                         Dapr.Proto.Runtime.V1.Dapr.EncryptResponse),
-                                  daprDecryptAlpha1 ::
-                                  request 'HsGRPC.BiDiStreaming
-                                    Dapr.Proto.Runtime.V1.Dapr.DecryptRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.DecryptResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.BiDiStreaming
-                                         Dapr.Proto.Runtime.V1.Dapr.DecryptResponse),
-                                  daprGetMetadata ::
-                                  request 'HsGRPC.Normal Google.Protobuf.Empty.Empty
-                                    Dapr.Proto.Runtime.V1.Dapr.GetMetadataResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetMetadataResponse),
-                                  daprSetMetadata ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SetMetadataRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprSubtleGetKeyAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleGetKeyRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleGetKeyResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.SubtleGetKeyResponse),
-                                  daprSubtleEncryptAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleEncryptRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleEncryptResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.SubtleEncryptResponse),
-                                  daprSubtleDecryptAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleDecryptRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleDecryptResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.SubtleDecryptResponse),
-                                  daprSubtleWrapKeyAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleWrapKeyRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleWrapKeyResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.SubtleWrapKeyResponse),
-                                  daprSubtleUnwrapKeyAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleUnwrapKeyRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleUnwrapKeyResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.SubtleUnwrapKeyResponse),
-                                  daprSubtleSignAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleSignRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleSignResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.SubtleSignResponse),
-                                  daprSubtleVerifyAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleVerifyRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.SubtleVerifyResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.SubtleVerifyResponse),
-                                  daprStartWorkflowAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.StartWorkflowRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.StartWorkflowResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.StartWorkflowResponse),
-                                  daprGetWorkflowAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.GetWorkflowRequest
-                                    Dapr.Proto.Runtime.V1.Dapr.GetWorkflowResponse
-                                    ->
-                                    Hs.IO
-                                      (response 'HsGRPC.Normal
-                                         Dapr.Proto.Runtime.V1.Dapr.GetWorkflowResponse),
-                                  daprPurgeWorkflowAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.PurgeWorkflowRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprTerminateWorkflowAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.TerminateWorkflowRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprPauseWorkflowAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.PauseWorkflowRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprResumeWorkflowAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.ResumeWorkflowRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprRaiseEventWorkflowAlpha1 ::
-                                  request 'HsGRPC.Normal
-                                    Dapr.Proto.Runtime.V1.Dapr.RaiseEventWorkflowRequest
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty),
-                                  daprShutdown ::
-                                  request 'HsGRPC.Normal Google.Protobuf.Empty.Empty
-                                    Google.Protobuf.Empty.Empty
-                                    -> Hs.IO (response 'HsGRPC.Normal Google.Protobuf.Empty.Empty)}
-                           deriving Hs.Generic
- 
-daprServer ::
-             Dapr HsGRPC.ServerRequest HsGRPC.ServerResponse ->
-               HsGRPC.ServiceOptions -> Hs.IO ()
-daprServer
-  Dapr{daprInvokeService = daprInvokeService,
-       daprGetState = daprGetState, daprGetBulkState = daprGetBulkState,
-       daprSaveState = daprSaveState,
-       daprQueryStateAlpha1 = daprQueryStateAlpha1,
-       daprDeleteState = daprDeleteState,
-       daprDeleteBulkState = daprDeleteBulkState,
-       daprExecuteStateTransaction = daprExecuteStateTransaction,
-       daprPublishEvent = daprPublishEvent,
-       daprBulkPublishEventAlpha1 = daprBulkPublishEventAlpha1,
-       daprInvokeBinding = daprInvokeBinding,
-       daprGetSecret = daprGetSecret,
-       daprGetBulkSecret = daprGetBulkSecret,
-       daprRegisterActorTimer = daprRegisterActorTimer,
-       daprUnregisterActorTimer = daprUnregisterActorTimer,
-       daprRegisterActorReminder = daprRegisterActorReminder,
-       daprUnregisterActorReminder = daprUnregisterActorReminder,
-       daprRenameActorReminder = daprRenameActorReminder,
-       daprGetActorState = daprGetActorState,
-       daprExecuteActorStateTransaction =
-         daprExecuteActorStateTransaction,
-       daprInvokeActor = daprInvokeActor,
-       daprGetConfigurationAlpha1 = daprGetConfigurationAlpha1,
-       daprGetConfiguration = daprGetConfiguration,
-       daprSubscribeConfigurationAlpha1 =
-         daprSubscribeConfigurationAlpha1,
-       daprSubscribeConfiguration = daprSubscribeConfiguration,
-       daprUnsubscribeConfigurationAlpha1 =
-         daprUnsubscribeConfigurationAlpha1,
-       daprUnsubscribeConfiguration = daprUnsubscribeConfiguration,
-       daprTryLockAlpha1 = daprTryLockAlpha1,
-       daprUnlockAlpha1 = daprUnlockAlpha1,
-       daprEncryptAlpha1 = daprEncryptAlpha1,
-       daprDecryptAlpha1 = daprDecryptAlpha1,
-       daprGetMetadata = daprGetMetadata,
-       daprSetMetadata = daprSetMetadata,
-       daprSubtleGetKeyAlpha1 = daprSubtleGetKeyAlpha1,
-       daprSubtleEncryptAlpha1 = daprSubtleEncryptAlpha1,
-       daprSubtleDecryptAlpha1 = daprSubtleDecryptAlpha1,
-       daprSubtleWrapKeyAlpha1 = daprSubtleWrapKeyAlpha1,
-       daprSubtleUnwrapKeyAlpha1 = daprSubtleUnwrapKeyAlpha1,
-       daprSubtleSignAlpha1 = daprSubtleSignAlpha1,
-       daprSubtleVerifyAlpha1 = daprSubtleVerifyAlpha1,
-       daprStartWorkflowAlpha1 = daprStartWorkflowAlpha1,
-       daprGetWorkflowAlpha1 = daprGetWorkflowAlpha1,
-       daprPurgeWorkflowAlpha1 = daprPurgeWorkflowAlpha1,
-       daprTerminateWorkflowAlpha1 = daprTerminateWorkflowAlpha1,
-       daprPauseWorkflowAlpha1 = daprPauseWorkflowAlpha1,
-       daprResumeWorkflowAlpha1 = daprResumeWorkflowAlpha1,
-       daprRaiseEventWorkflowAlpha1 = daprRaiseEventWorkflowAlpha1,
-       daprShutdown = daprShutdown}
-  (ServiceOptions serverHost serverPort useCompression
-     userAgentPrefix userAgentSuffix initialMetadata sslConfig logger
-     serverMaxReceiveMessageLength serverMaxMetadataSize)
-  = (HsGRPC.serverLoop
-       HsGRPC.defaultOptions{HsGRPC.optNormalHandlers =
-                               [(HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/InvokeService")
-                                   (HsGRPC.convertGeneratedServerHandler daprInvokeService)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetState")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetState)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetBulkState")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetBulkState)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/SaveState")
-                                   (HsGRPC.convertGeneratedServerHandler daprSaveState)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/QueryStateAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprQueryStateAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/DeleteState")
-                                   (HsGRPC.convertGeneratedServerHandler daprDeleteState)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/DeleteBulkState")
-                                   (HsGRPC.convertGeneratedServerHandler daprDeleteBulkState)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/ExecuteStateTransaction")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprExecuteStateTransaction)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/PublishEvent")
-                                   (HsGRPC.convertGeneratedServerHandler daprPublishEvent)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/BulkPublishEventAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprBulkPublishEventAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/InvokeBinding")
-                                   (HsGRPC.convertGeneratedServerHandler daprInvokeBinding)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetSecret")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetSecret)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetBulkSecret")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetBulkSecret)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/RegisterActorTimer")
-                                   (HsGRPC.convertGeneratedServerHandler daprRegisterActorTimer)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/UnregisterActorTimer")
-                                   (HsGRPC.convertGeneratedServerHandler daprUnregisterActorTimer)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/RegisterActorReminder")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprRegisterActorReminder)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/UnregisterActorReminder")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprUnregisterActorReminder)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/RenameActorReminder")
-                                   (HsGRPC.convertGeneratedServerHandler daprRenameActorReminder)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetActorState")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetActorState)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/ExecuteActorStateTransaction")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprExecuteActorStateTransaction)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/InvokeActor")
-                                   (HsGRPC.convertGeneratedServerHandler daprInvokeActor)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/GetConfigurationAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprGetConfigurationAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/GetConfiguration")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetConfiguration)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/UnsubscribeConfigurationAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprUnsubscribeConfigurationAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/UnsubscribeConfiguration")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprUnsubscribeConfiguration)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/TryLockAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprTryLockAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/UnlockAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprUnlockAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetMetadata")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetMetadata)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/SetMetadata")
-                                   (HsGRPC.convertGeneratedServerHandler daprSetMetadata)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubtleGetKeyAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprSubtleGetKeyAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubtleEncryptAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprSubtleEncryptAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubtleDecryptAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprSubtleDecryptAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubtleWrapKeyAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprSubtleWrapKeyAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubtleUnwrapKeyAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprSubtleUnwrapKeyAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubtleSignAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprSubtleSignAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubtleVerifyAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprSubtleVerifyAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/StartWorkflowAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprStartWorkflowAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/GetWorkflowAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprGetWorkflowAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/PurgeWorkflowAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprPurgeWorkflowAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/TerminateWorkflowAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprTerminateWorkflowAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/PauseWorkflowAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprPauseWorkflowAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/ResumeWorkflowAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler daprResumeWorkflowAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/RaiseEventWorkflowAlpha1")
-                                   (HsGRPC.convertGeneratedServerHandler
-                                      daprRaiseEventWorkflowAlpha1)),
-                                (HsGRPC.UnaryHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/Shutdown")
-                                   (HsGRPC.convertGeneratedServerHandler daprShutdown))],
-                             HsGRPC.optClientStreamHandlers = [],
-                             HsGRPC.optServerStreamHandlers =
-                               [(HsGRPC.ServerStreamHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubscribeConfigurationAlpha1")
-                                   (HsGRPC.convertGeneratedServerWriterHandler
-                                      daprSubscribeConfigurationAlpha1)),
-                                (HsGRPC.ServerStreamHandler
-                                   (HsGRPC.MethodName
-                                      "/dapr.proto.runtime.v1.Dapr/SubscribeConfiguration")
-                                   (HsGRPC.convertGeneratedServerWriterHandler
-                                      daprSubscribeConfiguration))],
-                             HsGRPC.optBiDiStreamHandlers =
-                               [(HsGRPC.BiDiStreamHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/EncryptAlpha1")
-                                   (HsGRPC.convertGeneratedServerRWHandler daprEncryptAlpha1)),
-                                (HsGRPC.BiDiStreamHandler
-                                   (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/DecryptAlpha1")
-                                   (HsGRPC.convertGeneratedServerRWHandler daprDecryptAlpha1))],
-                             optServerHost = serverHost, optServerPort = serverPort,
-                             optUseCompression = useCompression,
-                             optUserAgentPrefix = userAgentPrefix,
-                             optUserAgentSuffix = userAgentSuffix,
-                             optInitialMetadata = initialMetadata, optSSLConfig = sslConfig,
-                             optLogger = logger,
-                             optMaxReceiveMessageLength = serverMaxReceiveMessageLength,
-                             optMaxMetadataSize = serverMaxMetadataSize})
- 
-daprClient ::
-             HsGRPC.Client ->
-               Hs.IO (Dapr HsGRPC.ClientRequest HsGRPC.ClientResult)
-daprClient client
-  = (Hs.pure Dapr) <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/InvokeService")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetState")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetBulkState")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/SaveState")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/QueryStateAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/DeleteState")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/DeleteBulkState")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/ExecuteStateTransaction")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/PublishEvent")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/BulkPublishEventAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/InvokeBinding")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetSecret")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetBulkSecret")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/RegisterActorTimer")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/UnregisterActorTimer")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/RegisterActorReminder")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/UnregisterActorReminder")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/RenameActorReminder")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetActorState")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/ExecuteActorStateTransaction")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/InvokeActor")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/GetConfigurationAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/GetConfiguration")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubscribeConfigurationAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubscribeConfiguration")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/UnsubscribeConfigurationAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/UnsubscribeConfiguration")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/TryLockAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/UnlockAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/EncryptAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/DecryptAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/GetMetadata")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/SetMetadata")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubtleGetKeyAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubtleEncryptAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubtleDecryptAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubtleWrapKeyAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubtleUnwrapKeyAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubtleSignAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/SubtleVerifyAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/StartWorkflowAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/GetWorkflowAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/PurgeWorkflowAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/TerminateWorkflowAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/PauseWorkflowAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/ResumeWorkflowAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName
-               "/dapr.proto.runtime.v1.Dapr/RaiseEventWorkflowAlpha1")))
-      <*>
-      ((Hs.pure (HsGRPC.clientRequest client)) <*>
-         (HsGRPC.clientRegisterMethod client
-            (HsGRPC.MethodName "/dapr.proto.runtime.v1.Dapr/Shutdown")))
- 
+
 data InvokeServiceRequest = InvokeServiceRequest{invokeServiceRequestId
                                                  :: Hs.Text,
                                                  invokeServiceRequestMessage ::
                                                  Hs.Maybe Dapr.Proto.Common.V1.Common.InvokeRequest}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData InvokeServiceRequest
- 
+
 instance HsProtobuf.Named InvokeServiceRequest where
         nameOf _ = (Hs.fromString "InvokeServiceRequest")
- 
+
 instance HsProtobuf.HasDefault InvokeServiceRequest
- 
+
 instance HsProtobuf.Message InvokeServiceRequest where
         encodeMessage _
           InvokeServiceRequest{invokeServiceRequestId =
@@ -909,7 +97,7 @@ instance HsProtobuf.Message InvokeServiceRequest where
                 (HsProtobufAST.Single "message")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB InvokeServiceRequest where
         toJSONPB (InvokeServiceRequest f1 f3)
           = (HsJSONPB.object
@@ -925,7 +113,7 @@ instance HsJSONPB.ToJSONPB InvokeServiceRequest where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.InvokeRequest)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.InvokeRequest)
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB InvokeServiceRequest where
         parseJSONPB
           = (HsJSONPB.withObject "InvokeServiceRequest"
@@ -938,14 +126,14 @@ instance HsJSONPB.FromJSONPB InvokeServiceRequest where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.InvokeRequest)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.InvokeRequest)
                        (obj .: "message"))))
- 
+
 instance HsJSONPB.ToJSON InvokeServiceRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON InvokeServiceRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema InvokeServiceRequest where
         declareNamedSchema _
           = do let declare_id = HsJSONPB.declareSchemaRef
@@ -971,7 +159,7 @@ instance HsJSONPB.ToSchema InvokeServiceRequest where
                                                      HsJSONPB.insOrdFromList
                                                        [("id", invokeServiceRequestId),
                                                         ("message", invokeServiceRequestMessage)]}})
- 
+
 data GetStateRequest = GetStateRequest{getStateRequestStoreName ::
                                        Hs.Text,
                                        getStateRequestKey :: Hs.Text,
@@ -980,14 +168,14 @@ data GetStateRequest = GetStateRequest{getStateRequestStoreName ::
                                          Dapr.Proto.Common.V1.Common.StateOptions_StateConsistency,
                                        getStateRequestMetadata :: Hs.Map Hs.Text Hs.Text}
                      deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetStateRequest
- 
+
 instance HsProtobuf.Named GetStateRequest where
         nameOf _ = (Hs.fromString "GetStateRequest")
- 
+
 instance HsProtobuf.HasDefault GetStateRequest
- 
+
 instance HsProtobuf.Message GetStateRequest where
         encodeMessage _
           GetStateRequest{getStateRequestStoreName =
@@ -1052,7 +240,7 @@ instance HsProtobuf.Message GetStateRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetStateRequest where
         toJSONPB (GetStateRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -1074,7 +262,7 @@ instance HsJSONPB.ToJSONPB GetStateRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB GetStateRequest where
         parseJSONPB
           = (HsJSONPB.withObject "GetStateRequest"
@@ -1091,14 +279,14 @@ instance HsJSONPB.FromJSONPB GetStateRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON GetStateRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetStateRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetStateRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -1134,7 +322,7 @@ instance HsJSONPB.ToSchema GetStateRequest where
                                                         ("key", getStateRequestKey),
                                                         ("consistency", getStateRequestConsistency),
                                                         ("metadata", getStateRequestMetadata)]}})
- 
+
 data GetBulkStateRequest = GetBulkStateRequest{getBulkStateRequestStoreName
                                                :: Hs.Text,
                                                getBulkStateRequestKeys :: Hs.Vector Hs.Text,
@@ -1142,14 +330,14 @@ data GetBulkStateRequest = GetBulkStateRequest{getBulkStateRequestStoreName
                                                getBulkStateRequestMetadata ::
                                                Hs.Map Hs.Text Hs.Text}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetBulkStateRequest
- 
+
 instance HsProtobuf.Named GetBulkStateRequest where
         nameOf _ = (Hs.fromString "GetBulkStateRequest")
- 
+
 instance HsProtobuf.HasDefault GetBulkStateRequest
- 
+
 instance HsProtobuf.Message GetBulkStateRequest where
         encodeMessage _
           GetBulkStateRequest{getBulkStateRequestStoreName =
@@ -1212,7 +400,7 @@ instance HsProtobuf.Message GetBulkStateRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetBulkStateRequest where
         toJSONPB (GetBulkStateRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -1240,7 +428,7 @@ instance HsJSONPB.ToJSONPB GetBulkStateRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB GetBulkStateRequest where
         parseJSONPB
           = (HsJSONPB.withObject "GetBulkStateRequest"
@@ -1259,14 +447,14 @@ instance HsJSONPB.FromJSONPB GetBulkStateRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON GetBulkStateRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetBulkStateRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetBulkStateRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -1307,20 +495,20 @@ instance HsJSONPB.ToSchema GetBulkStateRequest where
                                                          getBulkStateRequestParallelism),
                                                         ("metadata",
                                                          getBulkStateRequestMetadata)]}})
- 
+
 newtype GetBulkStateResponse = GetBulkStateResponse{getBulkStateResponseItems
                                                     ::
                                                     Hs.Vector
                                                       Dapr.Proto.Runtime.V1.Dapr.BulkStateItem}
                                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetBulkStateResponse
- 
+
 instance HsProtobuf.Named GetBulkStateResponse where
         nameOf _ = (Hs.fromString "GetBulkStateResponse")
- 
+
 instance HsProtobuf.HasDefault GetBulkStateResponse
- 
+
 instance HsProtobuf.Message GetBulkStateResponse where
         encodeMessage _
           GetBulkStateResponse{getBulkStateResponseItems =
@@ -1344,7 +532,7 @@ instance HsProtobuf.Message GetBulkStateResponse where
                 (HsProtobufAST.Single "items")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetBulkStateResponse where
         toJSONPB (GetBulkStateResponse f1)
           = (HsJSONPB.object
@@ -1358,7 +546,7 @@ instance HsJSONPB.ToJSONPB GetBulkStateResponse where
                   (Hs.coerce @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.BulkStateItem)
                      @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.BulkStateItem)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB GetBulkStateResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetBulkStateResponse"
@@ -1368,14 +556,14 @@ instance HsJSONPB.FromJSONPB GetBulkStateResponse where
                        @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.BulkStateItem)
                        @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.BulkStateItem)
                        (obj .: "items"))))
- 
+
 instance HsJSONPB.ToJSON GetBulkStateResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetBulkStateResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetBulkStateResponse where
         declareNamedSchema _
           = do let declare_items = HsJSONPB.declareSchemaRef
@@ -1395,20 +583,20 @@ instance HsJSONPB.ToSchema GetBulkStateResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("items", getBulkStateResponseItems)]}})
- 
+
 data BulkStateItem = BulkStateItem{bulkStateItemKey :: Hs.Text,
                                    bulkStateItemData :: Hs.ByteString, bulkStateItemEtag :: Hs.Text,
                                    bulkStateItemError :: Hs.Text,
                                    bulkStateItemMetadata :: Hs.Map Hs.Text Hs.Text}
                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BulkStateItem
- 
+
 instance HsProtobuf.Named BulkStateItem where
         nameOf _ = (Hs.fromString "BulkStateItem")
- 
+
 instance HsProtobuf.HasDefault BulkStateItem
- 
+
 instance HsProtobuf.Message BulkStateItem where
         encodeMessage _
           BulkStateItem{bulkStateItemKey = bulkStateItemKey,
@@ -1483,7 +671,7 @@ instance HsProtobuf.Message BulkStateItem where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BulkStateItem where
         toJSONPB (BulkStateItem f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -1511,7 +699,7 @@ instance HsJSONPB.ToJSONPB BulkStateItem where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB BulkStateItem where
         parseJSONPB
           = (HsJSONPB.withObject "BulkStateItem"
@@ -1534,14 +722,14 @@ instance HsJSONPB.FromJSONPB BulkStateItem where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON BulkStateItem where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BulkStateItem where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BulkStateItem where
         declareNamedSchema _
           = do let declare_key = HsJSONPB.declareSchemaRef
@@ -1586,20 +774,20 @@ instance HsJSONPB.ToSchema BulkStateItem where
                                                         ("etag", bulkStateItemEtag),
                                                         ("error", bulkStateItemError),
                                                         ("metadata", bulkStateItemMetadata)]}})
- 
+
 data GetStateResponse = GetStateResponse{getStateResponseData ::
                                          Hs.ByteString,
                                          getStateResponseEtag :: Hs.Text,
                                          getStateResponseMetadata :: Hs.Map Hs.Text Hs.Text}
                       deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetStateResponse
- 
+
 instance HsProtobuf.Named GetStateResponse where
         nameOf _ = (Hs.fromString "GetStateResponse")
- 
+
 instance HsProtobuf.HasDefault GetStateResponse
- 
+
 instance HsProtobuf.Message GetStateResponse where
         encodeMessage _
           GetStateResponse{getStateResponseData = getStateResponseData,
@@ -1648,7 +836,7 @@ instance HsProtobuf.Message GetStateResponse where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetStateResponse where
         toJSONPB (GetStateResponse f1 f2 f3)
           = (HsJSONPB.object
@@ -1670,7 +858,7 @@ instance HsJSONPB.ToJSONPB GetStateResponse where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB GetStateResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetStateResponse"
@@ -1687,14 +875,14 @@ instance HsJSONPB.FromJSONPB GetStateResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON GetStateResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetStateResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetStateResponse where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -1727,7 +915,7 @@ instance HsJSONPB.ToSchema GetStateResponse where
                                                        [("data", getStateResponseData),
                                                         ("etag", getStateResponseEtag),
                                                         ("metadata", getStateResponseMetadata)]}})
- 
+
 data DeleteStateRequest = DeleteStateRequest{deleteStateRequestStoreName
                                              :: Hs.Text,
                                              deleteStateRequestKey :: Hs.Text,
@@ -1737,14 +925,14 @@ data DeleteStateRequest = DeleteStateRequest{deleteStateRequestStoreName
                                              Hs.Maybe Dapr.Proto.Common.V1.Common.StateOptions,
                                              deleteStateRequestMetadata :: Hs.Map Hs.Text Hs.Text}
                         deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData DeleteStateRequest
- 
+
 instance HsProtobuf.Named DeleteStateRequest where
         nameOf _ = (Hs.fromString "DeleteStateRequest")
- 
+
 instance HsProtobuf.HasDefault DeleteStateRequest
- 
+
 instance HsProtobuf.Message DeleteStateRequest where
         encodeMessage _
           DeleteStateRequest{deleteStateRequestStoreName =
@@ -1833,7 +1021,7 @@ instance HsProtobuf.Message DeleteStateRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB DeleteStateRequest where
         toJSONPB (DeleteStateRequest f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -1869,7 +1057,7 @@ instance HsJSONPB.ToJSONPB DeleteStateRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB DeleteStateRequest where
         parseJSONPB
           = (HsJSONPB.withObject "DeleteStateRequest"
@@ -1895,14 +1083,14 @@ instance HsJSONPB.FromJSONPB DeleteStateRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON DeleteStateRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON DeleteStateRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema DeleteStateRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -1950,21 +1138,21 @@ instance HsJSONPB.ToSchema DeleteStateRequest where
                                                         ("etag", deleteStateRequestEtag),
                                                         ("options", deleteStateRequestOptions),
                                                         ("metadata", deleteStateRequestMetadata)]}})
- 
+
 data DeleteBulkStateRequest = DeleteBulkStateRequest{deleteBulkStateRequestStoreName
                                                      :: Hs.Text,
                                                      deleteBulkStateRequestStates ::
                                                      Hs.Vector
                                                        Dapr.Proto.Common.V1.Common.StateItem}
                             deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData DeleteBulkStateRequest
- 
+
 instance HsProtobuf.Named DeleteBulkStateRequest where
         nameOf _ = (Hs.fromString "DeleteBulkStateRequest")
- 
+
 instance HsProtobuf.HasDefault DeleteBulkStateRequest
- 
+
 instance HsProtobuf.Message DeleteBulkStateRequest where
         encodeMessage _
           DeleteBulkStateRequest{deleteBulkStateRequestStoreName =
@@ -2004,7 +1192,7 @@ instance HsProtobuf.Message DeleteBulkStateRequest where
                 (HsProtobufAST.Single "states")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB DeleteBulkStateRequest where
         toJSONPB (DeleteBulkStateRequest f1 f2)
           = (HsJSONPB.object
@@ -2022,7 +1210,7 @@ instance HsJSONPB.ToJSONPB DeleteBulkStateRequest where
                   (Hs.coerce @(Hs.Vector Dapr.Proto.Common.V1.Common.StateItem)
                      @(HsProtobuf.NestedVec Dapr.Proto.Common.V1.Common.StateItem)
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB DeleteBulkStateRequest where
         parseJSONPB
           = (HsJSONPB.withObject "DeleteBulkStateRequest"
@@ -2035,14 +1223,14 @@ instance HsJSONPB.FromJSONPB DeleteBulkStateRequest where
                        @(HsProtobuf.NestedVec Dapr.Proto.Common.V1.Common.StateItem)
                        @(Hs.Vector Dapr.Proto.Common.V1.Common.StateItem)
                        (obj .: "states"))))
- 
+
 instance HsJSONPB.ToJSON DeleteBulkStateRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON DeleteBulkStateRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema DeleteBulkStateRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -2069,20 +1257,20 @@ instance HsJSONPB.ToSchema DeleteBulkStateRequest where
                                                        [("store_name",
                                                          deleteBulkStateRequestStoreName),
                                                         ("states", deleteBulkStateRequestStates)]}})
- 
+
 data SaveStateRequest = SaveStateRequest{saveStateRequestStoreName
                                          :: Hs.Text,
                                          saveStateRequestStates ::
                                          Hs.Vector Dapr.Proto.Common.V1.Common.StateItem}
                       deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SaveStateRequest
- 
+
 instance HsProtobuf.Named SaveStateRequest where
         nameOf _ = (Hs.fromString "SaveStateRequest")
- 
+
 instance HsProtobuf.HasDefault SaveStateRequest
- 
+
 instance HsProtobuf.Message SaveStateRequest where
         encodeMessage _
           SaveStateRequest{saveStateRequestStoreName =
@@ -2122,7 +1310,7 @@ instance HsProtobuf.Message SaveStateRequest where
                 (HsProtobufAST.Single "states")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SaveStateRequest where
         toJSONPB (SaveStateRequest f1 f2)
           = (HsJSONPB.object
@@ -2140,7 +1328,7 @@ instance HsJSONPB.ToJSONPB SaveStateRequest where
                   (Hs.coerce @(Hs.Vector Dapr.Proto.Common.V1.Common.StateItem)
                      @(HsProtobuf.NestedVec Dapr.Proto.Common.V1.Common.StateItem)
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB SaveStateRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SaveStateRequest"
@@ -2153,14 +1341,14 @@ instance HsJSONPB.FromJSONPB SaveStateRequest where
                        @(HsProtobuf.NestedVec Dapr.Proto.Common.V1.Common.StateItem)
                        @(Hs.Vector Dapr.Proto.Common.V1.Common.StateItem)
                        (obj .: "states"))))
- 
+
 instance HsJSONPB.ToJSON SaveStateRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SaveStateRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SaveStateRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -2186,20 +1374,20 @@ instance HsJSONPB.ToSchema SaveStateRequest where
                                                      HsJSONPB.insOrdFromList
                                                        [("store_name", saveStateRequestStoreName),
                                                         ("states", saveStateRequestStates)]}})
- 
+
 data QueryStateRequest = QueryStateRequest{queryStateRequestStoreName
                                            :: Hs.Text,
                                            queryStateRequestQuery :: Hs.Text,
                                            queryStateRequestMetadata :: Hs.Map Hs.Text Hs.Text}
                        deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData QueryStateRequest
- 
+
 instance HsProtobuf.Named QueryStateRequest where
         nameOf _ = (Hs.fromString "QueryStateRequest")
- 
+
 instance HsProtobuf.HasDefault QueryStateRequest
- 
+
 instance HsProtobuf.Message QueryStateRequest where
         encodeMessage _
           QueryStateRequest{queryStateRequestStoreName =
@@ -2249,7 +1437,7 @@ instance HsProtobuf.Message QueryStateRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB QueryStateRequest where
         toJSONPB (QueryStateRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -2271,7 +1459,7 @@ instance HsJSONPB.ToJSONPB QueryStateRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB QueryStateRequest where
         parseJSONPB
           = (HsJSONPB.withObject "QueryStateRequest"
@@ -2287,14 +1475,14 @@ instance HsJSONPB.FromJSONPB QueryStateRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON QueryStateRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON QueryStateRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema QueryStateRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -2326,19 +1514,19 @@ instance HsJSONPB.ToSchema QueryStateRequest where
                                                        [("store_name", queryStateRequestStoreName),
                                                         ("query", queryStateRequestQuery),
                                                         ("metadata", queryStateRequestMetadata)]}})
- 
+
 data QueryStateItem = QueryStateItem{queryStateItemKey :: Hs.Text,
                                      queryStateItemData :: Hs.ByteString,
                                      queryStateItemEtag :: Hs.Text, queryStateItemError :: Hs.Text}
                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData QueryStateItem
- 
+
 instance HsProtobuf.Named QueryStateItem where
         nameOf _ = (Hs.fromString "QueryStateItem")
- 
+
 instance HsProtobuf.HasDefault QueryStateItem
- 
+
 instance HsProtobuf.Message QueryStateItem where
         encodeMessage _
           QueryStateItem{queryStateItemKey = queryStateItemKey,
@@ -2397,7 +1585,7 @@ instance HsProtobuf.Message QueryStateItem where
                 (HsProtobufAST.Single "error")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB QueryStateItem where
         toJSONPB (QueryStateItem f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -2417,7 +1605,7 @@ instance HsJSONPB.ToJSONPB QueryStateItem where
                 "etag" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3)),
                 "error" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f4))])
- 
+
 instance HsJSONPB.FromJSONPB QueryStateItem where
         parseJSONPB
           = (HsJSONPB.withObject "QueryStateItem"
@@ -2435,14 +1623,14 @@ instance HsJSONPB.FromJSONPB QueryStateItem where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "error"))))
- 
+
 instance HsJSONPB.ToJSON QueryStateItem where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON QueryStateItem where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema QueryStateItem where
         declareNamedSchema _
           = do let declare_key = HsJSONPB.declareSchemaRef
@@ -2479,20 +1667,20 @@ instance HsJSONPB.ToSchema QueryStateItem where
                                                         ("data", queryStateItemData),
                                                         ("etag", queryStateItemEtag),
                                                         ("error", queryStateItemError)]}})
- 
+
 data QueryStateResponse = QueryStateResponse{queryStateResponseResults
                                              :: Hs.Vector Dapr.Proto.Runtime.V1.Dapr.QueryStateItem,
                                              queryStateResponseToken :: Hs.Text,
                                              queryStateResponseMetadata :: Hs.Map Hs.Text Hs.Text}
                         deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData QueryStateResponse
- 
+
 instance HsProtobuf.Named QueryStateResponse where
         nameOf _ = (Hs.fromString "QueryStateResponse")
- 
+
 instance HsProtobuf.HasDefault QueryStateResponse
- 
+
 instance HsProtobuf.Message QueryStateResponse where
         encodeMessage _
           QueryStateResponse{queryStateResponseResults =
@@ -2545,7 +1733,7 @@ instance HsProtobuf.Message QueryStateResponse where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB QueryStateResponse where
         toJSONPB (QueryStateResponse f1 f2 f3)
           = (HsJSONPB.object
@@ -2571,7 +1759,7 @@ instance HsJSONPB.ToJSONPB QueryStateResponse where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB QueryStateResponse where
         parseJSONPB
           = (HsJSONPB.withObject "QueryStateResponse"
@@ -2589,14 +1777,14 @@ instance HsJSONPB.FromJSONPB QueryStateResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON QueryStateResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON QueryStateResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema QueryStateResponse where
         declareNamedSchema _
           = do let declare_results = HsJSONPB.declareSchemaRef
@@ -2630,7 +1818,7 @@ instance HsJSONPB.ToSchema QueryStateResponse where
                                                        [("results", queryStateResponseResults),
                                                         ("token", queryStateResponseToken),
                                                         ("metadata", queryStateResponseMetadata)]}})
- 
+
 data PublishEventRequest = PublishEventRequest{publishEventRequestPubsubName
                                                :: Hs.Text,
                                                publishEventRequestTopic :: Hs.Text,
@@ -2639,14 +1827,14 @@ data PublishEventRequest = PublishEventRequest{publishEventRequestPubsubName
                                                publishEventRequestMetadata ::
                                                Hs.Map Hs.Text Hs.Text}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData PublishEventRequest
- 
+
 instance HsProtobuf.Named PublishEventRequest where
         nameOf _ = (Hs.fromString "PublishEventRequest")
- 
+
 instance HsProtobuf.HasDefault PublishEventRequest
- 
+
 instance HsProtobuf.Message PublishEventRequest where
         encodeMessage _
           PublishEventRequest{publishEventRequestPubsubName =
@@ -2723,7 +1911,7 @@ instance HsProtobuf.Message PublishEventRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB PublishEventRequest where
         toJSONPB (PublishEventRequest f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -2755,7 +1943,7 @@ instance HsJSONPB.ToJSONPB PublishEventRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB PublishEventRequest where
         parseJSONPB
           = (HsJSONPB.withObject "PublishEventRequest"
@@ -2778,14 +1966,14 @@ instance HsJSONPB.FromJSONPB PublishEventRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON PublishEventRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON PublishEventRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema PublishEventRequest where
         declareNamedSchema _
           = do let declare_pubsub_name = HsJSONPB.declareSchemaRef
@@ -2834,7 +2022,7 @@ instance HsJSONPB.ToSchema PublishEventRequest where
                                                          publishEventRequestDataContentType),
                                                         ("metadata",
                                                          publishEventRequestMetadata)]}})
- 
+
 data BulkPublishRequest = BulkPublishRequest{bulkPublishRequestPubsubName
                                              :: Hs.Text,
                                              bulkPublishRequestTopic :: Hs.Text,
@@ -2843,14 +2031,14 @@ data BulkPublishRequest = BulkPublishRequest{bulkPublishRequestPubsubName
                                                Dapr.Proto.Runtime.V1.Dapr.BulkPublishRequestEntry,
                                              bulkPublishRequestMetadata :: Hs.Map Hs.Text Hs.Text}
                         deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BulkPublishRequest
- 
+
 instance HsProtobuf.Named BulkPublishRequest where
         nameOf _ = (Hs.fromString "BulkPublishRequest")
- 
+
 instance HsProtobuf.HasDefault BulkPublishRequest
- 
+
 instance HsProtobuf.Message BulkPublishRequest where
         encodeMessage _
           BulkPublishRequest{bulkPublishRequestPubsubName =
@@ -2918,7 +2106,7 @@ instance HsProtobuf.Message BulkPublishRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BulkPublishRequest where
         toJSONPB (BulkPublishRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -2950,7 +2138,7 @@ instance HsJSONPB.ToJSONPB BulkPublishRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB BulkPublishRequest where
         parseJSONPB
           = (HsJSONPB.withObject "BulkPublishRequest"
@@ -2971,14 +2159,14 @@ instance HsJSONPB.FromJSONPB BulkPublishRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON BulkPublishRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BulkPublishRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BulkPublishRequest where
         declareNamedSchema _
           = do let declare_pubsub_name = HsJSONPB.declareSchemaRef
@@ -3019,7 +2207,7 @@ instance HsJSONPB.ToSchema BulkPublishRequest where
                                                         ("topic", bulkPublishRequestTopic),
                                                         ("entries", bulkPublishRequestEntries),
                                                         ("metadata", bulkPublishRequestMetadata)]}})
- 
+
 data BulkPublishRequestEntry = BulkPublishRequestEntry{bulkPublishRequestEntryEntryId
                                                        :: Hs.Text,
                                                        bulkPublishRequestEntryEvent ::
@@ -3029,14 +2217,14 @@ data BulkPublishRequestEntry = BulkPublishRequestEntry{bulkPublishRequestEntryEn
                                                        bulkPublishRequestEntryMetadata ::
                                                        Hs.Map Hs.Text Hs.Text}
                              deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BulkPublishRequestEntry
- 
+
 instance HsProtobuf.Named BulkPublishRequestEntry where
         nameOf _ = (Hs.fromString "BulkPublishRequestEntry")
- 
+
 instance HsProtobuf.HasDefault BulkPublishRequestEntry
- 
+
 instance HsProtobuf.Message BulkPublishRequestEntry where
         encodeMessage _
           BulkPublishRequestEntry{bulkPublishRequestEntryEntryId =
@@ -3100,7 +2288,7 @@ instance HsProtobuf.Message BulkPublishRequestEntry where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BulkPublishRequestEntry where
         toJSONPB (BulkPublishRequestEntry f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -3128,7 +2316,7 @@ instance HsJSONPB.ToJSONPB BulkPublishRequestEntry where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB BulkPublishRequestEntry where
         parseJSONPB
           = (HsJSONPB.withObject "BulkPublishRequestEntry"
@@ -3148,14 +2336,14 @@ instance HsJSONPB.FromJSONPB BulkPublishRequestEntry where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON BulkPublishRequestEntry where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BulkPublishRequestEntry where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BulkPublishRequestEntry where
         declareNamedSchema _
           = do let declare_entry_id = HsJSONPB.declareSchemaRef
@@ -3198,20 +2386,20 @@ instance HsJSONPB.ToSchema BulkPublishRequestEntry where
                                                          bulkPublishRequestEntryContentType),
                                                         ("metadata",
                                                          bulkPublishRequestEntryMetadata)]}})
- 
+
 newtype BulkPublishResponse = BulkPublishResponse{bulkPublishResponseFailedEntries
                                                   ::
                                                   Hs.Vector
                                                     Dapr.Proto.Runtime.V1.Dapr.BulkPublishResponseFailedEntry}
                               deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BulkPublishResponse
- 
+
 instance HsProtobuf.Named BulkPublishResponse where
         nameOf _ = (Hs.fromString "BulkPublishResponse")
- 
+
 instance HsProtobuf.HasDefault BulkPublishResponse
- 
+
 instance HsProtobuf.Message BulkPublishResponse where
         encodeMessage _
           BulkPublishResponse{bulkPublishResponseFailedEntries =
@@ -3237,7 +2425,7 @@ instance HsProtobuf.Message BulkPublishResponse where
                 (HsProtobufAST.Single "failedEntries")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BulkPublishResponse where
         toJSONPB (BulkPublishResponse f1)
           = (HsJSONPB.object
@@ -3253,7 +2441,7 @@ instance HsJSONPB.ToJSONPB BulkPublishResponse where
                      @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.BulkPublishResponseFailedEntry)
                      @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.BulkPublishResponseFailedEntry)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB BulkPublishResponse where
         parseJSONPB
           = (HsJSONPB.withObject "BulkPublishResponse"
@@ -3263,14 +2451,14 @@ instance HsJSONPB.FromJSONPB BulkPublishResponse where
                        @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.BulkPublishResponseFailedEntry)
                        @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.BulkPublishResponseFailedEntry)
                        (obj .: "failedEntries"))))
- 
+
 instance HsJSONPB.ToJSON BulkPublishResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BulkPublishResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BulkPublishResponse where
         declareNamedSchema _
           = do let declare_failedEntries = HsJSONPB.declareSchemaRef
@@ -3292,20 +2480,20 @@ instance HsJSONPB.ToSchema BulkPublishResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("failedEntries",
                                                          bulkPublishResponseFailedEntries)]}})
- 
+
 data BulkPublishResponseFailedEntry = BulkPublishResponseFailedEntry{bulkPublishResponseFailedEntryEntryId
                                                                      :: Hs.Text,
                                                                      bulkPublishResponseFailedEntryError
                                                                      :: Hs.Text}
                                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData BulkPublishResponseFailedEntry
- 
+
 instance HsProtobuf.Named BulkPublishResponseFailedEntry where
         nameOf _ = (Hs.fromString "BulkPublishResponseFailedEntry")
- 
+
 instance HsProtobuf.HasDefault BulkPublishResponseFailedEntry
- 
+
 instance HsProtobuf.Message BulkPublishResponseFailedEntry where
         encodeMessage _
           BulkPublishResponseFailedEntry{bulkPublishResponseFailedEntryEntryId
@@ -3339,7 +2527,7 @@ instance HsProtobuf.Message BulkPublishResponseFailedEntry where
                 (HsProtobufAST.Single "error")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB BulkPublishResponseFailedEntry where
         toJSONPB (BulkPublishResponseFailedEntry f1 f2)
           = (HsJSONPB.object
@@ -3353,7 +2541,7 @@ instance HsJSONPB.ToJSONPB BulkPublishResponseFailedEntry where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "error" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB BulkPublishResponseFailedEntry where
         parseJSONPB
           = (HsJSONPB.withObject "BulkPublishResponseFailedEntry"
@@ -3364,14 +2552,14 @@ instance HsJSONPB.FromJSONPB BulkPublishResponseFailedEntry where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "error"))))
- 
+
 instance HsJSONPB.ToJSON BulkPublishResponseFailedEntry where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON BulkPublishResponseFailedEntry where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema BulkPublishResponseFailedEntry where
         declareNamedSchema _
           = do let declare_entry_id = HsJSONPB.declareSchemaRef
@@ -3398,7 +2586,7 @@ instance HsJSONPB.ToSchema BulkPublishResponseFailedEntry where
                                                          bulkPublishResponseFailedEntryEntryId),
                                                         ("error",
                                                          bulkPublishResponseFailedEntryError)]}})
- 
+
 data InvokeBindingRequest = InvokeBindingRequest{invokeBindingRequestName
                                                  :: Hs.Text,
                                                  invokeBindingRequestData :: Hs.ByteString,
@@ -3406,14 +2594,14 @@ data InvokeBindingRequest = InvokeBindingRequest{invokeBindingRequestName
                                                  Hs.Map Hs.Text Hs.Text,
                                                  invokeBindingRequestOperation :: Hs.Text}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData InvokeBindingRequest
- 
+
 instance HsProtobuf.Named InvokeBindingRequest where
         nameOf _ = (Hs.fromString "InvokeBindingRequest")
- 
+
 instance HsProtobuf.HasDefault InvokeBindingRequest
- 
+
 instance HsProtobuf.Message InvokeBindingRequest where
         encodeMessage _
           InvokeBindingRequest{invokeBindingRequestName =
@@ -3476,7 +2664,7 @@ instance HsProtobuf.Message InvokeBindingRequest where
                 (HsProtobufAST.Single "operation")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB InvokeBindingRequest where
         toJSONPB (InvokeBindingRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -3504,7 +2692,7 @@ instance HsJSONPB.ToJSONPB InvokeBindingRequest where
                      (f3)),
                 "operation" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f4))])
- 
+
 instance HsJSONPB.FromJSONPB InvokeBindingRequest where
         parseJSONPB
           = (HsJSONPB.withObject "InvokeBindingRequest"
@@ -3524,14 +2712,14 @@ instance HsJSONPB.FromJSONPB InvokeBindingRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "operation"))))
- 
+
 instance HsJSONPB.ToJSON InvokeBindingRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON InvokeBindingRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema InvokeBindingRequest where
         declareNamedSchema _
           = do let declare_name = HsJSONPB.declareSchemaRef
@@ -3571,20 +2759,20 @@ instance HsJSONPB.ToSchema InvokeBindingRequest where
                                                         ("metadata", invokeBindingRequestMetadata),
                                                         ("operation",
                                                          invokeBindingRequestOperation)]}})
- 
+
 data InvokeBindingResponse = InvokeBindingResponse{invokeBindingResponseData
                                                    :: Hs.ByteString,
                                                    invokeBindingResponseMetadata ::
                                                    Hs.Map Hs.Text Hs.Text}
                            deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData InvokeBindingResponse
- 
+
 instance HsProtobuf.Named InvokeBindingResponse where
         nameOf _ = (Hs.fromString "InvokeBindingResponse")
- 
+
 instance HsProtobuf.HasDefault InvokeBindingResponse
- 
+
 instance HsProtobuf.Message InvokeBindingResponse where
         encodeMessage _
           InvokeBindingResponse{invokeBindingResponseData =
@@ -3621,7 +2809,7 @@ instance HsProtobuf.Message InvokeBindingResponse where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB InvokeBindingResponse where
         toJSONPB (InvokeBindingResponse f1 f2)
           = (HsJSONPB.object
@@ -3641,7 +2829,7 @@ instance HsJSONPB.ToJSONPB InvokeBindingResponse where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB InvokeBindingResponse where
         parseJSONPB
           = (HsJSONPB.withObject "InvokeBindingResponse"
@@ -3655,14 +2843,14 @@ instance HsJSONPB.FromJSONPB InvokeBindingResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON InvokeBindingResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON InvokeBindingResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema InvokeBindingResponse where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -3690,20 +2878,20 @@ instance HsJSONPB.ToSchema InvokeBindingResponse where
                                                        [("data", invokeBindingResponseData),
                                                         ("metadata",
                                                          invokeBindingResponseMetadata)]}})
- 
+
 data GetSecretRequest = GetSecretRequest{getSecretRequestStoreName
                                          :: Hs.Text,
                                          getSecretRequestKey :: Hs.Text,
                                          getSecretRequestMetadata :: Hs.Map Hs.Text Hs.Text}
                       deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetSecretRequest
- 
+
 instance HsProtobuf.Named GetSecretRequest where
         nameOf _ = (Hs.fromString "GetSecretRequest")
- 
+
 instance HsProtobuf.HasDefault GetSecretRequest
- 
+
 instance HsProtobuf.Message GetSecretRequest where
         encodeMessage _
           GetSecretRequest{getSecretRequestStoreName =
@@ -3753,7 +2941,7 @@ instance HsProtobuf.Message GetSecretRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetSecretRequest where
         toJSONPB (GetSecretRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -3773,7 +2961,7 @@ instance HsJSONPB.ToJSONPB GetSecretRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB GetSecretRequest where
         parseJSONPB
           = (HsJSONPB.withObject "GetSecretRequest"
@@ -3789,14 +2977,14 @@ instance HsJSONPB.FromJSONPB GetSecretRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON GetSecretRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetSecretRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetSecretRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -3828,18 +3016,18 @@ instance HsJSONPB.ToSchema GetSecretRequest where
                                                        [("store_name", getSecretRequestStoreName),
                                                         ("key", getSecretRequestKey),
                                                         ("metadata", getSecretRequestMetadata)]}})
- 
+
 newtype GetSecretResponse = GetSecretResponse{getSecretResponseData
                                               :: Hs.Map Hs.Text Hs.Text}
                             deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetSecretResponse
- 
+
 instance HsProtobuf.Named GetSecretResponse where
         nameOf _ = (Hs.fromString "GetSecretResponse")
- 
+
 instance HsProtobuf.HasDefault GetSecretResponse
- 
+
 instance HsProtobuf.Message GetSecretResponse where
         encodeMessage _
           GetSecretResponse{getSecretResponseData = getSecretResponseData}
@@ -3861,7 +3049,7 @@ instance HsProtobuf.Message GetSecretResponse where
                 (HsProtobufAST.Single "data")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetSecretResponse where
         toJSONPB (GetSecretResponse f1)
           = (HsJSONPB.object
@@ -3875,7 +3063,7 @@ instance HsJSONPB.ToJSONPB GetSecretResponse where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB GetSecretResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetSecretResponse"
@@ -3885,14 +3073,14 @@ instance HsJSONPB.FromJSONPB GetSecretResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "data"))))
- 
+
 instance HsJSONPB.ToJSON GetSecretResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetSecretResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetSecretResponse where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -3912,20 +3100,20 @@ instance HsJSONPB.ToSchema GetSecretResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("data", getSecretResponseData)]}})
- 
+
 data GetBulkSecretRequest = GetBulkSecretRequest{getBulkSecretRequestStoreName
                                                  :: Hs.Text,
                                                  getBulkSecretRequestMetadata ::
                                                  Hs.Map Hs.Text Hs.Text}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetBulkSecretRequest
- 
+
 instance HsProtobuf.Named GetBulkSecretRequest where
         nameOf _ = (Hs.fromString "GetBulkSecretRequest")
- 
+
 instance HsProtobuf.HasDefault GetBulkSecretRequest
- 
+
 instance HsProtobuf.Message GetBulkSecretRequest where
         encodeMessage _
           GetBulkSecretRequest{getBulkSecretRequestStoreName =
@@ -3962,7 +3150,7 @@ instance HsProtobuf.Message GetBulkSecretRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetBulkSecretRequest where
         toJSONPB (GetBulkSecretRequest f1 f2)
           = (HsJSONPB.object
@@ -3980,7 +3168,7 @@ instance HsJSONPB.ToJSONPB GetBulkSecretRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB GetBulkSecretRequest where
         parseJSONPB
           = (HsJSONPB.withObject "GetBulkSecretRequest"
@@ -3993,14 +3181,14 @@ instance HsJSONPB.FromJSONPB GetBulkSecretRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON GetBulkSecretRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetBulkSecretRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetBulkSecretRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -4028,18 +3216,18 @@ instance HsJSONPB.ToSchema GetBulkSecretRequest where
                                                          getBulkSecretRequestStoreName),
                                                         ("metadata",
                                                          getBulkSecretRequestMetadata)]}})
- 
+
 newtype SecretResponse = SecretResponse{secretResponseSecrets ::
                                         Hs.Map Hs.Text Hs.Text}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SecretResponse
- 
+
 instance HsProtobuf.Named SecretResponse where
         nameOf _ = (Hs.fromString "SecretResponse")
- 
+
 instance HsProtobuf.HasDefault SecretResponse
- 
+
 instance HsProtobuf.Message SecretResponse where
         encodeMessage _
           SecretResponse{secretResponseSecrets = secretResponseSecrets}
@@ -4061,7 +3249,7 @@ instance HsProtobuf.Message SecretResponse where
                 (HsProtobufAST.Single "secrets")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SecretResponse where
         toJSONPB (SecretResponse f1)
           = (HsJSONPB.object
@@ -4075,7 +3263,7 @@ instance HsJSONPB.ToJSONPB SecretResponse where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB SecretResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SecretResponse"
@@ -4085,14 +3273,14 @@ instance HsJSONPB.FromJSONPB SecretResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "secrets"))))
- 
+
 instance HsJSONPB.ToJSON SecretResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SecretResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SecretResponse where
         declareNamedSchema _
           = do let declare_secrets = HsJSONPB.declareSchemaRef
@@ -4112,21 +3300,21 @@ instance HsJSONPB.ToSchema SecretResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("secrets", secretResponseSecrets)]}})
- 
+
 newtype GetBulkSecretResponse = GetBulkSecretResponse{getBulkSecretResponseData
                                                       ::
                                                       Hs.Map Hs.Text
                                                         (Hs.Maybe
                                                            Dapr.Proto.Runtime.V1.Dapr.SecretResponse)}
                                 deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetBulkSecretResponse
- 
+
 instance HsProtobuf.Named GetBulkSecretResponse where
         nameOf _ = (Hs.fromString "GetBulkSecretResponse")
- 
+
 instance HsProtobuf.HasDefault GetBulkSecretResponse
- 
+
 instance HsProtobuf.Message GetBulkSecretResponse where
         encodeMessage _
           GetBulkSecretResponse{getBulkSecretResponseData =
@@ -4151,7 +3339,7 @@ instance HsProtobuf.Message GetBulkSecretResponse where
                 (HsProtobufAST.Single "data")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetBulkSecretResponse where
         toJSONPB (GetBulkSecretResponse f1)
           = (HsJSONPB.object
@@ -4167,7 +3355,7 @@ instance HsJSONPB.ToJSONPB GetBulkSecretResponse where
                      @(Hs.Map Hs.Text (Hs.Maybe Dapr.Proto.Runtime.V1.Dapr.SecretResponse))
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.Nested Dapr.Proto.Runtime.V1.Dapr.SecretResponse))
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB GetBulkSecretResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetBulkSecretResponse"
@@ -4177,14 +3365,14 @@ instance HsJSONPB.FromJSONPB GetBulkSecretResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.Nested Dapr.Proto.Runtime.V1.Dapr.SecretResponse))
                        @(Hs.Map Hs.Text (Hs.Maybe Dapr.Proto.Runtime.V1.Dapr.SecretResponse))
                        (obj .: "data"))))
- 
+
 instance HsJSONPB.ToJSON GetBulkSecretResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetBulkSecretResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetBulkSecretResponse where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -4204,21 +3392,21 @@ instance HsJSONPB.ToSchema GetBulkSecretResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("data", getBulkSecretResponseData)]}})
- 
+
 data TransactionalStateOperation = TransactionalStateOperation{transactionalStateOperationOperationType
                                                                :: Hs.Text,
                                                                transactionalStateOperationRequest ::
                                                                Hs.Maybe
                                                                  Dapr.Proto.Common.V1.Common.StateItem}
                                  deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TransactionalStateOperation
- 
+
 instance HsProtobuf.Named TransactionalStateOperation where
         nameOf _ = (Hs.fromString "TransactionalStateOperation")
- 
+
 instance HsProtobuf.HasDefault TransactionalStateOperation
- 
+
 instance HsProtobuf.Message TransactionalStateOperation where
         encodeMessage _
           TransactionalStateOperation{transactionalStateOperationOperationType
@@ -4259,7 +3447,7 @@ instance HsProtobuf.Message TransactionalStateOperation where
                 (HsProtobufAST.Single "request")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TransactionalStateOperation where
         toJSONPB (TransactionalStateOperation f1 f2)
           = (HsJSONPB.object
@@ -4277,7 +3465,7 @@ instance HsJSONPB.ToJSONPB TransactionalStateOperation where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.StateItem)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StateItem)
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB TransactionalStateOperation where
         parseJSONPB
           = (HsJSONPB.withObject "TransactionalStateOperation"
@@ -4290,14 +3478,14 @@ instance HsJSONPB.FromJSONPB TransactionalStateOperation where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StateItem)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.StateItem)
                        (obj .: "request"))))
- 
+
 instance HsJSONPB.ToJSON TransactionalStateOperation where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TransactionalStateOperation where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TransactionalStateOperation where
         declareNamedSchema _
           = do let declare_operationType = HsJSONPB.declareSchemaRef
@@ -4326,7 +3514,7 @@ instance HsJSONPB.ToSchema TransactionalStateOperation where
                                                          transactionalStateOperationOperationType),
                                                         ("request",
                                                          transactionalStateOperationRequest)]}})
- 
+
 data ExecuteStateTransactionRequest = ExecuteStateTransactionRequest{executeStateTransactionRequestStoreName
                                                                      :: Hs.Text,
                                                                      executeStateTransactionRequestOperations
@@ -4336,14 +3524,14 @@ data ExecuteStateTransactionRequest = ExecuteStateTransactionRequest{executeStat
                                                                      executeStateTransactionRequestMetadata
                                                                      :: Hs.Map Hs.Text Hs.Text}
                                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData ExecuteStateTransactionRequest
- 
+
 instance HsProtobuf.Named ExecuteStateTransactionRequest where
         nameOf _ = (Hs.fromString "ExecuteStateTransactionRequest")
- 
+
 instance HsProtobuf.HasDefault ExecuteStateTransactionRequest
- 
+
 instance HsProtobuf.Message ExecuteStateTransactionRequest where
         encodeMessage _
           ExecuteStateTransactionRequest{executeStateTransactionRequestStoreName
@@ -4400,7 +3588,7 @@ instance HsProtobuf.Message ExecuteStateTransactionRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB ExecuteStateTransactionRequest where
         toJSONPB (ExecuteStateTransactionRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -4428,7 +3616,7 @@ instance HsJSONPB.ToJSONPB ExecuteStateTransactionRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB ExecuteStateTransactionRequest where
         parseJSONPB
           = (HsJSONPB.withObject "ExecuteStateTransactionRequest"
@@ -4446,14 +3634,14 @@ instance HsJSONPB.FromJSONPB ExecuteStateTransactionRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON ExecuteStateTransactionRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON ExecuteStateTransactionRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema ExecuteStateTransactionRequest where
         declareNamedSchema _
           = do let declare_storeName = HsJSONPB.declareSchemaRef
@@ -4493,7 +3681,7 @@ instance HsJSONPB.ToSchema ExecuteStateTransactionRequest where
                                                          executeStateTransactionRequestOperations),
                                                         ("metadata",
                                                          executeStateTransactionRequestMetadata)]}})
- 
+
 data RegisterActorTimerRequest = RegisterActorTimerRequest{registerActorTimerRequestActorType
                                                            :: Hs.Text,
                                                            registerActorTimerRequestActorId ::
@@ -4509,14 +3697,14 @@ data RegisterActorTimerRequest = RegisterActorTimerRequest{registerActorTimerReq
                                                            Hs.ByteString,
                                                            registerActorTimerRequestTtl :: Hs.Text}
                                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData RegisterActorTimerRequest
- 
+
 instance HsProtobuf.Named RegisterActorTimerRequest where
         nameOf _ = (Hs.fromString "RegisterActorTimerRequest")
- 
+
 instance HsProtobuf.HasDefault RegisterActorTimerRequest
- 
+
 instance HsProtobuf.Message RegisterActorTimerRequest where
         encodeMessage _
           RegisterActorTimerRequest{registerActorTimerRequestActorType =
@@ -4632,7 +3820,7 @@ instance HsProtobuf.Message RegisterActorTimerRequest where
                 (HsProtobufAST.Single "ttl")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB RegisterActorTimerRequest where
         toJSONPB (RegisterActorTimerRequest f1 f2 f3 f4 f5 f6 f7 f8)
           = (HsJSONPB.object
@@ -4668,7 +3856,7 @@ instance HsJSONPB.ToJSONPB RegisterActorTimerRequest where
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f7)),
                 "ttl" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f8))])
- 
+
 instance HsJSONPB.FromJSONPB RegisterActorTimerRequest where
         parseJSONPB
           = (HsJSONPB.withObject "RegisterActorTimerRequest"
@@ -4698,14 +3886,14 @@ instance HsJSONPB.FromJSONPB RegisterActorTimerRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "ttl"))))
- 
+
 instance HsJSONPB.ToJSON RegisterActorTimerRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON RegisterActorTimerRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema RegisterActorTimerRequest where
         declareNamedSchema _
           = do let declare_actor_type = HsJSONPB.declareSchemaRef
@@ -4771,7 +3959,7 @@ instance HsJSONPB.ToSchema RegisterActorTimerRequest where
                                                          registerActorTimerRequestCallback),
                                                         ("data", registerActorTimerRequestData),
                                                         ("ttl", registerActorTimerRequestTtl)]}})
- 
+
 data UnregisterActorTimerRequest = UnregisterActorTimerRequest{unregisterActorTimerRequestActorType
                                                                :: Hs.Text,
                                                                unregisterActorTimerRequestActorId ::
@@ -4779,14 +3967,14 @@ data UnregisterActorTimerRequest = UnregisterActorTimerRequest{unregisterActorTi
                                                                unregisterActorTimerRequestName ::
                                                                Hs.Text}
                                  deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData UnregisterActorTimerRequest
- 
+
 instance HsProtobuf.Named UnregisterActorTimerRequest where
         nameOf _ = (Hs.fromString "UnregisterActorTimerRequest")
- 
+
 instance HsProtobuf.HasDefault UnregisterActorTimerRequest
- 
+
 instance HsProtobuf.Message UnregisterActorTimerRequest where
         encodeMessage _
           UnregisterActorTimerRequest{unregisterActorTimerRequestActorType =
@@ -4834,7 +4022,7 @@ instance HsProtobuf.Message UnregisterActorTimerRequest where
                 (HsProtobufAST.Single "name")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB UnregisterActorTimerRequest where
         toJSONPB (UnregisterActorTimerRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -4852,7 +4040,7 @@ instance HsJSONPB.ToJSONPB UnregisterActorTimerRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2)),
                 "name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3))])
- 
+
 instance HsJSONPB.FromJSONPB UnregisterActorTimerRequest where
         parseJSONPB
           = (HsJSONPB.withObject "UnregisterActorTimerRequest"
@@ -4866,14 +4054,14 @@ instance HsJSONPB.FromJSONPB UnregisterActorTimerRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "name"))))
- 
+
 instance HsJSONPB.ToJSON UnregisterActorTimerRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON UnregisterActorTimerRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema UnregisterActorTimerRequest where
         declareNamedSchema _
           = do let declare_actor_type = HsJSONPB.declareSchemaRef
@@ -4907,7 +4095,7 @@ instance HsJSONPB.ToSchema UnregisterActorTimerRequest where
                                                          unregisterActorTimerRequestActorId),
                                                         ("name",
                                                          unregisterActorTimerRequestName)]}})
- 
+
 data RegisterActorReminderRequest = RegisterActorReminderRequest{registerActorReminderRequestActorType
                                                                  :: Hs.Text,
                                                                  registerActorReminderRequestActorId
@@ -4923,14 +4111,14 @@ data RegisterActorReminderRequest = RegisterActorReminderRequest{registerActorRe
                                                                  registerActorReminderRequestTtl ::
                                                                  Hs.Text}
                                   deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData RegisterActorReminderRequest
- 
+
 instance HsProtobuf.Named RegisterActorReminderRequest where
         nameOf _ = (Hs.fromString "RegisterActorReminderRequest")
- 
+
 instance HsProtobuf.HasDefault RegisterActorReminderRequest
- 
+
 instance HsProtobuf.Message RegisterActorReminderRequest where
         encodeMessage _
           RegisterActorReminderRequest{registerActorReminderRequestActorType
@@ -5035,7 +4223,7 @@ instance HsProtobuf.Message RegisterActorReminderRequest where
                 (HsProtobufAST.Single "ttl")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB RegisterActorReminderRequest where
         toJSONPB (RegisterActorReminderRequest f1 f2 f3 f4 f5 f6 f7)
           = (HsJSONPB.object
@@ -5067,7 +4255,7 @@ instance HsJSONPB.ToJSONPB RegisterActorReminderRequest where
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f6)),
                 "ttl" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f7))])
- 
+
 instance HsJSONPB.FromJSONPB RegisterActorReminderRequest where
         parseJSONPB
           = (HsJSONPB.withObject "RegisterActorReminderRequest"
@@ -5094,14 +4282,14 @@ instance HsJSONPB.FromJSONPB RegisterActorReminderRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "ttl"))))
- 
+
 instance HsJSONPB.ToJSON RegisterActorReminderRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON RegisterActorReminderRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema RegisterActorReminderRequest where
         declareNamedSchema _
           = do let declare_actor_type = HsJSONPB.declareSchemaRef
@@ -5161,7 +4349,7 @@ instance HsJSONPB.ToSchema RegisterActorReminderRequest where
                                                          registerActorReminderRequestPeriod),
                                                         ("data", registerActorReminderRequestData),
                                                         ("ttl", registerActorReminderRequestTtl)]}})
- 
+
 data UnregisterActorReminderRequest = UnregisterActorReminderRequest{unregisterActorReminderRequestActorType
                                                                      :: Hs.Text,
                                                                      unregisterActorReminderRequestActorId
@@ -5169,14 +4357,14 @@ data UnregisterActorReminderRequest = UnregisterActorReminderRequest{unregisterA
                                                                      unregisterActorReminderRequestName
                                                                      :: Hs.Text}
                                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData UnregisterActorReminderRequest
- 
+
 instance HsProtobuf.Named UnregisterActorReminderRequest where
         nameOf _ = (Hs.fromString "UnregisterActorReminderRequest")
- 
+
 instance HsProtobuf.HasDefault UnregisterActorReminderRequest
- 
+
 instance HsProtobuf.Message UnregisterActorReminderRequest where
         encodeMessage _
           UnregisterActorReminderRequest{unregisterActorReminderRequestActorType
@@ -5224,7 +4412,7 @@ instance HsProtobuf.Message UnregisterActorReminderRequest where
                 (HsProtobufAST.Single "name")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB UnregisterActorReminderRequest where
         toJSONPB (UnregisterActorReminderRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -5242,7 +4430,7 @@ instance HsJSONPB.ToJSONPB UnregisterActorReminderRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2)),
                 "name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3))])
- 
+
 instance HsJSONPB.FromJSONPB UnregisterActorReminderRequest where
         parseJSONPB
           = (HsJSONPB.withObject "UnregisterActorReminderRequest"
@@ -5256,14 +4444,14 @@ instance HsJSONPB.FromJSONPB UnregisterActorReminderRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "name"))))
- 
+
 instance HsJSONPB.ToJSON UnregisterActorReminderRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON UnregisterActorReminderRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema UnregisterActorReminderRequest where
         declareNamedSchema _
           = do let declare_actor_type = HsJSONPB.declareSchemaRef
@@ -5298,7 +4486,7 @@ instance HsJSONPB.ToSchema UnregisterActorReminderRequest where
                                                          unregisterActorReminderRequestActorId),
                                                         ("name",
                                                          unregisterActorReminderRequestName)]}})
- 
+
 data RenameActorReminderRequest = RenameActorReminderRequest{renameActorReminderRequestActorType
                                                              :: Hs.Text,
                                                              renameActorReminderRequestActorId ::
@@ -5308,14 +4496,14 @@ data RenameActorReminderRequest = RenameActorReminderRequest{renameActorReminder
                                                              renameActorReminderRequestNewName ::
                                                              Hs.Text}
                                 deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData RenameActorReminderRequest
- 
+
 instance HsProtobuf.Named RenameActorReminderRequest where
         nameOf _ = (Hs.fromString "RenameActorReminderRequest")
- 
+
 instance HsProtobuf.HasDefault RenameActorReminderRequest
- 
+
 instance HsProtobuf.Message RenameActorReminderRequest where
         encodeMessage _
           RenameActorReminderRequest{renameActorReminderRequestActorType =
@@ -5377,7 +4565,7 @@ instance HsProtobuf.Message RenameActorReminderRequest where
                 (HsProtobufAST.Single "new_name")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB RenameActorReminderRequest where
         toJSONPB (RenameActorReminderRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -5399,7 +4587,7 @@ instance HsJSONPB.ToJSONPB RenameActorReminderRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3)),
                 "new_name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f4))])
- 
+
 instance HsJSONPB.FromJSONPB RenameActorReminderRequest where
         parseJSONPB
           = (HsJSONPB.withObject "RenameActorReminderRequest"
@@ -5416,14 +4604,14 @@ instance HsJSONPB.FromJSONPB RenameActorReminderRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "new_name"))))
- 
+
 instance HsJSONPB.ToJSON RenameActorReminderRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON RenameActorReminderRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema RenameActorReminderRequest where
         declareNamedSchema _
           = do let declare_actor_type = HsJSONPB.declareSchemaRef
@@ -5464,20 +4652,20 @@ instance HsJSONPB.ToSchema RenameActorReminderRequest where
                                                          renameActorReminderRequestOldName),
                                                         ("new_name",
                                                          renameActorReminderRequestNewName)]}})
- 
+
 data GetActorStateRequest = GetActorStateRequest{getActorStateRequestActorType
                                                  :: Hs.Text,
                                                  getActorStateRequestActorId :: Hs.Text,
                                                  getActorStateRequestKey :: Hs.Text}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetActorStateRequest
- 
+
 instance HsProtobuf.Named GetActorStateRequest where
         nameOf _ = (Hs.fromString "GetActorStateRequest")
- 
+
 instance HsProtobuf.HasDefault GetActorStateRequest
- 
+
 instance HsProtobuf.Message GetActorStateRequest where
         encodeMessage _
           GetActorStateRequest{getActorStateRequestActorType =
@@ -5523,7 +4711,7 @@ instance HsProtobuf.Message GetActorStateRequest where
                 (HsProtobufAST.Single "key")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetActorStateRequest where
         toJSONPB (GetActorStateRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -5539,7 +4727,7 @@ instance HsJSONPB.ToJSONPB GetActorStateRequest where
                 "actor_id" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2)),
                 "key" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3))])
- 
+
 instance HsJSONPB.FromJSONPB GetActorStateRequest where
         parseJSONPB
           = (HsJSONPB.withObject "GetActorStateRequest"
@@ -5553,14 +4741,14 @@ instance HsJSONPB.FromJSONPB GetActorStateRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "key"))))
- 
+
 instance HsJSONPB.ToJSON GetActorStateRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetActorStateRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetActorStateRequest where
         declareNamedSchema _
           = do let declare_actor_type = HsJSONPB.declareSchemaRef
@@ -5591,18 +4779,18 @@ instance HsJSONPB.ToSchema GetActorStateRequest where
                                                          getActorStateRequestActorType),
                                                         ("actor_id", getActorStateRequestActorId),
                                                         ("key", getActorStateRequestKey)]}})
- 
+
 newtype GetActorStateResponse = GetActorStateResponse{getActorStateResponseData
                                                       :: Hs.ByteString}
                                 deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetActorStateResponse
- 
+
 instance HsProtobuf.Named GetActorStateResponse where
         nameOf _ = (Hs.fromString "GetActorStateResponse")
- 
+
 instance HsProtobuf.HasDefault GetActorStateResponse
- 
+
 instance HsProtobuf.Message GetActorStateResponse where
         encodeMessage _
           GetActorStateResponse{getActorStateResponseData =
@@ -5623,7 +4811,7 @@ instance HsProtobuf.Message GetActorStateResponse where
                 (HsProtobufAST.Single "data")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetActorStateResponse where
         toJSONPB (GetActorStateResponse f1)
           = (HsJSONPB.object
@@ -5635,7 +4823,7 @@ instance HsJSONPB.ToJSONPB GetActorStateResponse where
                ["data" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB GetActorStateResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetActorStateResponse"
@@ -5644,14 +4832,14 @@ instance HsJSONPB.FromJSONPB GetActorStateResponse where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "data"))))
- 
+
 instance HsJSONPB.ToJSON GetActorStateResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetActorStateResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetActorStateResponse where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -5670,7 +4858,7 @@ instance HsJSONPB.ToSchema GetActorStateResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("data", getActorStateResponseData)]}})
- 
+
 data ExecuteActorStateTransactionRequest = ExecuteActorStateTransactionRequest{executeActorStateTransactionRequestActorType
                                                                                :: Hs.Text,
                                                                                executeActorStateTransactionRequestActorId
@@ -5680,14 +4868,14 @@ data ExecuteActorStateTransactionRequest = ExecuteActorStateTransactionRequest{e
                                                                                Hs.Vector
                                                                                  Dapr.Proto.Runtime.V1.Dapr.TransactionalActorStateOperation}
                                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData ExecuteActorStateTransactionRequest
- 
+
 instance HsProtobuf.Named ExecuteActorStateTransactionRequest where
         nameOf _ = (Hs.fromString "ExecuteActorStateTransactionRequest")
- 
+
 instance HsProtobuf.HasDefault ExecuteActorStateTransactionRequest
- 
+
 instance HsProtobuf.Message ExecuteActorStateTransactionRequest
          where
         encodeMessage _
@@ -5742,7 +4930,7 @@ instance HsProtobuf.Message ExecuteActorStateTransactionRequest
                 (HsProtobufAST.Single "operations")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB ExecuteActorStateTransactionRequest
          where
         toJSONPB (ExecuteActorStateTransactionRequest f1 f2 f3)
@@ -5767,7 +4955,7 @@ instance HsJSONPB.ToJSONPB ExecuteActorStateTransactionRequest
                      @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.TransactionalActorStateOperation)
                      @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.TransactionalActorStateOperation)
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB ExecuteActorStateTransactionRequest
          where
         parseJSONPB
@@ -5784,15 +4972,15 @@ instance HsJSONPB.FromJSONPB ExecuteActorStateTransactionRequest
                        @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.TransactionalActorStateOperation)
                        @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.TransactionalActorStateOperation)
                        (obj .: "operations"))))
- 
+
 instance HsJSONPB.ToJSON ExecuteActorStateTransactionRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON ExecuteActorStateTransactionRequest
          where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema ExecuteActorStateTransactionRequest
          where
         declareNamedSchema _
@@ -5831,7 +5019,7 @@ instance HsJSONPB.ToSchema ExecuteActorStateTransactionRequest
                                                          executeActorStateTransactionRequestActorId),
                                                         ("operations",
                                                          executeActorStateTransactionRequestOperations)]}})
- 
+
 data TransactionalActorStateOperation = TransactionalActorStateOperation{transactionalActorStateOperationOperationType
                                                                          :: Hs.Text,
                                                                          transactionalActorStateOperationKey
@@ -5843,14 +5031,14 @@ data TransactionalActorStateOperation = TransactionalActorStateOperation{transac
                                                                          transactionalActorStateOperationMetadata
                                                                          :: Hs.Map Hs.Text Hs.Text}
                                       deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TransactionalActorStateOperation
- 
+
 instance HsProtobuf.Named TransactionalActorStateOperation where
         nameOf _ = (Hs.fromString "TransactionalActorStateOperation")
- 
+
 instance HsProtobuf.HasDefault TransactionalActorStateOperation
- 
+
 instance HsProtobuf.Message TransactionalActorStateOperation where
         encodeMessage _
           TransactionalActorStateOperation{transactionalActorStateOperationOperationType
@@ -5920,7 +5108,7 @@ instance HsProtobuf.Message TransactionalActorStateOperation where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TransactionalActorStateOperation where
         toJSONPB (TransactionalActorStateOperation f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -5948,7 +5136,7 @@ instance HsJSONPB.ToJSONPB TransactionalActorStateOperation where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB TransactionalActorStateOperation where
         parseJSONPB
           = (HsJSONPB.withObject "TransactionalActorStateOperation"
@@ -5968,14 +5156,14 @@ instance HsJSONPB.FromJSONPB TransactionalActorStateOperation where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON TransactionalActorStateOperation where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TransactionalActorStateOperation where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TransactionalActorStateOperation where
         declareNamedSchema _
           = do let declare_operationType = HsJSONPB.declareSchemaRef
@@ -6020,7 +5208,7 @@ instance HsJSONPB.ToSchema TransactionalActorStateOperation where
                                                          transactionalActorStateOperationValue),
                                                         ("metadata",
                                                          transactionalActorStateOperationMetadata)]}})
- 
+
 data InvokeActorRequest = InvokeActorRequest{invokeActorRequestActorType
                                              :: Hs.Text,
                                              invokeActorRequestActorId :: Hs.Text,
@@ -6028,14 +5216,14 @@ data InvokeActorRequest = InvokeActorRequest{invokeActorRequestActorType
                                              invokeActorRequestData :: Hs.ByteString,
                                              invokeActorRequestMetadata :: Hs.Map Hs.Text Hs.Text}
                         deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData InvokeActorRequest
- 
+
 instance HsProtobuf.Named InvokeActorRequest where
         nameOf _ = (Hs.fromString "InvokeActorRequest")
- 
+
 instance HsProtobuf.HasDefault InvokeActorRequest
- 
+
 instance HsProtobuf.Message InvokeActorRequest where
         encodeMessage _
           InvokeActorRequest{invokeActorRequestActorType =
@@ -6111,7 +5299,7 @@ instance HsProtobuf.Message InvokeActorRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB InvokeActorRequest where
         toJSONPB (InvokeActorRequest f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -6143,7 +5331,7 @@ instance HsJSONPB.ToJSONPB InvokeActorRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB InvokeActorRequest where
         parseJSONPB
           = (HsJSONPB.withObject "InvokeActorRequest"
@@ -6166,14 +5354,14 @@ instance HsJSONPB.FromJSONPB InvokeActorRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON InvokeActorRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON InvokeActorRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema InvokeActorRequest where
         declareNamedSchema _
           = do let declare_actor_type = HsJSONPB.declareSchemaRef
@@ -6218,18 +5406,18 @@ instance HsJSONPB.ToSchema InvokeActorRequest where
                                                         ("method", invokeActorRequestMethod),
                                                         ("data", invokeActorRequestData),
                                                         ("metadata", invokeActorRequestMetadata)]}})
- 
+
 newtype InvokeActorResponse = InvokeActorResponse{invokeActorResponseData
                                                   :: Hs.ByteString}
                               deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData InvokeActorResponse
- 
+
 instance HsProtobuf.Named InvokeActorResponse where
         nameOf _ = (Hs.fromString "InvokeActorResponse")
- 
+
 instance HsProtobuf.HasDefault InvokeActorResponse
- 
+
 instance HsProtobuf.Message InvokeActorResponse where
         encodeMessage _
           InvokeActorResponse{invokeActorResponseData =
@@ -6250,7 +5438,7 @@ instance HsProtobuf.Message InvokeActorResponse where
                 (HsProtobufAST.Single "data")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB InvokeActorResponse where
         toJSONPB (InvokeActorResponse f1)
           = (HsJSONPB.object
@@ -6262,7 +5450,7 @@ instance HsJSONPB.ToJSONPB InvokeActorResponse where
                ["data" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB InvokeActorResponse where
         parseJSONPB
           = (HsJSONPB.withObject "InvokeActorResponse"
@@ -6271,14 +5459,14 @@ instance HsJSONPB.FromJSONPB InvokeActorResponse where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "data"))))
- 
+
 instance HsJSONPB.ToJSON InvokeActorResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON InvokeActorResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema InvokeActorResponse where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -6297,7 +5485,7 @@ instance HsJSONPB.ToSchema InvokeActorResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("data", invokeActorResponseData)]}})
- 
+
 data GetMetadataResponse = GetMetadataResponse{getMetadataResponseId
                                                :: Hs.Text,
                                                getMetadataResponseActiveActorsCount ::
@@ -6321,14 +5509,14 @@ data GetMetadataResponse = GetMetadataResponse{getMetadataResponseId
                                                getMetadataResponseEnabledFeatures ::
                                                Hs.Vector Hs.Text}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetMetadataResponse
- 
+
 instance HsProtobuf.Named GetMetadataResponse where
         nameOf _ = (Hs.fromString "GetMetadataResponse")
- 
+
 instance HsProtobuf.HasDefault GetMetadataResponse
- 
+
 instance HsProtobuf.Message GetMetadataResponse where
         encodeMessage _
           GetMetadataResponse{getMetadataResponseId = getMetadataResponseId,
@@ -6501,7 +5689,7 @@ instance HsProtobuf.Message GetMetadataResponse where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "enabledFeatures"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetMetadataResponse where
         toJSONPB (GetMetadataResponse f1 f2 f3 f4 f5 f6 f7 f8 f9)
           = (HsJSONPB.object
@@ -6579,7 +5767,7 @@ instance HsJSONPB.ToJSONPB GetMetadataResponse where
                   (Hs.coerce @(Hs.Vector Hs.Text)
                      @(HsProtobuf.UnpackedVec (HsProtobuf.String Hs.Text))
                      (f9))])
- 
+
 instance HsJSONPB.FromJSONPB GetMetadataResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetMetadataResponse"
@@ -6625,14 +5813,14 @@ instance HsJSONPB.FromJSONPB GetMetadataResponse where
                        @(HsProtobuf.UnpackedVec (HsProtobuf.String Hs.Text))
                        @(Hs.Vector Hs.Text)
                        (obj .: "enabled_features"))))
- 
+
 instance HsJSONPB.ToJSON GetMetadataResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetMetadataResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetMetadataResponse where
         declareNamedSchema _
           = do let declare_id = HsJSONPB.declareSchemaRef
@@ -6728,19 +5916,19 @@ instance HsJSONPB.ToSchema GetMetadataResponse where
                                                          getMetadataResponseRuntimeVersion),
                                                         ("enabled_features",
                                                          getMetadataResponseEnabledFeatures)]}})
- 
+
 data ActiveActorsCount = ActiveActorsCount{activeActorsCountType ::
                                            Hs.Text,
                                            activeActorsCountCount :: Hs.Int32}
                        deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData ActiveActorsCount
- 
+
 instance HsProtobuf.Named ActiveActorsCount where
         nameOf _ = (Hs.fromString "ActiveActorsCount")
- 
+
 instance HsProtobuf.HasDefault ActiveActorsCount
- 
+
 instance HsProtobuf.Message ActiveActorsCount where
         encodeMessage _
           ActiveActorsCount{activeActorsCountType = activeActorsCountType,
@@ -6770,7 +5958,7 @@ instance HsProtobuf.Message ActiveActorsCount where
                 (HsProtobufAST.Single "count")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB ActiveActorsCount where
         toJSONPB (ActiveActorsCount f1 f2)
           = (HsJSONPB.object
@@ -6782,7 +5970,7 @@ instance HsJSONPB.ToJSONPB ActiveActorsCount where
                ["type" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "count" .= f2])
- 
+
 instance HsJSONPB.FromJSONPB ActiveActorsCount where
         parseJSONPB
           = (HsJSONPB.withObject "ActiveActorsCount"
@@ -6791,14 +5979,14 @@ instance HsJSONPB.FromJSONPB ActiveActorsCount where
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "type"))
                     <*> obj .: "count"))
- 
+
 instance HsJSONPB.ToJSON ActiveActorsCount where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON ActiveActorsCount where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema ActiveActorsCount where
         declareNamedSchema _
           = do let declare_type = HsJSONPB.declareSchemaRef
@@ -6820,7 +6008,7 @@ instance HsJSONPB.ToSchema ActiveActorsCount where
                                                      HsJSONPB.insOrdFromList
                                                        [("type", activeActorsCountType),
                                                         ("count", activeActorsCountCount)]}})
- 
+
 data RegisteredComponents = RegisteredComponents{registeredComponentsName
                                                  :: Hs.Text,
                                                  registeredComponentsType :: Hs.Text,
@@ -6828,14 +6016,14 @@ data RegisteredComponents = RegisteredComponents{registeredComponentsName
                                                  registeredComponentsCapabilities ::
                                                  Hs.Vector Hs.Text}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData RegisteredComponents
- 
+
 instance HsProtobuf.Named RegisteredComponents where
         nameOf _ = (Hs.fromString "RegisteredComponents")
- 
+
 instance HsProtobuf.HasDefault RegisteredComponents
- 
+
 instance HsProtobuf.Message RegisteredComponents where
         encodeMessage _
           RegisteredComponents{registeredComponentsName =
@@ -6898,7 +6086,7 @@ instance HsProtobuf.Message RegisteredComponents where
                 (HsProtobufAST.Single "capabilities")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB RegisteredComponents where
         toJSONPB (RegisteredComponents f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -6922,7 +6110,7 @@ instance HsJSONPB.ToJSONPB RegisteredComponents where
                   (Hs.coerce @(Hs.Vector Hs.Text)
                      @(HsProtobuf.UnpackedVec (HsProtobuf.String Hs.Text))
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB RegisteredComponents where
         parseJSONPB
           = (HsJSONPB.withObject "RegisteredComponents"
@@ -6941,14 +6129,14 @@ instance HsJSONPB.FromJSONPB RegisteredComponents where
                        @(HsProtobuf.UnpackedVec (HsProtobuf.String Hs.Text))
                        @(Hs.Vector Hs.Text)
                        (obj .: "capabilities"))))
- 
+
 instance HsJSONPB.ToJSON RegisteredComponents where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON RegisteredComponents where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema RegisteredComponents where
         declareNamedSchema _
           = do let declare_name = HsJSONPB.declareSchemaRef
@@ -6988,18 +6176,18 @@ instance HsJSONPB.ToSchema RegisteredComponents where
                                                         ("version", registeredComponentsVersion),
                                                         ("capabilities",
                                                          registeredComponentsCapabilities)]}})
- 
+
 newtype MetadataHTTPEndpoint = MetadataHTTPEndpoint{metadataHTTPEndpointName
                                                     :: Hs.Text}
                                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData MetadataHTTPEndpoint
- 
+
 instance HsProtobuf.Named MetadataHTTPEndpoint where
         nameOf _ = (Hs.fromString "MetadataHTTPEndpoint")
- 
+
 instance HsProtobuf.HasDefault MetadataHTTPEndpoint
- 
+
 instance HsProtobuf.Message MetadataHTTPEndpoint where
         encodeMessage _
           MetadataHTTPEndpoint{metadataHTTPEndpointName =
@@ -7020,7 +6208,7 @@ instance HsProtobuf.Message MetadataHTTPEndpoint where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "name"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB MetadataHTTPEndpoint where
         toJSONPB (MetadataHTTPEndpoint f1)
           = (HsJSONPB.object
@@ -7030,7 +6218,7 @@ instance HsJSONPB.ToJSONPB MetadataHTTPEndpoint where
           = (HsJSONPB.pairs
                ["name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1))])
- 
+
 instance HsJSONPB.FromJSONPB MetadataHTTPEndpoint where
         parseJSONPB
           = (HsJSONPB.withObject "MetadataHTTPEndpoint"
@@ -7038,14 +6226,14 @@ instance HsJSONPB.FromJSONPB MetadataHTTPEndpoint where
                   (Hs.pure MetadataHTTPEndpoint) <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "name"))))
- 
+
 instance HsJSONPB.ToJSON MetadataHTTPEndpoint where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON MetadataHTTPEndpoint where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema MetadataHTTPEndpoint where
         declareNamedSchema _
           = do let declare_name = HsJSONPB.declareSchemaRef
@@ -7063,7 +6251,7 @@ instance HsJSONPB.ToSchema MetadataHTTPEndpoint where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("name", metadataHTTPEndpointName)]}})
- 
+
 data AppConnectionProperties = AppConnectionProperties{appConnectionPropertiesPort
                                                        :: Hs.Int32,
                                                        appConnectionPropertiesProtocol :: Hs.Text,
@@ -7075,14 +6263,14 @@ data AppConnectionProperties = AppConnectionProperties{appConnectionPropertiesPo
                                                        Hs.Maybe
                                                          Dapr.Proto.Runtime.V1.Dapr.AppConnectionHealthProperties}
                              deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData AppConnectionProperties
- 
+
 instance HsProtobuf.Named AppConnectionProperties where
         nameOf _ = (Hs.fromString "AppConnectionProperties")
- 
+
 instance HsProtobuf.HasDefault AppConnectionProperties
- 
+
 instance HsProtobuf.Message AppConnectionProperties where
         encodeMessage _
           AppConnectionProperties{appConnectionPropertiesPort =
@@ -7160,7 +6348,7 @@ instance HsProtobuf.Message AppConnectionProperties where
                 (HsProtobufAST.Single "health")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB AppConnectionProperties where
         toJSONPB (AppConnectionProperties f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -7188,7 +6376,7 @@ instance HsJSONPB.ToJSONPB AppConnectionProperties where
                      @(Hs.Maybe Dapr.Proto.Runtime.V1.Dapr.AppConnectionHealthProperties)
                      @(HsProtobuf.Nested Dapr.Proto.Runtime.V1.Dapr.AppConnectionHealthProperties)
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB AppConnectionProperties where
         parseJSONPB
           = (HsJSONPB.withObject "AppConnectionProperties"
@@ -7205,14 +6393,14 @@ instance HsJSONPB.FromJSONPB AppConnectionProperties where
                        @(HsProtobuf.Nested Dapr.Proto.Runtime.V1.Dapr.AppConnectionHealthProperties)
                        @(Hs.Maybe Dapr.Proto.Runtime.V1.Dapr.AppConnectionHealthProperties)
                        (obj .: "health"))))
- 
+
 instance HsJSONPB.ToJSON AppConnectionProperties where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON AppConnectionProperties where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema AppConnectionProperties where
         declareNamedSchema _
           = do let declare_port = HsJSONPB.declareSchemaRef
@@ -7259,7 +6447,7 @@ instance HsJSONPB.ToSchema AppConnectionProperties where
                                                          appConnectionPropertiesMaxConcurrency),
                                                         ("health",
                                                          appConnectionPropertiesHealth)]}})
- 
+
 data AppConnectionHealthProperties = AppConnectionHealthProperties{appConnectionHealthPropertiesHealthCheckPath
                                                                    :: Hs.Text,
                                                                    appConnectionHealthPropertiesHealthProbeInterval
@@ -7269,14 +6457,14 @@ data AppConnectionHealthProperties = AppConnectionHealthProperties{appConnection
                                                                    appConnectionHealthPropertiesHealthThreshold
                                                                    :: Hs.Int32}
                                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData AppConnectionHealthProperties
- 
+
 instance HsProtobuf.Named AppConnectionHealthProperties where
         nameOf _ = (Hs.fromString "AppConnectionHealthProperties")
- 
+
 instance HsProtobuf.HasDefault AppConnectionHealthProperties
- 
+
 instance HsProtobuf.Message AppConnectionHealthProperties where
         encodeMessage _
           AppConnectionHealthProperties{appConnectionHealthPropertiesHealthCheckPath
@@ -7340,7 +6528,7 @@ instance HsProtobuf.Message AppConnectionHealthProperties where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "healthThreshold"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB AppConnectionHealthProperties where
         toJSONPB (AppConnectionHealthProperties f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -7360,7 +6548,7 @@ instance HsJSONPB.ToJSONPB AppConnectionHealthProperties where
                 "health_probe_timeout" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3)),
                 "health_threshold" .= f4])
- 
+
 instance HsJSONPB.FromJSONPB AppConnectionHealthProperties where
         parseJSONPB
           = (HsJSONPB.withObject "AppConnectionHealthProperties"
@@ -7375,14 +6563,14 @@ instance HsJSONPB.FromJSONPB AppConnectionHealthProperties where
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "health_probe_timeout"))
                     <*> obj .: "health_threshold"))
- 
+
 instance HsJSONPB.ToJSON AppConnectionHealthProperties where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON AppConnectionHealthProperties where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema AppConnectionHealthProperties where
         declareNamedSchema _
           = do let declare_health_check_path = HsJSONPB.declareSchemaRef
@@ -7424,7 +6612,7 @@ instance HsJSONPB.ToSchema AppConnectionHealthProperties where
                                                          appConnectionHealthPropertiesHealthProbeTimeout),
                                                         ("health_threshold",
                                                          appConnectionHealthPropertiesHealthThreshold)]}})
- 
+
 data PubsubSubscription = PubsubSubscription{pubsubSubscriptionPubsubName
                                              :: Hs.Text,
                                              pubsubSubscriptionTopic :: Hs.Text,
@@ -7434,14 +6622,14 @@ data PubsubSubscription = PubsubSubscription{pubsubSubscriptionPubsubName
                                                Dapr.Proto.Runtime.V1.Dapr.PubsubSubscriptionRules,
                                              pubsubSubscriptionDeadLetterTopic :: Hs.Text}
                         deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData PubsubSubscription
- 
+
 instance HsProtobuf.Named PubsubSubscription where
         nameOf _ = (Hs.fromString "PubsubSubscription")
- 
+
 instance HsProtobuf.HasDefault PubsubSubscription
- 
+
 instance HsProtobuf.Message PubsubSubscription where
         encodeMessage _
           PubsubSubscription{pubsubSubscriptionPubsubName =
@@ -7528,7 +6716,7 @@ instance HsProtobuf.Message PubsubSubscription where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "deadLetterTopic"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB PubsubSubscription where
         toJSONPB (PubsubSubscription f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -7564,7 +6752,7 @@ instance HsJSONPB.ToJSONPB PubsubSubscription where
                      (f4)),
                 "dead_letter_topic" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f5))])
- 
+
 instance HsJSONPB.FromJSONPB PubsubSubscription where
         parseJSONPB
           = (HsJSONPB.withObject "PubsubSubscription"
@@ -7588,14 +6776,14 @@ instance HsJSONPB.FromJSONPB PubsubSubscription where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "dead_letter_topic"))))
- 
+
 instance HsJSONPB.ToJSON PubsubSubscription where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON PubsubSubscription where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema PubsubSubscription where
         declareNamedSchema _
           = do let declare_pubsub_name = HsJSONPB.declareSchemaRef
@@ -7644,20 +6832,20 @@ instance HsJSONPB.ToSchema PubsubSubscription where
                                                         ("rules", pubsubSubscriptionRules),
                                                         ("dead_letter_topic",
                                                          pubsubSubscriptionDeadLetterTopic)]}})
- 
+
 newtype PubsubSubscriptionRules = PubsubSubscriptionRules{pubsubSubscriptionRulesRules
                                                           ::
                                                           Hs.Vector
                                                             Dapr.Proto.Runtime.V1.Dapr.PubsubSubscriptionRule}
                                   deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData PubsubSubscriptionRules
- 
+
 instance HsProtobuf.Named PubsubSubscriptionRules where
         nameOf _ = (Hs.fromString "PubsubSubscriptionRules")
- 
+
 instance HsProtobuf.HasDefault PubsubSubscriptionRules
- 
+
 instance HsProtobuf.Message PubsubSubscriptionRules where
         encodeMessage _
           PubsubSubscriptionRules{pubsubSubscriptionRulesRules =
@@ -7683,7 +6871,7 @@ instance HsProtobuf.Message PubsubSubscriptionRules where
                 (HsProtobufAST.Single "rules")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB PubsubSubscriptionRules where
         toJSONPB (PubsubSubscriptionRules f1)
           = (HsJSONPB.object
@@ -7699,7 +6887,7 @@ instance HsJSONPB.ToJSONPB PubsubSubscriptionRules where
                      @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.PubsubSubscriptionRule)
                      @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.PubsubSubscriptionRule)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB PubsubSubscriptionRules where
         parseJSONPB
           = (HsJSONPB.withObject "PubsubSubscriptionRules"
@@ -7709,14 +6897,14 @@ instance HsJSONPB.FromJSONPB PubsubSubscriptionRules where
                        @(HsProtobuf.NestedVec Dapr.Proto.Runtime.V1.Dapr.PubsubSubscriptionRule)
                        @(Hs.Vector Dapr.Proto.Runtime.V1.Dapr.PubsubSubscriptionRule)
                        (obj .: "rules"))))
- 
+
 instance HsJSONPB.ToJSON PubsubSubscriptionRules where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON PubsubSubscriptionRules where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema PubsubSubscriptionRules where
         declareNamedSchema _
           = do let declare_rules = HsJSONPB.declareSchemaRef
@@ -7736,19 +6924,19 @@ instance HsJSONPB.ToSchema PubsubSubscriptionRules where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("rules", pubsubSubscriptionRulesRules)]}})
- 
+
 data PubsubSubscriptionRule = PubsubSubscriptionRule{pubsubSubscriptionRuleMatch
                                                      :: Hs.Text,
                                                      pubsubSubscriptionRulePath :: Hs.Text}
                             deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData PubsubSubscriptionRule
- 
+
 instance HsProtobuf.Named PubsubSubscriptionRule where
         nameOf _ = (Hs.fromString "PubsubSubscriptionRule")
- 
+
 instance HsProtobuf.HasDefault PubsubSubscriptionRule
- 
+
 instance HsProtobuf.Message PubsubSubscriptionRule where
         encodeMessage _
           PubsubSubscriptionRule{pubsubSubscriptionRuleMatch =
@@ -7781,7 +6969,7 @@ instance HsProtobuf.Message PubsubSubscriptionRule where
                 (HsProtobufAST.Single "path")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB PubsubSubscriptionRule where
         toJSONPB (PubsubSubscriptionRule f1 f2)
           = (HsJSONPB.object
@@ -7795,7 +6983,7 @@ instance HsJSONPB.ToJSONPB PubsubSubscriptionRule where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "path" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB PubsubSubscriptionRule where
         parseJSONPB
           = (HsJSONPB.withObject "PubsubSubscriptionRule"
@@ -7806,14 +6994,14 @@ instance HsJSONPB.FromJSONPB PubsubSubscriptionRule where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "path"))))
- 
+
 instance HsJSONPB.ToJSON PubsubSubscriptionRule where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON PubsubSubscriptionRule where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema PubsubSubscriptionRule where
         declareNamedSchema _
           = do let declare_match = HsJSONPB.declareSchemaRef
@@ -7837,19 +7025,19 @@ instance HsJSONPB.ToSchema PubsubSubscriptionRule where
                                                      HsJSONPB.insOrdFromList
                                                        [("match", pubsubSubscriptionRuleMatch),
                                                         ("path", pubsubSubscriptionRulePath)]}})
- 
+
 data SetMetadataRequest = SetMetadataRequest{setMetadataRequestKey
                                              :: Hs.Text,
                                              setMetadataRequestValue :: Hs.Text}
                         deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SetMetadataRequest
- 
+
 instance HsProtobuf.Named SetMetadataRequest where
         nameOf _ = (Hs.fromString "SetMetadataRequest")
- 
+
 instance HsProtobuf.HasDefault SetMetadataRequest
- 
+
 instance HsProtobuf.Message SetMetadataRequest where
         encodeMessage _
           SetMetadataRequest{setMetadataRequestKey = setMetadataRequestKey,
@@ -7881,7 +7069,7 @@ instance HsProtobuf.Message SetMetadataRequest where
                 (HsProtobufAST.Single "value")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SetMetadataRequest where
         toJSONPB (SetMetadataRequest f1 f2)
           = (HsJSONPB.object
@@ -7893,7 +7081,7 @@ instance HsJSONPB.ToJSONPB SetMetadataRequest where
                ["key" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "value" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB SetMetadataRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SetMetadataRequest"
@@ -7904,14 +7092,14 @@ instance HsJSONPB.FromJSONPB SetMetadataRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "value"))))
- 
+
 instance HsJSONPB.ToJSON SetMetadataRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SetMetadataRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SetMetadataRequest where
         declareNamedSchema _
           = do let declare_key = HsJSONPB.declareSchemaRef
@@ -7935,7 +7123,7 @@ instance HsJSONPB.ToSchema SetMetadataRequest where
                                                      HsJSONPB.insOrdFromList
                                                        [("key", setMetadataRequestKey),
                                                         ("value", setMetadataRequestValue)]}})
- 
+
 data GetConfigurationRequest = GetConfigurationRequest{getConfigurationRequestStoreName
                                                        :: Hs.Text,
                                                        getConfigurationRequestKeys ::
@@ -7943,14 +7131,14 @@ data GetConfigurationRequest = GetConfigurationRequest{getConfigurationRequestSt
                                                        getConfigurationRequestMetadata ::
                                                        Hs.Map Hs.Text Hs.Text}
                              deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetConfigurationRequest
- 
+
 instance HsProtobuf.Named GetConfigurationRequest where
         nameOf _ = (Hs.fromString "GetConfigurationRequest")
- 
+
 instance HsProtobuf.HasDefault GetConfigurationRequest
- 
+
 instance HsProtobuf.Message GetConfigurationRequest where
         encodeMessage _
           GetConfigurationRequest{getConfigurationRequestStoreName =
@@ -8002,7 +7190,7 @@ instance HsProtobuf.Message GetConfigurationRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetConfigurationRequest where
         toJSONPB (GetConfigurationRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -8028,7 +7216,7 @@ instance HsJSONPB.ToJSONPB GetConfigurationRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB GetConfigurationRequest where
         parseJSONPB
           = (HsJSONPB.withObject "GetConfigurationRequest"
@@ -8046,14 +7234,14 @@ instance HsJSONPB.FromJSONPB GetConfigurationRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON GetConfigurationRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetConfigurationRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetConfigurationRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -8089,21 +7277,21 @@ instance HsJSONPB.ToSchema GetConfigurationRequest where
                                                         ("keys", getConfigurationRequestKeys),
                                                         ("metadata",
                                                          getConfigurationRequestMetadata)]}})
- 
+
 newtype GetConfigurationResponse = GetConfigurationResponse{getConfigurationResponseItems
                                                             ::
                                                             Hs.Map Hs.Text
                                                               (Hs.Maybe
                                                                  Dapr.Proto.Common.V1.Common.ConfigurationItem)}
                                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetConfigurationResponse
- 
+
 instance HsProtobuf.Named GetConfigurationResponse where
         nameOf _ = (Hs.fromString "GetConfigurationResponse")
- 
+
 instance HsProtobuf.HasDefault GetConfigurationResponse
- 
+
 instance HsProtobuf.Message GetConfigurationResponse where
         encodeMessage _
           GetConfigurationResponse{getConfigurationResponseItems =
@@ -8131,7 +7319,7 @@ instance HsProtobuf.Message GetConfigurationResponse where
                 (HsProtobufAST.Single "items")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetConfigurationResponse where
         toJSONPB (GetConfigurationResponse f1)
           = (HsJSONPB.object
@@ -8147,7 +7335,7 @@ instance HsJSONPB.ToJSONPB GetConfigurationResponse where
                      @(Hs.Map Hs.Text (Hs.Maybe Dapr.Proto.Common.V1.Common.ConfigurationItem))
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.Nested Dapr.Proto.Common.V1.Common.ConfigurationItem))
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB GetConfigurationResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetConfigurationResponse"
@@ -8157,14 +7345,14 @@ instance HsJSONPB.FromJSONPB GetConfigurationResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.Nested Dapr.Proto.Common.V1.Common.ConfigurationItem))
                        @(Hs.Map Hs.Text (Hs.Maybe Dapr.Proto.Common.V1.Common.ConfigurationItem))
                        (obj .: "items"))))
- 
+
 instance HsJSONPB.ToJSON GetConfigurationResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetConfigurationResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetConfigurationResponse where
         declareNamedSchema _
           = do let declare_items = HsJSONPB.declareSchemaRef
@@ -8184,7 +7372,7 @@ instance HsJSONPB.ToSchema GetConfigurationResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("items", getConfigurationResponseItems)]}})
- 
+
 data SubscribeConfigurationRequest = SubscribeConfigurationRequest{subscribeConfigurationRequestStoreName
                                                                    :: Hs.Text,
                                                                    subscribeConfigurationRequestKeys
@@ -8192,14 +7380,14 @@ data SubscribeConfigurationRequest = SubscribeConfigurationRequest{subscribeConf
                                                                    subscribeConfigurationRequestMetadata
                                                                    :: Hs.Map Hs.Text Hs.Text}
                                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubscribeConfigurationRequest
- 
+
 instance HsProtobuf.Named SubscribeConfigurationRequest where
         nameOf _ = (Hs.fromString "SubscribeConfigurationRequest")
- 
+
 instance HsProtobuf.HasDefault SubscribeConfigurationRequest
- 
+
 instance HsProtobuf.Message SubscribeConfigurationRequest where
         encodeMessage _
           SubscribeConfigurationRequest{subscribeConfigurationRequestStoreName
@@ -8253,7 +7441,7 @@ instance HsProtobuf.Message SubscribeConfigurationRequest where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubscribeConfigurationRequest where
         toJSONPB (SubscribeConfigurationRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -8279,7 +7467,7 @@ instance HsJSONPB.ToJSONPB SubscribeConfigurationRequest where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB SubscribeConfigurationRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubscribeConfigurationRequest"
@@ -8297,14 +7485,14 @@ instance HsJSONPB.FromJSONPB SubscribeConfigurationRequest where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON SubscribeConfigurationRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubscribeConfigurationRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubscribeConfigurationRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -8342,20 +7530,20 @@ instance HsJSONPB.ToSchema SubscribeConfigurationRequest where
                                                         ("keys", subscribeConfigurationRequestKeys),
                                                         ("metadata",
                                                          subscribeConfigurationRequestMetadata)]}})
- 
+
 data UnsubscribeConfigurationRequest = UnsubscribeConfigurationRequest{unsubscribeConfigurationRequestStoreName
                                                                        :: Hs.Text,
                                                                        unsubscribeConfigurationRequestId
                                                                        :: Hs.Text}
                                      deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData UnsubscribeConfigurationRequest
- 
+
 instance HsProtobuf.Named UnsubscribeConfigurationRequest where
         nameOf _ = (Hs.fromString "UnsubscribeConfigurationRequest")
- 
+
 instance HsProtobuf.HasDefault UnsubscribeConfigurationRequest
- 
+
 instance HsProtobuf.Message UnsubscribeConfigurationRequest where
         encodeMessage _
           UnsubscribeConfigurationRequest{unsubscribeConfigurationRequestStoreName
@@ -8389,7 +7577,7 @@ instance HsProtobuf.Message UnsubscribeConfigurationRequest where
                 (HsProtobufAST.Single "id")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB UnsubscribeConfigurationRequest where
         toJSONPB (UnsubscribeConfigurationRequest f1 f2)
           = (HsJSONPB.object
@@ -8401,7 +7589,7 @@ instance HsJSONPB.ToJSONPB UnsubscribeConfigurationRequest where
                ["store_name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "id" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB UnsubscribeConfigurationRequest where
         parseJSONPB
           = (HsJSONPB.withObject "UnsubscribeConfigurationRequest"
@@ -8412,14 +7600,14 @@ instance HsJSONPB.FromJSONPB UnsubscribeConfigurationRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "id"))))
- 
+
 instance HsJSONPB.ToJSON UnsubscribeConfigurationRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON UnsubscribeConfigurationRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema UnsubscribeConfigurationRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -8446,7 +7634,7 @@ instance HsJSONPB.ToSchema UnsubscribeConfigurationRequest where
                                                          unsubscribeConfigurationRequestStoreName),
                                                         ("id",
                                                          unsubscribeConfigurationRequestId)]}})
- 
+
 data SubscribeConfigurationResponse = SubscribeConfigurationResponse{subscribeConfigurationResponseId
                                                                      :: Hs.Text,
                                                                      subscribeConfigurationResponseItems
@@ -8455,14 +7643,14 @@ data SubscribeConfigurationResponse = SubscribeConfigurationResponse{subscribeCo
                                                                        (Hs.Maybe
                                                                           Dapr.Proto.Common.V1.Common.ConfigurationItem)}
                                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubscribeConfigurationResponse
- 
+
 instance HsProtobuf.Named SubscribeConfigurationResponse where
         nameOf _ = (Hs.fromString "SubscribeConfigurationResponse")
- 
+
 instance HsProtobuf.HasDefault SubscribeConfigurationResponse
- 
+
 instance HsProtobuf.Message SubscribeConfigurationResponse where
         encodeMessage _
           SubscribeConfigurationResponse{subscribeConfigurationResponseId =
@@ -8504,7 +7692,7 @@ instance HsProtobuf.Message SubscribeConfigurationResponse where
                 (HsProtobufAST.Single "items")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubscribeConfigurationResponse where
         toJSONPB (SubscribeConfigurationResponse f1 f2)
           = (HsJSONPB.object
@@ -8522,7 +7710,7 @@ instance HsJSONPB.ToJSONPB SubscribeConfigurationResponse where
                      @(Hs.Map Hs.Text (Hs.Maybe Dapr.Proto.Common.V1.Common.ConfigurationItem))
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.Nested Dapr.Proto.Common.V1.Common.ConfigurationItem))
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB SubscribeConfigurationResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubscribeConfigurationResponse"
@@ -8535,14 +7723,14 @@ instance HsJSONPB.FromJSONPB SubscribeConfigurationResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.Nested Dapr.Proto.Common.V1.Common.ConfigurationItem))
                        @(Hs.Map Hs.Text (Hs.Maybe Dapr.Proto.Common.V1.Common.ConfigurationItem))
                        (obj .: "items"))))
- 
+
 instance HsJSONPB.ToJSON SubscribeConfigurationResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubscribeConfigurationResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubscribeConfigurationResponse where
         declareNamedSchema _
           = do let declare_id = HsJSONPB.declareSchemaRef
@@ -8569,20 +7757,20 @@ instance HsJSONPB.ToSchema SubscribeConfigurationResponse where
                                                        [("id", subscribeConfigurationResponseId),
                                                         ("items",
                                                          subscribeConfigurationResponseItems)]}})
- 
+
 data UnsubscribeConfigurationResponse = UnsubscribeConfigurationResponse{unsubscribeConfigurationResponseOk
                                                                          :: Hs.Bool,
                                                                          unsubscribeConfigurationResponseMessage
                                                                          :: Hs.Text}
                                       deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData UnsubscribeConfigurationResponse
- 
+
 instance HsProtobuf.Named UnsubscribeConfigurationResponse where
         nameOf _ = (Hs.fromString "UnsubscribeConfigurationResponse")
- 
+
 instance HsProtobuf.HasDefault UnsubscribeConfigurationResponse
- 
+
 instance HsProtobuf.Message UnsubscribeConfigurationResponse where
         encodeMessage _
           UnsubscribeConfigurationResponse{unsubscribeConfigurationResponseOk
@@ -8614,7 +7802,7 @@ instance HsProtobuf.Message UnsubscribeConfigurationResponse where
                 (HsProtobufAST.Single "message")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB UnsubscribeConfigurationResponse where
         toJSONPB (UnsubscribeConfigurationResponse f1 f2)
           = (HsJSONPB.object
@@ -8626,7 +7814,7 @@ instance HsJSONPB.ToJSONPB UnsubscribeConfigurationResponse where
                ["ok" .= f1,
                 "message" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB UnsubscribeConfigurationResponse where
         parseJSONPB
           = (HsJSONPB.withObject "UnsubscribeConfigurationResponse"
@@ -8634,14 +7822,14 @@ instance HsJSONPB.FromJSONPB UnsubscribeConfigurationResponse where
                   (Hs.pure UnsubscribeConfigurationResponse) <*> obj .: "ok" <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "message"))))
- 
+
 instance HsJSONPB.ToJSON UnsubscribeConfigurationResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON UnsubscribeConfigurationResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema UnsubscribeConfigurationResponse where
         declareNamedSchema _
           = do let declare_ok = HsJSONPB.declareSchemaRef
@@ -8666,21 +7854,21 @@ instance HsJSONPB.ToSchema UnsubscribeConfigurationResponse where
                                                        [("ok", unsubscribeConfigurationResponseOk),
                                                         ("message",
                                                          unsubscribeConfigurationResponseMessage)]}})
- 
+
 data TryLockRequest = TryLockRequest{tryLockRequestStoreName ::
                                      Hs.Text,
                                      tryLockRequestResourceId :: Hs.Text,
                                      tryLockRequestLockOwner :: Hs.Text,
                                      tryLockRequestExpiryInSeconds :: Hs.Int32}
                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TryLockRequest
- 
+
 instance HsProtobuf.Named TryLockRequest where
         nameOf _ = (Hs.fromString "TryLockRequest")
- 
+
 instance HsProtobuf.HasDefault TryLockRequest
- 
+
 instance HsProtobuf.Message TryLockRequest where
         encodeMessage _
           TryLockRequest{tryLockRequestStoreName = tryLockRequestStoreName,
@@ -8740,7 +7928,7 @@ instance HsProtobuf.Message TryLockRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "expiryInSeconds"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TryLockRequest where
         toJSONPB (TryLockRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -8760,7 +7948,7 @@ instance HsJSONPB.ToJSONPB TryLockRequest where
                 "lock_owner" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3)),
                 "expiry_in_seconds" .= f4])
- 
+
 instance HsJSONPB.FromJSONPB TryLockRequest where
         parseJSONPB
           = (HsJSONPB.withObject "TryLockRequest"
@@ -8775,14 +7963,14 @@ instance HsJSONPB.FromJSONPB TryLockRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "lock_owner"))
                     <*> obj .: "expiry_in_seconds"))
- 
+
 instance HsJSONPB.ToJSON TryLockRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TryLockRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TryLockRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -8818,18 +8006,18 @@ instance HsJSONPB.ToSchema TryLockRequest where
                                                         ("lock_owner", tryLockRequestLockOwner),
                                                         ("expiry_in_seconds",
                                                          tryLockRequestExpiryInSeconds)]}})
- 
+
 newtype TryLockResponse = TryLockResponse{tryLockResponseSuccess ::
                                           Hs.Bool}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TryLockResponse
- 
+
 instance HsProtobuf.Named TryLockResponse where
         nameOf _ = (Hs.fromString "TryLockResponse")
- 
+
 instance HsProtobuf.HasDefault TryLockResponse
- 
+
 instance HsProtobuf.Message TryLockResponse where
         encodeMessage _
           TryLockResponse{tryLockResponseSuccess = tryLockResponseSuccess}
@@ -8846,24 +8034,24 @@ instance HsProtobuf.Message TryLockResponse where
                 (HsProtobufAST.Single "success")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TryLockResponse where
         toJSONPB (TryLockResponse f1) = (HsJSONPB.object ["success" .= f1])
         toEncodingPB (TryLockResponse f1)
           = (HsJSONPB.pairs ["success" .= f1])
- 
+
 instance HsJSONPB.FromJSONPB TryLockResponse where
         parseJSONPB
           = (HsJSONPB.withObject "TryLockResponse"
                (\ obj -> (Hs.pure TryLockResponse) <*> obj .: "success"))
- 
+
 instance HsJSONPB.ToJSON TryLockResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TryLockResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TryLockResponse where
         declareNamedSchema _
           = do let declare_success = HsJSONPB.declareSchemaRef
@@ -8880,20 +8068,20 @@ instance HsJSONPB.ToSchema TryLockResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("success", tryLockResponseSuccess)]}})
- 
+
 data UnlockRequest = UnlockRequest{unlockRequestStoreName ::
                                    Hs.Text,
                                    unlockRequestResourceId :: Hs.Text,
                                    unlockRequestLockOwner :: Hs.Text}
                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData UnlockRequest
- 
+
 instance HsProtobuf.Named UnlockRequest where
         nameOf _ = (Hs.fromString "UnlockRequest")
- 
+
 instance HsProtobuf.HasDefault UnlockRequest
- 
+
 instance HsProtobuf.Message UnlockRequest where
         encodeMessage _
           UnlockRequest{unlockRequestStoreName = unlockRequestStoreName,
@@ -8941,7 +8129,7 @@ instance HsProtobuf.Message UnlockRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "lockOwner"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB UnlockRequest where
         toJSONPB (UnlockRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -8959,7 +8147,7 @@ instance HsJSONPB.ToJSONPB UnlockRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2)),
                 "lock_owner" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3))])
- 
+
 instance HsJSONPB.FromJSONPB UnlockRequest where
         parseJSONPB
           = (HsJSONPB.withObject "UnlockRequest"
@@ -8973,14 +8161,14 @@ instance HsJSONPB.FromJSONPB UnlockRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "lock_owner"))))
- 
+
 instance HsJSONPB.ToJSON UnlockRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON UnlockRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema UnlockRequest where
         declareNamedSchema _
           = do let declare_store_name = HsJSONPB.declareSchemaRef
@@ -9010,19 +8198,19 @@ instance HsJSONPB.ToSchema UnlockRequest where
                                                        [("store_name", unlockRequestStoreName),
                                                         ("resource_id", unlockRequestResourceId),
                                                         ("lock_owner", unlockRequestLockOwner)]}})
- 
+
 newtype UnlockResponse = UnlockResponse{unlockResponseStatus ::
                                         HsProtobuf.Enumerated
                                           Dapr.Proto.Runtime.V1.Dapr.UnlockResponse_Status}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData UnlockResponse
- 
+
 instance HsProtobuf.Named UnlockResponse where
         nameOf _ = (Hs.fromString "UnlockResponse")
- 
+
 instance HsProtobuf.HasDefault UnlockResponse
- 
+
 instance HsProtobuf.Message UnlockResponse where
         encodeMessage _
           UnlockResponse{unlockResponseStatus = unlockResponseStatus}
@@ -9040,24 +8228,24 @@ instance HsProtobuf.Message UnlockResponse where
                 (HsProtobufAST.Single "status")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB UnlockResponse where
         toJSONPB (UnlockResponse f1) = (HsJSONPB.object ["status" .= f1])
         toEncodingPB (UnlockResponse f1)
           = (HsJSONPB.pairs ["status" .= f1])
- 
+
 instance HsJSONPB.FromJSONPB UnlockResponse where
         parseJSONPB
           = (HsJSONPB.withObject "UnlockResponse"
                (\ obj -> (Hs.pure UnlockResponse) <*> obj .: "status"))
- 
+
 instance HsJSONPB.ToJSON UnlockResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON UnlockResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema UnlockResponse where
         declareNamedSchema _
           = do let declare_status = HsJSONPB.declareSchemaRef
@@ -9073,27 +8261,27 @@ instance HsJSONPB.ToSchema UnlockResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("status", unlockResponseStatus)]}})
- 
+
 data UnlockResponse_Status = UnlockResponse_StatusSUCCESS
                            | UnlockResponse_StatusLOCK_DOES_NOT_EXIST
                            | UnlockResponse_StatusLOCK_BELONGS_TO_OTHERS
                            | UnlockResponse_StatusINTERNAL_ERROR
                            deriving (Hs.Show, Hs.Eq, Hs.Generic, Hs.NFData)
- 
+
 instance HsProtobuf.Named UnlockResponse_Status where
         nameOf _ = (Hs.fromString "UnlockResponse_Status")
- 
+
 instance HsProtobuf.HasDefault UnlockResponse_Status
- 
+
 instance Hs.Bounded UnlockResponse_Status where
         minBound = UnlockResponse_StatusSUCCESS
         maxBound = UnlockResponse_StatusINTERNAL_ERROR
- 
+
 instance Hs.Ord UnlockResponse_Status where
         compare x y
           = Hs.compare (HsProtobuf.fromProtoEnum x)
               (HsProtobuf.fromProtoEnum y)
- 
+
 instance HsProtobuf.ProtoEnum UnlockResponse_Status where
         toProtoEnumMay 0 = Hs.Just UnlockResponse_StatusSUCCESS
         toProtoEnumMay 1 = Hs.Just UnlockResponse_StatusLOCK_DOES_NOT_EXIST
@@ -9105,11 +8293,11 @@ instance HsProtobuf.ProtoEnum UnlockResponse_Status where
         fromProtoEnum (UnlockResponse_StatusLOCK_DOES_NOT_EXIST) = 1
         fromProtoEnum (UnlockResponse_StatusLOCK_BELONGS_TO_OTHERS) = 2
         fromProtoEnum (UnlockResponse_StatusINTERNAL_ERROR) = 3
- 
+
 instance HsJSONPB.ToJSONPB UnlockResponse_Status where
         toJSONPB x _ = HsJSONPB.enumFieldString x
         toEncodingPB x _ = HsJSONPB.enumFieldEncoding x
- 
+
 instance HsJSONPB.FromJSONPB UnlockResponse_Status where
         parseJSONPB (HsJSONPB.String "SUCCESS")
           = Hs.pure UnlockResponse_StatusSUCCESS
@@ -9120,16 +8308,16 @@ instance HsJSONPB.FromJSONPB UnlockResponse_Status where
         parseJSONPB (HsJSONPB.String "INTERNAL_ERROR")
           = Hs.pure UnlockResponse_StatusINTERNAL_ERROR
         parseJSONPB v = (HsJSONPB.typeMismatch "UnlockResponse_Status" v)
- 
+
 instance HsJSONPB.ToJSON UnlockResponse_Status where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON UnlockResponse_Status where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsProtobuf.Finite UnlockResponse_Status
- 
+
 data SubtleGetKeyRequest = SubtleGetKeyRequest{subtleGetKeyRequestComponentName
                                                :: Hs.Text,
                                                subtleGetKeyRequestName :: Hs.Text,
@@ -9137,14 +8325,14 @@ data SubtleGetKeyRequest = SubtleGetKeyRequest{subtleGetKeyRequestComponentName
                                                HsProtobuf.Enumerated
                                                  Dapr.Proto.Runtime.V1.Dapr.SubtleGetKeyRequest_KeyFormat}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleGetKeyRequest
- 
+
 instance HsProtobuf.Named SubtleGetKeyRequest where
         nameOf _ = (Hs.fromString "SubtleGetKeyRequest")
- 
+
 instance HsProtobuf.HasDefault SubtleGetKeyRequest
- 
+
 instance HsProtobuf.Message SubtleGetKeyRequest where
         encodeMessage _
           SubtleGetKeyRequest{subtleGetKeyRequestComponentName =
@@ -9190,7 +8378,7 @@ instance HsProtobuf.Message SubtleGetKeyRequest where
                 (HsProtobufAST.Single "format")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleGetKeyRequest where
         toJSONPB (SubtleGetKeyRequest f1 f2 f3)
           = (HsJSONPB.object
@@ -9204,7 +8392,7 @@ instance HsJSONPB.ToJSONPB SubtleGetKeyRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "name" .= (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2)),
                 "format" .= f3])
- 
+
 instance HsJSONPB.FromJSONPB SubtleGetKeyRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleGetKeyRequest"
@@ -9216,14 +8404,14 @@ instance HsJSONPB.FromJSONPB SubtleGetKeyRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "name"))
                     <*> obj .: "format"))
- 
+
 instance HsJSONPB.ToJSON SubtleGetKeyRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleGetKeyRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleGetKeyRequest where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -9253,36 +8441,36 @@ instance HsJSONPB.ToSchema SubtleGetKeyRequest where
                                                          subtleGetKeyRequestComponentName),
                                                         ("name", subtleGetKeyRequestName),
                                                         ("format", subtleGetKeyRequestFormat)]}})
- 
+
 data SubtleGetKeyRequest_KeyFormat = SubtleGetKeyRequest_KeyFormatPEM
                                    | SubtleGetKeyRequest_KeyFormatJSON
                                    deriving (Hs.Show, Hs.Eq, Hs.Generic, Hs.NFData)
- 
+
 instance HsProtobuf.Named SubtleGetKeyRequest_KeyFormat where
         nameOf _ = (Hs.fromString "SubtleGetKeyRequest_KeyFormat")
- 
+
 instance HsProtobuf.HasDefault SubtleGetKeyRequest_KeyFormat
- 
+
 instance Hs.Bounded SubtleGetKeyRequest_KeyFormat where
         minBound = SubtleGetKeyRequest_KeyFormatPEM
         maxBound = SubtleGetKeyRequest_KeyFormatJSON
- 
+
 instance Hs.Ord SubtleGetKeyRequest_KeyFormat where
         compare x y
           = Hs.compare (HsProtobuf.fromProtoEnum x)
               (HsProtobuf.fromProtoEnum y)
- 
+
 instance HsProtobuf.ProtoEnum SubtleGetKeyRequest_KeyFormat where
         toProtoEnumMay 0 = Hs.Just SubtleGetKeyRequest_KeyFormatPEM
         toProtoEnumMay 1 = Hs.Just SubtleGetKeyRequest_KeyFormatJSON
         toProtoEnumMay _ = Hs.Nothing
         fromProtoEnum (SubtleGetKeyRequest_KeyFormatPEM) = 0
         fromProtoEnum (SubtleGetKeyRequest_KeyFormatJSON) = 1
- 
+
 instance HsJSONPB.ToJSONPB SubtleGetKeyRequest_KeyFormat where
         toJSONPB x _ = HsJSONPB.enumFieldString x
         toEncodingPB x _ = HsJSONPB.enumFieldEncoding x
- 
+
 instance HsJSONPB.FromJSONPB SubtleGetKeyRequest_KeyFormat where
         parseJSONPB (HsJSONPB.String "PEM")
           = Hs.pure SubtleGetKeyRequest_KeyFormatPEM
@@ -9290,28 +8478,28 @@ instance HsJSONPB.FromJSONPB SubtleGetKeyRequest_KeyFormat where
           = Hs.pure SubtleGetKeyRequest_KeyFormatJSON
         parseJSONPB v
           = (HsJSONPB.typeMismatch "SubtleGetKeyRequest_KeyFormat" v)
- 
+
 instance HsJSONPB.ToJSON SubtleGetKeyRequest_KeyFormat where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleGetKeyRequest_KeyFormat where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsProtobuf.Finite SubtleGetKeyRequest_KeyFormat
- 
+
 data SubtleGetKeyResponse = SubtleGetKeyResponse{subtleGetKeyResponseName
                                                  :: Hs.Text,
                                                  subtleGetKeyResponsePublicKey :: Hs.Text}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleGetKeyResponse
- 
+
 instance HsProtobuf.Named SubtleGetKeyResponse where
         nameOf _ = (Hs.fromString "SubtleGetKeyResponse")
- 
+
 instance HsProtobuf.HasDefault SubtleGetKeyResponse
- 
+
 instance HsProtobuf.Message SubtleGetKeyResponse where
         encodeMessage _
           SubtleGetKeyResponse{subtleGetKeyResponseName =
@@ -9345,7 +8533,7 @@ instance HsProtobuf.Message SubtleGetKeyResponse where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "publicKey"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleGetKeyResponse where
         toJSONPB (SubtleGetKeyResponse f1 f2)
           = (HsJSONPB.object
@@ -9359,7 +8547,7 @@ instance HsJSONPB.ToJSONPB SubtleGetKeyResponse where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "public_key" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleGetKeyResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleGetKeyResponse"
@@ -9370,14 +8558,14 @@ instance HsJSONPB.FromJSONPB SubtleGetKeyResponse where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "public_key"))))
- 
+
 instance HsJSONPB.ToJSON SubtleGetKeyResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleGetKeyResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleGetKeyResponse where
         declareNamedSchema _
           = do let declare_name = HsJSONPB.declareSchemaRef
@@ -9402,7 +8590,7 @@ instance HsJSONPB.ToSchema SubtleGetKeyResponse where
                                                        [("name", subtleGetKeyResponseName),
                                                         ("public_key",
                                                          subtleGetKeyResponsePublicKey)]}})
- 
+
 data SubtleEncryptRequest = SubtleEncryptRequest{subtleEncryptRequestComponentName
                                                  :: Hs.Text,
                                                  subtleEncryptRequestPlaintext :: Hs.ByteString,
@@ -9412,14 +8600,14 @@ data SubtleEncryptRequest = SubtleEncryptRequest{subtleEncryptRequestComponentNa
                                                  subtleEncryptRequestAssociatedData ::
                                                  Hs.ByteString}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleEncryptRequest
- 
+
 instance HsProtobuf.Named SubtleEncryptRequest where
         nameOf _ = (Hs.fromString "SubtleEncryptRequest")
- 
+
 instance HsProtobuf.HasDefault SubtleEncryptRequest
- 
+
 instance HsProtobuf.Message SubtleEncryptRequest where
         encodeMessage _
           SubtleEncryptRequest{subtleEncryptRequestComponentName =
@@ -9511,7 +8699,7 @@ instance HsProtobuf.Message SubtleEncryptRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "associatedData"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleEncryptRequest where
         toJSONPB (SubtleEncryptRequest f1 f2 f3 f4 f5 f6)
           = (HsJSONPB.object
@@ -9547,7 +8735,7 @@ instance HsJSONPB.ToJSONPB SubtleEncryptRequest where
                 "associated_data" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f6))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleEncryptRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleEncryptRequest"
@@ -9573,14 +8761,14 @@ instance HsJSONPB.FromJSONPB SubtleEncryptRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "associated_data"))))
- 
+
 instance HsJSONPB.ToJSON SubtleEncryptRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleEncryptRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleEncryptRequest where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -9637,19 +8825,19 @@ instance HsJSONPB.ToSchema SubtleEncryptRequest where
                                                         ("nonce", subtleEncryptRequestNonce),
                                                         ("associated_data",
                                                          subtleEncryptRequestAssociatedData)]}})
- 
+
 data SubtleEncryptResponse = SubtleEncryptResponse{subtleEncryptResponseCiphertext
                                                    :: Hs.ByteString,
                                                    subtleEncryptResponseTag :: Hs.ByteString}
                            deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleEncryptResponse
- 
+
 instance HsProtobuf.Named SubtleEncryptResponse where
         nameOf _ = (Hs.fromString "SubtleEncryptResponse")
- 
+
 instance HsProtobuf.HasDefault SubtleEncryptResponse
- 
+
 instance HsProtobuf.Message SubtleEncryptResponse where
         encodeMessage _
           SubtleEncryptResponse{subtleEncryptResponseCiphertext =
@@ -9684,7 +8872,7 @@ instance HsProtobuf.Message SubtleEncryptResponse where
                 (HsProtobufAST.Single "tag")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleEncryptResponse where
         toJSONPB (SubtleEncryptResponse f1 f2)
           = (HsJSONPB.object
@@ -9702,7 +8890,7 @@ instance HsJSONPB.ToJSONPB SubtleEncryptResponse where
                 "tag" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleEncryptResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleEncryptResponse"
@@ -9715,14 +8903,14 @@ instance HsJSONPB.FromJSONPB SubtleEncryptResponse where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "tag"))))
- 
+
 instance HsJSONPB.ToJSON SubtleEncryptResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleEncryptResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleEncryptResponse where
         declareNamedSchema _
           = do let declare_ciphertext = HsJSONPB.declareSchemaRef
@@ -9749,7 +8937,7 @@ instance HsJSONPB.ToSchema SubtleEncryptResponse where
                                                        [("ciphertext",
                                                          subtleEncryptResponseCiphertext),
                                                         ("tag", subtleEncryptResponseTag)]}})
- 
+
 data SubtleDecryptRequest = SubtleDecryptRequest{subtleDecryptRequestComponentName
                                                  :: Hs.Text,
                                                  subtleDecryptRequestCiphertext :: Hs.ByteString,
@@ -9760,14 +8948,14 @@ data SubtleDecryptRequest = SubtleDecryptRequest{subtleDecryptRequestComponentNa
                                                  subtleDecryptRequestAssociatedData ::
                                                  Hs.ByteString}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleDecryptRequest
- 
+
 instance HsProtobuf.Named SubtleDecryptRequest where
         nameOf _ = (Hs.fromString "SubtleDecryptRequest")
- 
+
 instance HsProtobuf.HasDefault SubtleDecryptRequest
- 
+
 instance HsProtobuf.Message SubtleDecryptRequest where
         encodeMessage _
           SubtleDecryptRequest{subtleDecryptRequestComponentName =
@@ -9873,7 +9061,7 @@ instance HsProtobuf.Message SubtleDecryptRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "associatedData"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleDecryptRequest where
         toJSONPB (SubtleDecryptRequest f1 f2 f3 f4 f5 f6 f7)
           = (HsJSONPB.object
@@ -9915,7 +9103,7 @@ instance HsJSONPB.ToJSONPB SubtleDecryptRequest where
                 "associated_data" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f7))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleDecryptRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleDecryptRequest"
@@ -9945,14 +9133,14 @@ instance HsJSONPB.FromJSONPB SubtleDecryptRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "associated_data"))))
- 
+
 instance HsJSONPB.ToJSON SubtleDecryptRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleDecryptRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleDecryptRequest where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -10016,18 +9204,18 @@ instance HsJSONPB.ToSchema SubtleDecryptRequest where
                                                         ("tag", subtleDecryptRequestTag),
                                                         ("associated_data",
                                                          subtleDecryptRequestAssociatedData)]}})
- 
+
 newtype SubtleDecryptResponse = SubtleDecryptResponse{subtleDecryptResponsePlaintext
                                                       :: Hs.ByteString}
                                 deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleDecryptResponse
- 
+
 instance HsProtobuf.Named SubtleDecryptResponse where
         nameOf _ = (Hs.fromString "SubtleDecryptResponse")
- 
+
 instance HsProtobuf.HasDefault SubtleDecryptResponse
- 
+
 instance HsProtobuf.Message SubtleDecryptResponse where
         encodeMessage _
           SubtleDecryptResponse{subtleDecryptResponsePlaintext =
@@ -10048,7 +9236,7 @@ instance HsProtobuf.Message SubtleDecryptResponse where
                 (HsProtobufAST.Single "plaintext")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleDecryptResponse where
         toJSONPB (SubtleDecryptResponse f1)
           = (HsJSONPB.object
@@ -10060,7 +9248,7 @@ instance HsJSONPB.ToJSONPB SubtleDecryptResponse where
                ["plaintext" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleDecryptResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleDecryptResponse"
@@ -10069,14 +9257,14 @@ instance HsJSONPB.FromJSONPB SubtleDecryptResponse where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "plaintext"))))
- 
+
 instance HsJSONPB.ToJSON SubtleDecryptResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleDecryptResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleDecryptResponse where
         declareNamedSchema _
           = do let declare_plaintext = HsJSONPB.declareSchemaRef
@@ -10096,7 +9284,7 @@ instance HsJSONPB.ToSchema SubtleDecryptResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("plaintext",
                                                          subtleDecryptResponsePlaintext)]}})
- 
+
 data SubtleWrapKeyRequest = SubtleWrapKeyRequest{subtleWrapKeyRequestComponentName
                                                  :: Hs.Text,
                                                  subtleWrapKeyRequestPlaintextKey :: Hs.ByteString,
@@ -10106,14 +9294,14 @@ data SubtleWrapKeyRequest = SubtleWrapKeyRequest{subtleWrapKeyRequestComponentNa
                                                  subtleWrapKeyRequestAssociatedData ::
                                                  Hs.ByteString}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleWrapKeyRequest
- 
+
 instance HsProtobuf.Named SubtleWrapKeyRequest where
         nameOf _ = (Hs.fromString "SubtleWrapKeyRequest")
- 
+
 instance HsProtobuf.HasDefault SubtleWrapKeyRequest
- 
+
 instance HsProtobuf.Message SubtleWrapKeyRequest where
         encodeMessage _
           SubtleWrapKeyRequest{subtleWrapKeyRequestComponentName =
@@ -10207,7 +9395,7 @@ instance HsProtobuf.Message SubtleWrapKeyRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "associatedData"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleWrapKeyRequest where
         toJSONPB (SubtleWrapKeyRequest f1 f2 f3 f4 f5 f6)
           = (HsJSONPB.object
@@ -10243,7 +9431,7 @@ instance HsJSONPB.ToJSONPB SubtleWrapKeyRequest where
                 "associated_data" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f6))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleWrapKeyRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleWrapKeyRequest"
@@ -10269,14 +9457,14 @@ instance HsJSONPB.FromJSONPB SubtleWrapKeyRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "associated_data"))))
- 
+
 instance HsJSONPB.ToJSON SubtleWrapKeyRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleWrapKeyRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleWrapKeyRequest where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -10334,19 +9522,19 @@ instance HsJSONPB.ToSchema SubtleWrapKeyRequest where
                                                         ("nonce", subtleWrapKeyRequestNonce),
                                                         ("associated_data",
                                                          subtleWrapKeyRequestAssociatedData)]}})
- 
+
 data SubtleWrapKeyResponse = SubtleWrapKeyResponse{subtleWrapKeyResponseWrappedKey
                                                    :: Hs.ByteString,
                                                    subtleWrapKeyResponseTag :: Hs.ByteString}
                            deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleWrapKeyResponse
- 
+
 instance HsProtobuf.Named SubtleWrapKeyResponse where
         nameOf _ = (Hs.fromString "SubtleWrapKeyResponse")
- 
+
 instance HsProtobuf.HasDefault SubtleWrapKeyResponse
- 
+
 instance HsProtobuf.Message SubtleWrapKeyResponse where
         encodeMessage _
           SubtleWrapKeyResponse{subtleWrapKeyResponseWrappedKey =
@@ -10382,7 +9570,7 @@ instance HsProtobuf.Message SubtleWrapKeyResponse where
                 (HsProtobufAST.Single "tag")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleWrapKeyResponse where
         toJSONPB (SubtleWrapKeyResponse f1 f2)
           = (HsJSONPB.object
@@ -10400,7 +9588,7 @@ instance HsJSONPB.ToJSONPB SubtleWrapKeyResponse where
                 "tag" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleWrapKeyResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleWrapKeyResponse"
@@ -10413,14 +9601,14 @@ instance HsJSONPB.FromJSONPB SubtleWrapKeyResponse where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "tag"))))
- 
+
 instance HsJSONPB.ToJSON SubtleWrapKeyResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleWrapKeyResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleWrapKeyResponse where
         declareNamedSchema _
           = do let declare_wrapped_key = HsJSONPB.declareSchemaRef
@@ -10447,7 +9635,7 @@ instance HsJSONPB.ToSchema SubtleWrapKeyResponse where
                                                        [("wrapped_key",
                                                          subtleWrapKeyResponseWrappedKey),
                                                         ("tag", subtleWrapKeyResponseTag)]}})
- 
+
 data SubtleUnwrapKeyRequest = SubtleUnwrapKeyRequest{subtleUnwrapKeyRequestComponentName
                                                      :: Hs.Text,
                                                      subtleUnwrapKeyRequestWrappedKey ::
@@ -10459,14 +9647,14 @@ data SubtleUnwrapKeyRequest = SubtleUnwrapKeyRequest{subtleUnwrapKeyRequestCompo
                                                      subtleUnwrapKeyRequestAssociatedData ::
                                                      Hs.ByteString}
                             deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleUnwrapKeyRequest
- 
+
 instance HsProtobuf.Named SubtleUnwrapKeyRequest where
         nameOf _ = (Hs.fromString "SubtleUnwrapKeyRequest")
- 
+
 instance HsProtobuf.HasDefault SubtleUnwrapKeyRequest
- 
+
 instance HsProtobuf.Message SubtleUnwrapKeyRequest where
         encodeMessage _
           SubtleUnwrapKeyRequest{subtleUnwrapKeyRequestComponentName =
@@ -10574,7 +9762,7 @@ instance HsProtobuf.Message SubtleUnwrapKeyRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "associatedData"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleUnwrapKeyRequest where
         toJSONPB (SubtleUnwrapKeyRequest f1 f2 f3 f4 f5 f6 f7)
           = (HsJSONPB.object
@@ -10616,7 +9804,7 @@ instance HsJSONPB.ToJSONPB SubtleUnwrapKeyRequest where
                 "associated_data" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f7))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleUnwrapKeyRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleUnwrapKeyRequest"
@@ -10646,14 +9834,14 @@ instance HsJSONPB.FromJSONPB SubtleUnwrapKeyRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "associated_data"))))
- 
+
 instance HsJSONPB.ToJSON SubtleUnwrapKeyRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleUnwrapKeyRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleUnwrapKeyRequest where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -10717,18 +9905,18 @@ instance HsJSONPB.ToSchema SubtleUnwrapKeyRequest where
                                                         ("tag", subtleUnwrapKeyRequestTag),
                                                         ("associated_data",
                                                          subtleUnwrapKeyRequestAssociatedData)]}})
- 
+
 newtype SubtleUnwrapKeyResponse = SubtleUnwrapKeyResponse{subtleUnwrapKeyResponsePlaintextKey
                                                           :: Hs.ByteString}
                                   deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleUnwrapKeyResponse
- 
+
 instance HsProtobuf.Named SubtleUnwrapKeyResponse where
         nameOf _ = (Hs.fromString "SubtleUnwrapKeyResponse")
- 
+
 instance HsProtobuf.HasDefault SubtleUnwrapKeyResponse
- 
+
 instance HsProtobuf.Message SubtleUnwrapKeyResponse where
         encodeMessage _
           SubtleUnwrapKeyResponse{subtleUnwrapKeyResponsePlaintextKey =
@@ -10750,7 +9938,7 @@ instance HsProtobuf.Message SubtleUnwrapKeyResponse where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "plaintextKey"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleUnwrapKeyResponse where
         toJSONPB (SubtleUnwrapKeyResponse f1)
           = (HsJSONPB.object
@@ -10762,7 +9950,7 @@ instance HsJSONPB.ToJSONPB SubtleUnwrapKeyResponse where
                ["plaintext_key" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleUnwrapKeyResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleUnwrapKeyResponse"
@@ -10771,14 +9959,14 @@ instance HsJSONPB.FromJSONPB SubtleUnwrapKeyResponse where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "plaintext_key"))))
- 
+
 instance HsJSONPB.ToJSON SubtleUnwrapKeyResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleUnwrapKeyResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleUnwrapKeyResponse where
         declareNamedSchema _
           = do let declare_plaintext_key = HsJSONPB.declareSchemaRef
@@ -10799,21 +9987,21 @@ instance HsJSONPB.ToSchema SubtleUnwrapKeyResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("plaintext_key",
                                                          subtleUnwrapKeyResponsePlaintextKey)]}})
- 
+
 data SubtleSignRequest = SubtleSignRequest{subtleSignRequestComponentName
                                            :: Hs.Text,
                                            subtleSignRequestDigest :: Hs.ByteString,
                                            subtleSignRequestAlgorithm :: Hs.Text,
                                            subtleSignRequestKeyName :: Hs.Text}
                        deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleSignRequest
- 
+
 instance HsProtobuf.Named SubtleSignRequest where
         nameOf _ = (Hs.fromString "SubtleSignRequest")
- 
+
 instance HsProtobuf.HasDefault SubtleSignRequest
- 
+
 instance HsProtobuf.Message SubtleSignRequest where
         encodeMessage _
           SubtleSignRequest{subtleSignRequestComponentName =
@@ -10875,7 +10063,7 @@ instance HsProtobuf.Message SubtleSignRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "keyName"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleSignRequest where
         toJSONPB (SubtleSignRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -10899,7 +10087,7 @@ instance HsJSONPB.ToJSONPB SubtleSignRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f3)),
                 "key_name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f4))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleSignRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleSignRequest"
@@ -10917,14 +10105,14 @@ instance HsJSONPB.FromJSONPB SubtleSignRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "key_name"))))
- 
+
 instance HsJSONPB.ToJSON SubtleSignRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleSignRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleSignRequest where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -10963,18 +10151,18 @@ instance HsJSONPB.ToSchema SubtleSignRequest where
                                                         ("digest", subtleSignRequestDigest),
                                                         ("algorithm", subtleSignRequestAlgorithm),
                                                         ("key_name", subtleSignRequestKeyName)]}})
- 
+
 newtype SubtleSignResponse = SubtleSignResponse{subtleSignResponseSignature
                                                 :: Hs.ByteString}
                              deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleSignResponse
- 
+
 instance HsProtobuf.Named SubtleSignResponse where
         nameOf _ = (Hs.fromString "SubtleSignResponse")
- 
+
 instance HsProtobuf.HasDefault SubtleSignResponse
- 
+
 instance HsProtobuf.Message SubtleSignResponse where
         encodeMessage _
           SubtleSignResponse{subtleSignResponseSignature =
@@ -10995,7 +10183,7 @@ instance HsProtobuf.Message SubtleSignResponse where
                 (HsProtobufAST.Single "signature")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleSignResponse where
         toJSONPB (SubtleSignResponse f1)
           = (HsJSONPB.object
@@ -11007,7 +10195,7 @@ instance HsJSONPB.ToJSONPB SubtleSignResponse where
                ["signature" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleSignResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleSignResponse"
@@ -11016,14 +10204,14 @@ instance HsJSONPB.FromJSONPB SubtleSignResponse where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "signature"))))
- 
+
 instance HsJSONPB.ToJSON SubtleSignResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleSignResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleSignResponse where
         declareNamedSchema _
           = do let declare_signature = HsJSONPB.declareSchemaRef
@@ -11043,7 +10231,7 @@ instance HsJSONPB.ToSchema SubtleSignResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("signature",
                                                          subtleSignResponseSignature)]}})
- 
+
 data SubtleVerifyRequest = SubtleVerifyRequest{subtleVerifyRequestComponentName
                                                :: Hs.Text,
                                                subtleVerifyRequestDigest :: Hs.ByteString,
@@ -11051,14 +10239,14 @@ data SubtleVerifyRequest = SubtleVerifyRequest{subtleVerifyRequestComponentName
                                                subtleVerifyRequestKeyName :: Hs.Text,
                                                subtleVerifyRequestSignature :: Hs.ByteString}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleVerifyRequest
- 
+
 instance HsProtobuf.Named SubtleVerifyRequest where
         nameOf _ = (Hs.fromString "SubtleVerifyRequest")
- 
+
 instance HsProtobuf.HasDefault SubtleVerifyRequest
- 
+
 instance HsProtobuf.Message SubtleVerifyRequest where
         encodeMessage _
           SubtleVerifyRequest{subtleVerifyRequestComponentName =
@@ -11134,7 +10322,7 @@ instance HsProtobuf.Message SubtleVerifyRequest where
                 (HsProtobufAST.Single "signature")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleVerifyRequest where
         toJSONPB (SubtleVerifyRequest f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -11164,7 +10352,7 @@ instance HsJSONPB.ToJSONPB SubtleVerifyRequest where
                 "signature" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB SubtleVerifyRequest where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleVerifyRequest"
@@ -11186,14 +10374,14 @@ instance HsJSONPB.FromJSONPB SubtleVerifyRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "signature"))))
- 
+
 instance HsJSONPB.ToJSON SubtleVerifyRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleVerifyRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleVerifyRequest where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -11240,18 +10428,18 @@ instance HsJSONPB.ToSchema SubtleVerifyRequest where
                                                         ("key_name", subtleVerifyRequestKeyName),
                                                         ("signature",
                                                          subtleVerifyRequestSignature)]}})
- 
+
 newtype SubtleVerifyResponse = SubtleVerifyResponse{subtleVerifyResponseValid
                                                     :: Hs.Bool}
                                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData SubtleVerifyResponse
- 
+
 instance HsProtobuf.Named SubtleVerifyResponse where
         nameOf _ = (Hs.fromString "SubtleVerifyResponse")
- 
+
 instance HsProtobuf.HasDefault SubtleVerifyResponse
- 
+
 instance HsProtobuf.Message SubtleVerifyResponse where
         encodeMessage _
           SubtleVerifyResponse{subtleVerifyResponseValid =
@@ -11269,25 +10457,25 @@ instance HsProtobuf.Message SubtleVerifyResponse where
                 (HsProtobufAST.Single "valid")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB SubtleVerifyResponse where
         toJSONPB (SubtleVerifyResponse f1)
           = (HsJSONPB.object ["valid" .= f1])
         toEncodingPB (SubtleVerifyResponse f1)
           = (HsJSONPB.pairs ["valid" .= f1])
- 
+
 instance HsJSONPB.FromJSONPB SubtleVerifyResponse where
         parseJSONPB
           = (HsJSONPB.withObject "SubtleVerifyResponse"
                (\ obj -> (Hs.pure SubtleVerifyResponse) <*> obj .: "valid"))
- 
+
 instance HsJSONPB.ToJSON SubtleVerifyResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON SubtleVerifyResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema SubtleVerifyResponse where
         declareNamedSchema _
           = do let declare_valid = HsJSONPB.declareSchemaRef
@@ -11304,20 +10492,20 @@ instance HsJSONPB.ToSchema SubtleVerifyResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("valid", subtleVerifyResponseValid)]}})
- 
+
 data EncryptRequest = EncryptRequest{encryptRequestOptions ::
                                      Hs.Maybe Dapr.Proto.Runtime.V1.Dapr.EncryptRequestOptions,
                                      encryptRequestPayload ::
                                      Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload}
                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData EncryptRequest
- 
+
 instance HsProtobuf.Named EncryptRequest where
         nameOf _ = (Hs.fromString "EncryptRequest")
- 
+
 instance HsProtobuf.HasDefault EncryptRequest
- 
+
 instance HsProtobuf.Message EncryptRequest where
         encodeMessage _
           EncryptRequest{encryptRequestOptions = encryptRequestOptions,
@@ -11362,7 +10550,7 @@ instance HsProtobuf.Message EncryptRequest where
                 (HsProtobufAST.Single "payload")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB EncryptRequest where
         toJSONPB (EncryptRequest f1 f2)
           = (HsJSONPB.object
@@ -11386,7 +10574,7 @@ instance HsJSONPB.ToJSONPB EncryptRequest where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB EncryptRequest where
         parseJSONPB
           = (HsJSONPB.withObject "EncryptRequest"
@@ -11401,14 +10589,14 @@ instance HsJSONPB.FromJSONPB EncryptRequest where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                        (obj .: "payload"))))
- 
+
 instance HsJSONPB.ToJSON EncryptRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON EncryptRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema EncryptRequest where
         declareNamedSchema _
           = do let declare_options = HsJSONPB.declareSchemaRef
@@ -11436,7 +10624,7 @@ instance HsJSONPB.ToSchema EncryptRequest where
                                                      HsJSONPB.insOrdFromList
                                                        [("options", encryptRequestOptions),
                                                         ("payload", encryptRequestPayload)]}})
- 
+
 data EncryptRequestOptions = EncryptRequestOptions{encryptRequestOptionsComponentName
                                                    :: Hs.Text,
                                                    encryptRequestOptionsKeyName :: Hs.Text,
@@ -11448,14 +10636,14 @@ data EncryptRequestOptions = EncryptRequestOptions{encryptRequestOptionsComponen
                                                    encryptRequestOptionsDecryptionKeyName ::
                                                    Hs.Text}
                            deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData EncryptRequestOptions
- 
+
 instance HsProtobuf.Named EncryptRequestOptions where
         nameOf _ = (Hs.fromString "EncryptRequestOptions")
- 
+
 instance HsProtobuf.HasDefault EncryptRequestOptions
- 
+
 instance HsProtobuf.Message EncryptRequestOptions where
         encodeMessage _
           EncryptRequestOptions{encryptRequestOptionsComponentName =
@@ -11546,7 +10734,7 @@ instance HsProtobuf.Message EncryptRequestOptions where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "decryptionKeyName"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB EncryptRequestOptions where
         toJSONPB (EncryptRequestOptions f1 f2 f3 f10 f11 f12)
           = (HsJSONPB.object
@@ -11574,7 +10762,7 @@ instance HsJSONPB.ToJSONPB EncryptRequestOptions where
                 "omit_decryption_key_name" .= f11,
                 "decryption_key_name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f12))])
- 
+
 instance HsJSONPB.FromJSONPB EncryptRequestOptions where
         parseJSONPB
           = (HsJSONPB.withObject "EncryptRequestOptions"
@@ -11595,14 +10783,14 @@ instance HsJSONPB.FromJSONPB EncryptRequestOptions where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "decryption_key_name"))))
- 
+
 instance HsJSONPB.ToJSON EncryptRequestOptions where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON EncryptRequestOptions where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema EncryptRequestOptions where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -11658,18 +10846,18 @@ instance HsJSONPB.ToSchema EncryptRequestOptions where
                                                          encryptRequestOptionsOmitDecryptionKeyName),
                                                         ("decryption_key_name",
                                                          encryptRequestOptionsDecryptionKeyName)]}})
- 
+
 newtype EncryptResponse = EncryptResponse{encryptResponsePayload ::
                                           Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData EncryptResponse
- 
+
 instance HsProtobuf.Named EncryptResponse where
         nameOf _ = (Hs.fromString "EncryptResponse")
- 
+
 instance HsProtobuf.HasDefault EncryptResponse
- 
+
 instance HsProtobuf.Message EncryptResponse where
         encodeMessage _
           EncryptResponse{encryptResponsePayload = encryptResponsePayload}
@@ -11695,7 +10883,7 @@ instance HsProtobuf.Message EncryptResponse where
                 (HsProtobufAST.Single "payload")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB EncryptResponse where
         toJSONPB (EncryptResponse f1)
           = (HsJSONPB.object
@@ -11709,7 +10897,7 @@ instance HsJSONPB.ToJSONPB EncryptResponse where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB EncryptResponse where
         parseJSONPB
           = (HsJSONPB.withObject "EncryptResponse"
@@ -11719,14 +10907,14 @@ instance HsJSONPB.FromJSONPB EncryptResponse where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                        (obj .: "payload"))))
- 
+
 instance HsJSONPB.ToJSON EncryptResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON EncryptResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema EncryptResponse where
         declareNamedSchema _
           = do let declare_payload = HsJSONPB.declareSchemaRef
@@ -11746,20 +10934,20 @@ instance HsJSONPB.ToSchema EncryptResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("payload", encryptResponsePayload)]}})
- 
+
 data DecryptRequest = DecryptRequest{decryptRequestOptions ::
                                      Hs.Maybe Dapr.Proto.Runtime.V1.Dapr.DecryptRequestOptions,
                                      decryptRequestPayload ::
                                      Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload}
                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData DecryptRequest
- 
+
 instance HsProtobuf.Named DecryptRequest where
         nameOf _ = (Hs.fromString "DecryptRequest")
- 
+
 instance HsProtobuf.HasDefault DecryptRequest
- 
+
 instance HsProtobuf.Message DecryptRequest where
         encodeMessage _
           DecryptRequest{decryptRequestOptions = decryptRequestOptions,
@@ -11804,7 +10992,7 @@ instance HsProtobuf.Message DecryptRequest where
                 (HsProtobufAST.Single "payload")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB DecryptRequest where
         toJSONPB (DecryptRequest f1 f2)
           = (HsJSONPB.object
@@ -11828,7 +11016,7 @@ instance HsJSONPB.ToJSONPB DecryptRequest where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                      (f2))])
- 
+
 instance HsJSONPB.FromJSONPB DecryptRequest where
         parseJSONPB
           = (HsJSONPB.withObject "DecryptRequest"
@@ -11843,14 +11031,14 @@ instance HsJSONPB.FromJSONPB DecryptRequest where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                        (obj .: "payload"))))
- 
+
 instance HsJSONPB.ToJSON DecryptRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON DecryptRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema DecryptRequest where
         declareNamedSchema _
           = do let declare_options = HsJSONPB.declareSchemaRef
@@ -11878,19 +11066,19 @@ instance HsJSONPB.ToSchema DecryptRequest where
                                                      HsJSONPB.insOrdFromList
                                                        [("options", decryptRequestOptions),
                                                         ("payload", decryptRequestPayload)]}})
- 
+
 data DecryptRequestOptions = DecryptRequestOptions{decryptRequestOptionsComponentName
                                                    :: Hs.Text,
                                                    decryptRequestOptionsKeyName :: Hs.Text}
                            deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData DecryptRequestOptions
- 
+
 instance HsProtobuf.Named DecryptRequestOptions where
         nameOf _ = (Hs.fromString "DecryptRequestOptions")
- 
+
 instance HsProtobuf.HasDefault DecryptRequestOptions
- 
+
 instance HsProtobuf.Message DecryptRequestOptions where
         encodeMessage _
           DecryptRequestOptions{decryptRequestOptionsComponentName =
@@ -11925,7 +11113,7 @@ instance HsProtobuf.Message DecryptRequestOptions where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "keyName"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB DecryptRequestOptions where
         toJSONPB (DecryptRequestOptions f1 f12)
           = (HsJSONPB.object
@@ -11939,7 +11127,7 @@ instance HsJSONPB.ToJSONPB DecryptRequestOptions where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "key_name" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f12))])
- 
+
 instance HsJSONPB.FromJSONPB DecryptRequestOptions where
         parseJSONPB
           = (HsJSONPB.withObject "DecryptRequestOptions"
@@ -11950,14 +11138,14 @@ instance HsJSONPB.FromJSONPB DecryptRequestOptions where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "key_name"))))
- 
+
 instance HsJSONPB.ToJSON DecryptRequestOptions where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON DecryptRequestOptions where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema DecryptRequestOptions where
         declareNamedSchema _
           = do let declare_component_name = HsJSONPB.declareSchemaRef
@@ -11984,18 +11172,18 @@ instance HsJSONPB.ToSchema DecryptRequestOptions where
                                                          decryptRequestOptionsComponentName),
                                                         ("key_name",
                                                          decryptRequestOptionsKeyName)]}})
- 
+
 newtype DecryptResponse = DecryptResponse{decryptResponsePayload ::
                                           Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData DecryptResponse
- 
+
 instance HsProtobuf.Named DecryptResponse where
         nameOf _ = (Hs.fromString "DecryptResponse")
- 
+
 instance HsProtobuf.HasDefault DecryptResponse
- 
+
 instance HsProtobuf.Message DecryptResponse where
         encodeMessage _
           DecryptResponse{decryptResponsePayload = decryptResponsePayload}
@@ -12021,7 +11209,7 @@ instance HsProtobuf.Message DecryptResponse where
                 (HsProtobufAST.Single "payload")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB DecryptResponse where
         toJSONPB (DecryptResponse f1)
           = (HsJSONPB.object
@@ -12035,7 +11223,7 @@ instance HsJSONPB.ToJSONPB DecryptResponse where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                      (f1))])
- 
+
 instance HsJSONPB.FromJSONPB DecryptResponse where
         parseJSONPB
           = (HsJSONPB.withObject "DecryptResponse"
@@ -12045,14 +11233,14 @@ instance HsJSONPB.FromJSONPB DecryptResponse where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StreamPayload)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.StreamPayload)
                        (obj .: "payload"))))
- 
+
 instance HsJSONPB.ToJSON DecryptResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON DecryptResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema DecryptResponse where
         declareNamedSchema _
           = do let declare_payload = HsJSONPB.declareSchemaRef
@@ -12072,19 +11260,19 @@ instance HsJSONPB.ToSchema DecryptResponse where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("payload", decryptResponsePayload)]}})
- 
+
 data GetWorkflowRequest = GetWorkflowRequest{getWorkflowRequestInstanceId
                                              :: Hs.Text,
                                              getWorkflowRequestWorkflowComponent :: Hs.Text}
                         deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetWorkflowRequest
- 
+
 instance HsProtobuf.Named GetWorkflowRequest where
         nameOf _ = (Hs.fromString "GetWorkflowRequest")
- 
+
 instance HsProtobuf.HasDefault GetWorkflowRequest
- 
+
 instance HsProtobuf.Message GetWorkflowRequest where
         encodeMessage _
           GetWorkflowRequest{getWorkflowRequestInstanceId =
@@ -12120,7 +11308,7 @@ instance HsProtobuf.Message GetWorkflowRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "workflowComponent"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetWorkflowRequest where
         toJSONPB (GetWorkflowRequest f1 f2)
           = (HsJSONPB.object
@@ -12134,7 +11322,7 @@ instance HsJSONPB.ToJSONPB GetWorkflowRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "workflow_component" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB GetWorkflowRequest where
         parseJSONPB
           = (HsJSONPB.withObject "GetWorkflowRequest"
@@ -12145,14 +11333,14 @@ instance HsJSONPB.FromJSONPB GetWorkflowRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "workflow_component"))))
- 
+
 instance HsJSONPB.ToJSON GetWorkflowRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetWorkflowRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetWorkflowRequest where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -12179,7 +11367,7 @@ instance HsJSONPB.ToSchema GetWorkflowRequest where
                                                          getWorkflowRequestInstanceId),
                                                         ("workflow_component",
                                                          getWorkflowRequestWorkflowComponent)]}})
- 
+
 data GetWorkflowResponse = GetWorkflowResponse{getWorkflowResponseInstanceId
                                                :: Hs.Text,
                                                getWorkflowResponseWorkflowName :: Hs.Text,
@@ -12191,14 +11379,14 @@ data GetWorkflowResponse = GetWorkflowResponse{getWorkflowResponseInstanceId
                                                getWorkflowResponseProperties ::
                                                Hs.Map Hs.Text Hs.Text}
                          deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData GetWorkflowResponse
- 
+
 instance HsProtobuf.Named GetWorkflowResponse where
         nameOf _ = (Hs.fromString "GetWorkflowResponse")
- 
+
 instance HsProtobuf.HasDefault GetWorkflowResponse
- 
+
 instance HsProtobuf.Message GetWorkflowResponse where
         encodeMessage _
           GetWorkflowResponse{getWorkflowResponseInstanceId =
@@ -12305,7 +11493,7 @@ instance HsProtobuf.Message GetWorkflowResponse where
                 (HsProtobufAST.Single "properties")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB GetWorkflowResponse where
         toJSONPB (GetWorkflowResponse f1 f2 f3 f4 f5 f6)
           = (HsJSONPB.object
@@ -12347,7 +11535,7 @@ instance HsJSONPB.ToJSONPB GetWorkflowResponse where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f6))])
- 
+
 instance HsJSONPB.FromJSONPB GetWorkflowResponse where
         parseJSONPB
           = (HsJSONPB.withObject "GetWorkflowResponse"
@@ -12376,14 +11564,14 @@ instance HsJSONPB.FromJSONPB GetWorkflowResponse where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "properties"))))
- 
+
 instance HsJSONPB.ToJSON GetWorkflowResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON GetWorkflowResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema GetWorkflowResponse where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -12446,7 +11634,7 @@ instance HsJSONPB.ToSchema GetWorkflowResponse where
                                                          getWorkflowResponseRuntimeStatus),
                                                         ("properties",
                                                          getWorkflowResponseProperties)]}})
- 
+
 data StartWorkflowRequest = StartWorkflowRequest{startWorkflowRequestInstanceId
                                                  :: Hs.Text,
                                                  startWorkflowRequestWorkflowComponent :: Hs.Text,
@@ -12455,14 +11643,14 @@ data StartWorkflowRequest = StartWorkflowRequest{startWorkflowRequestInstanceId
                                                  Hs.Map Hs.Text Hs.Text,
                                                  startWorkflowRequestInput :: Hs.ByteString}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData StartWorkflowRequest
- 
+
 instance HsProtobuf.Named StartWorkflowRequest where
         nameOf _ = (Hs.fromString "StartWorkflowRequest")
- 
+
 instance HsProtobuf.HasDefault StartWorkflowRequest
- 
+
 instance HsProtobuf.Message StartWorkflowRequest where
         encodeMessage _
           StartWorkflowRequest{startWorkflowRequestInstanceId =
@@ -12543,7 +11731,7 @@ instance HsProtobuf.Message StartWorkflowRequest where
                 (HsProtobufAST.Single "input")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB StartWorkflowRequest where
         toJSONPB (StartWorkflowRequest f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -12575,7 +11763,7 @@ instance HsJSONPB.ToJSONPB StartWorkflowRequest where
                 "input" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB StartWorkflowRequest where
         parseJSONPB
           = (HsJSONPB.withObject "StartWorkflowRequest"
@@ -12598,14 +11786,14 @@ instance HsJSONPB.FromJSONPB StartWorkflowRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "input"))))
- 
+
 instance HsJSONPB.ToJSON StartWorkflowRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON StartWorkflowRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema StartWorkflowRequest where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -12655,18 +11843,18 @@ instance HsJSONPB.ToSchema StartWorkflowRequest where
                                                          startWorkflowRequestWorkflowName),
                                                         ("options", startWorkflowRequestOptions),
                                                         ("input", startWorkflowRequestInput)]}})
- 
+
 newtype StartWorkflowResponse = StartWorkflowResponse{startWorkflowResponseInstanceId
                                                       :: Hs.Text}
                                 deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData StartWorkflowResponse
- 
+
 instance HsProtobuf.Named StartWorkflowResponse where
         nameOf _ = (Hs.fromString "StartWorkflowResponse")
- 
+
 instance HsProtobuf.HasDefault StartWorkflowResponse
- 
+
 instance HsProtobuf.Message StartWorkflowResponse where
         encodeMessage _
           StartWorkflowResponse{startWorkflowResponseInstanceId =
@@ -12687,7 +11875,7 @@ instance HsProtobuf.Message StartWorkflowResponse where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "instanceID"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB StartWorkflowResponse where
         toJSONPB (StartWorkflowResponse f1)
           = (HsJSONPB.object
@@ -12697,7 +11885,7 @@ instance HsJSONPB.ToJSONPB StartWorkflowResponse where
           = (HsJSONPB.pairs
                ["instance_id" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1))])
- 
+
 instance HsJSONPB.FromJSONPB StartWorkflowResponse where
         parseJSONPB
           = (HsJSONPB.withObject "StartWorkflowResponse"
@@ -12705,14 +11893,14 @@ instance HsJSONPB.FromJSONPB StartWorkflowResponse where
                   (Hs.pure StartWorkflowResponse) <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "instance_id"))))
- 
+
 instance HsJSONPB.ToJSON StartWorkflowResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON StartWorkflowResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema StartWorkflowResponse where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -12731,20 +11919,20 @@ instance HsJSONPB.ToSchema StartWorkflowResponse where
                                                      HsJSONPB.insOrdFromList
                                                        [("instance_id",
                                                          startWorkflowResponseInstanceId)]}})
- 
+
 data TerminateWorkflowRequest = TerminateWorkflowRequest{terminateWorkflowRequestInstanceId
                                                          :: Hs.Text,
                                                          terminateWorkflowRequestWorkflowComponent
                                                          :: Hs.Text}
                               deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData TerminateWorkflowRequest
- 
+
 instance HsProtobuf.Named TerminateWorkflowRequest where
         nameOf _ = (Hs.fromString "TerminateWorkflowRequest")
- 
+
 instance HsProtobuf.HasDefault TerminateWorkflowRequest
- 
+
 instance HsProtobuf.Message TerminateWorkflowRequest where
         encodeMessage _
           TerminateWorkflowRequest{terminateWorkflowRequestInstanceId =
@@ -12780,7 +11968,7 @@ instance HsProtobuf.Message TerminateWorkflowRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "workflowComponent"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB TerminateWorkflowRequest where
         toJSONPB (TerminateWorkflowRequest f1 f2)
           = (HsJSONPB.object
@@ -12794,7 +11982,7 @@ instance HsJSONPB.ToJSONPB TerminateWorkflowRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "workflow_component" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB TerminateWorkflowRequest where
         parseJSONPB
           = (HsJSONPB.withObject "TerminateWorkflowRequest"
@@ -12805,14 +11993,14 @@ instance HsJSONPB.FromJSONPB TerminateWorkflowRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "workflow_component"))))
- 
+
 instance HsJSONPB.ToJSON TerminateWorkflowRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON TerminateWorkflowRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema TerminateWorkflowRequest where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -12840,19 +12028,19 @@ instance HsJSONPB.ToSchema TerminateWorkflowRequest where
                                                          terminateWorkflowRequestInstanceId),
                                                         ("workflow_component",
                                                          terminateWorkflowRequestWorkflowComponent)]}})
- 
+
 data PauseWorkflowRequest = PauseWorkflowRequest{pauseWorkflowRequestInstanceId
                                                  :: Hs.Text,
                                                  pauseWorkflowRequestWorkflowComponent :: Hs.Text}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData PauseWorkflowRequest
- 
+
 instance HsProtobuf.Named PauseWorkflowRequest where
         nameOf _ = (Hs.fromString "PauseWorkflowRequest")
- 
+
 instance HsProtobuf.HasDefault PauseWorkflowRequest
- 
+
 instance HsProtobuf.Message PauseWorkflowRequest where
         encodeMessage _
           PauseWorkflowRequest{pauseWorkflowRequestInstanceId =
@@ -12888,7 +12076,7 @@ instance HsProtobuf.Message PauseWorkflowRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "workflowComponent"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB PauseWorkflowRequest where
         toJSONPB (PauseWorkflowRequest f1 f2)
           = (HsJSONPB.object
@@ -12902,7 +12090,7 @@ instance HsJSONPB.ToJSONPB PauseWorkflowRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "workflow_component" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB PauseWorkflowRequest where
         parseJSONPB
           = (HsJSONPB.withObject "PauseWorkflowRequest"
@@ -12913,14 +12101,14 @@ instance HsJSONPB.FromJSONPB PauseWorkflowRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "workflow_component"))))
- 
+
 instance HsJSONPB.ToJSON PauseWorkflowRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON PauseWorkflowRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema PauseWorkflowRequest where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -12947,20 +12135,20 @@ instance HsJSONPB.ToSchema PauseWorkflowRequest where
                                                          pauseWorkflowRequestInstanceId),
                                                         ("workflow_component",
                                                          pauseWorkflowRequestWorkflowComponent)]}})
- 
+
 data ResumeWorkflowRequest = ResumeWorkflowRequest{resumeWorkflowRequestInstanceId
                                                    :: Hs.Text,
                                                    resumeWorkflowRequestWorkflowComponent ::
                                                    Hs.Text}
                            deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData ResumeWorkflowRequest
- 
+
 instance HsProtobuf.Named ResumeWorkflowRequest where
         nameOf _ = (Hs.fromString "ResumeWorkflowRequest")
- 
+
 instance HsProtobuf.HasDefault ResumeWorkflowRequest
- 
+
 instance HsProtobuf.Message ResumeWorkflowRequest where
         encodeMessage _
           ResumeWorkflowRequest{resumeWorkflowRequestInstanceId =
@@ -12996,7 +12184,7 @@ instance HsProtobuf.Message ResumeWorkflowRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "workflowComponent"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB ResumeWorkflowRequest where
         toJSONPB (ResumeWorkflowRequest f1 f2)
           = (HsJSONPB.object
@@ -13010,7 +12198,7 @@ instance HsJSONPB.ToJSONPB ResumeWorkflowRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "workflow_component" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB ResumeWorkflowRequest where
         parseJSONPB
           = (HsJSONPB.withObject "ResumeWorkflowRequest"
@@ -13021,14 +12209,14 @@ instance HsJSONPB.FromJSONPB ResumeWorkflowRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "workflow_component"))))
- 
+
 instance HsJSONPB.ToJSON ResumeWorkflowRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON ResumeWorkflowRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema ResumeWorkflowRequest where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -13055,7 +12243,7 @@ instance HsJSONPB.ToSchema ResumeWorkflowRequest where
                                                          resumeWorkflowRequestInstanceId),
                                                         ("workflow_component",
                                                          resumeWorkflowRequestWorkflowComponent)]}})
- 
+
 data RaiseEventWorkflowRequest = RaiseEventWorkflowRequest{raiseEventWorkflowRequestInstanceId
                                                            :: Hs.Text,
                                                            raiseEventWorkflowRequestWorkflowComponent
@@ -13065,14 +12253,14 @@ data RaiseEventWorkflowRequest = RaiseEventWorkflowRequest{raiseEventWorkflowReq
                                                            raiseEventWorkflowRequestEventData ::
                                                            Hs.ByteString}
                                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData RaiseEventWorkflowRequest
- 
+
 instance HsProtobuf.Named RaiseEventWorkflowRequest where
         nameOf _ = (Hs.fromString "RaiseEventWorkflowRequest")
- 
+
 instance HsProtobuf.HasDefault RaiseEventWorkflowRequest
- 
+
 instance HsProtobuf.Message RaiseEventWorkflowRequest where
         encodeMessage _
           RaiseEventWorkflowRequest{raiseEventWorkflowRequestInstanceId =
@@ -13138,7 +12326,7 @@ instance HsProtobuf.Message RaiseEventWorkflowRequest where
                 (HsProtobufAST.Single "event_data")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB RaiseEventWorkflowRequest where
         toJSONPB (RaiseEventWorkflowRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -13162,7 +12350,7 @@ instance HsJSONPB.ToJSONPB RaiseEventWorkflowRequest where
                 "event_data" .=
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB RaiseEventWorkflowRequest where
         parseJSONPB
           = (HsJSONPB.withObject "RaiseEventWorkflowRequest"
@@ -13180,14 +12368,14 @@ instance HsJSONPB.FromJSONPB RaiseEventWorkflowRequest where
                     (HsProtobuf.coerceOver @(HsProtobuf.Bytes Hs.ByteString)
                        @(Hs.ByteString)
                        (obj .: "event_data"))))
- 
+
 instance HsJSONPB.ToJSON RaiseEventWorkflowRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON RaiseEventWorkflowRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema RaiseEventWorkflowRequest where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef
@@ -13232,19 +12420,19 @@ instance HsJSONPB.ToSchema RaiseEventWorkflowRequest where
                                                          raiseEventWorkflowRequestEventName),
                                                         ("event_data",
                                                          raiseEventWorkflowRequestEventData)]}})
- 
+
 data PurgeWorkflowRequest = PurgeWorkflowRequest{purgeWorkflowRequestInstanceId
                                                  :: Hs.Text,
                                                  purgeWorkflowRequestWorkflowComponent :: Hs.Text}
                           deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData PurgeWorkflowRequest
- 
+
 instance HsProtobuf.Named PurgeWorkflowRequest where
         nameOf _ = (Hs.fromString "PurgeWorkflowRequest")
- 
+
 instance HsProtobuf.HasDefault PurgeWorkflowRequest
- 
+
 instance HsProtobuf.Message PurgeWorkflowRequest where
         encodeMessage _
           PurgeWorkflowRequest{purgeWorkflowRequestInstanceId =
@@ -13280,7 +12468,7 @@ instance HsProtobuf.Message PurgeWorkflowRequest where
                 [(HsProtobufAST.DotProtoOption (HsProtobufAST.Single "json_name")
                     (HsProtobufAST.StringLit "workflowComponent"))]
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB PurgeWorkflowRequest where
         toJSONPB (PurgeWorkflowRequest f1 f2)
           = (HsJSONPB.object
@@ -13294,7 +12482,7 @@ instance HsJSONPB.ToJSONPB PurgeWorkflowRequest where
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1)),
                 "workflow_component" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB PurgeWorkflowRequest where
         parseJSONPB
           = (HsJSONPB.withObject "PurgeWorkflowRequest"
@@ -13305,14 +12493,14 @@ instance HsJSONPB.FromJSONPB PurgeWorkflowRequest where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "workflow_component"))))
- 
+
 instance HsJSONPB.ToJSON PurgeWorkflowRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON PurgeWorkflowRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema PurgeWorkflowRequest where
         declareNamedSchema _
           = do let declare_instance_id = HsJSONPB.declareSchemaRef

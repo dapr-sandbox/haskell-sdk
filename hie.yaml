@@ -1,0 +1,40 @@
+cradle:
+  cabal:
+    - path: "./dapr-actor/src"
+      component: "lib:dapr-actor"
+
+    - path: "./dapr-actor/test"
+      component: "dapr-actor:test:dapr-actor-test"
+
+    - path: "./dapr-core/src"
+      component: "lib:dapr-core"
+
+    - path: "./dapr-core/test"
+      component: "dapr-core:test:dapr-core-test"
+
+    - path: "./dapr-grpc-client/src"
+      component: "lib:dapr-grpc-client"
+
+    - path: "./dapr-grpc-client/test"
+      component: "dapr-grpc-client:test:dapr-grpc-client-test"
+
+    - path: "./dapr-http-client/src"
+      component: "lib:dapr-http-client"
+
+    - path: "./dapr-http-client/test/e2e"
+      component: "dapr-http-client:test:dapr-http-client-test-e2e"
+
+    - path: "./dapr-http-server/src"
+      component: "lib:dapr-http-server"
+
+    - path: "./dapr-http-server/test"
+      component: "dapr-http-server:test:dapr-http-server-test"
+
+    - path: "./dapr-proto/src"
+      component: "lib:dapr-proto"
+
+    - path: "./dapr-proto/test"
+      component: "dapr-proto:test:dapr-proto-test"
+
+    - path: "./examples/http/pubsub/app/Main.hs"
+      component: "http-pubsub-example:exe:http-pubsub-example"

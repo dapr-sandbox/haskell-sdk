@@ -40,20 +40,20 @@ import qualified Google.Protobuf.Wrappers.Polymorphic as HsProtobuf
        (Wrapped(..))
 import qualified Unsafe.Coerce as Hs
 import qualified Google.Protobuf.Any
- 
+
 data HTTPExtension = HTTPExtension{httpextensionVerb ::
                                    HsProtobuf.Enumerated
                                      Dapr.Proto.Common.V1.Common.HTTPExtension_Verb,
                                    httpextensionQuerystring :: Hs.Text}
                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData HTTPExtension
- 
+
 instance HsProtobuf.Named HTTPExtension where
         nameOf _ = (Hs.fromString "HTTPExtension")
- 
+
 instance HsProtobuf.HasDefault HTTPExtension
- 
+
 instance HsProtobuf.Message HTTPExtension where
         encodeMessage _
           HTTPExtension{httpextensionVerb = httpextensionVerb,
@@ -84,7 +84,7 @@ instance HsProtobuf.Message HTTPExtension where
                 (HsProtobufAST.Single "querystring")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB HTTPExtension where
         toJSONPB (HTTPExtension f1 f2)
           = (HsJSONPB.object
@@ -96,7 +96,7 @@ instance HsJSONPB.ToJSONPB HTTPExtension where
                ["verb" .= f1,
                 "querystring" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB HTTPExtension where
         parseJSONPB
           = (HsJSONPB.withObject "HTTPExtension"
@@ -104,14 +104,14 @@ instance HsJSONPB.FromJSONPB HTTPExtension where
                   (Hs.pure HTTPExtension) <*> obj .: "verb" <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "querystring"))))
- 
+
 instance HsJSONPB.ToJSON HTTPExtension where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON HTTPExtension where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema HTTPExtension where
         declareNamedSchema _
           = do let declare_verb = HsJSONPB.declareSchemaRef
@@ -133,7 +133,7 @@ instance HsJSONPB.ToSchema HTTPExtension where
                                                        [("verb", httpextensionVerb),
                                                         ("querystring",
                                                          httpextensionQuerystring)]}})
- 
+
 data HTTPExtension_Verb = HTTPExtension_VerbNONE
                         | HTTPExtension_VerbGET
                         | HTTPExtension_VerbHEAD
@@ -145,21 +145,21 @@ data HTTPExtension_Verb = HTTPExtension_VerbNONE
                         | HTTPExtension_VerbTRACE
                         | HTTPExtension_VerbPATCH
                         deriving (Hs.Show, Hs.Eq, Hs.Generic, Hs.NFData)
- 
+
 instance HsProtobuf.Named HTTPExtension_Verb where
         nameOf _ = (Hs.fromString "HTTPExtension_Verb")
- 
+
 instance HsProtobuf.HasDefault HTTPExtension_Verb
- 
+
 instance Hs.Bounded HTTPExtension_Verb where
         minBound = HTTPExtension_VerbNONE
         maxBound = HTTPExtension_VerbPATCH
- 
+
 instance Hs.Ord HTTPExtension_Verb where
         compare x y
           = Hs.compare (HsProtobuf.fromProtoEnum x)
               (HsProtobuf.fromProtoEnum y)
- 
+
 instance HsProtobuf.ProtoEnum HTTPExtension_Verb where
         toProtoEnumMay 0 = Hs.Just HTTPExtension_VerbNONE
         toProtoEnumMay 1 = Hs.Just HTTPExtension_VerbGET
@@ -182,11 +182,11 @@ instance HsProtobuf.ProtoEnum HTTPExtension_Verb where
         fromProtoEnum (HTTPExtension_VerbOPTIONS) = 7
         fromProtoEnum (HTTPExtension_VerbTRACE) = 8
         fromProtoEnum (HTTPExtension_VerbPATCH) = 9
- 
+
 instance HsJSONPB.ToJSONPB HTTPExtension_Verb where
         toJSONPB x _ = HsJSONPB.enumFieldString x
         toEncodingPB x _ = HsJSONPB.enumFieldEncoding x
- 
+
 instance HsJSONPB.FromJSONPB HTTPExtension_Verb where
         parseJSONPB (HsJSONPB.String "NONE")
           = Hs.pure HTTPExtension_VerbNONE
@@ -207,30 +207,30 @@ instance HsJSONPB.FromJSONPB HTTPExtension_Verb where
         parseJSONPB (HsJSONPB.String "PATCH")
           = Hs.pure HTTPExtension_VerbPATCH
         parseJSONPB v = (HsJSONPB.typeMismatch "HTTPExtension_Verb" v)
- 
+
 instance HsJSONPB.ToJSON HTTPExtension_Verb where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON HTTPExtension_Verb where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsProtobuf.Finite HTTPExtension_Verb
- 
+
 data InvokeRequest = InvokeRequest{invokeRequestMethod :: Hs.Text,
                                    invokeRequestData :: Hs.Maybe Google.Protobuf.Any.Any,
                                    invokeRequestContentType :: Hs.Text,
                                    invokeRequestHttpExtension ::
                                    Hs.Maybe Dapr.Proto.Common.V1.Common.HTTPExtension}
                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData InvokeRequest
- 
+
 instance HsProtobuf.Named InvokeRequest where
         nameOf _ = (Hs.fromString "InvokeRequest")
- 
+
 instance HsProtobuf.HasDefault InvokeRequest
- 
+
 instance HsProtobuf.Message InvokeRequest where
         encodeMessage _
           InvokeRequest{invokeRequestMethod = invokeRequestMethod,
@@ -297,7 +297,7 @@ instance HsProtobuf.Message InvokeRequest where
                 (HsProtobufAST.Single "http_extension")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB InvokeRequest where
         toJSONPB (InvokeRequest f1 f2 f3 f4)
           = (HsJSONPB.object
@@ -327,7 +327,7 @@ instance HsJSONPB.ToJSONPB InvokeRequest where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.HTTPExtension)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.HTTPExtension)
                      (f4))])
- 
+
 instance HsJSONPB.FromJSONPB InvokeRequest where
         parseJSONPB
           = (HsJSONPB.withObject "InvokeRequest"
@@ -347,14 +347,14 @@ instance HsJSONPB.FromJSONPB InvokeRequest where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.HTTPExtension)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.HTTPExtension)
                        (obj .: "http_extension"))))
- 
+
 instance HsJSONPB.ToJSON InvokeRequest where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON InvokeRequest where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema InvokeRequest where
         declareNamedSchema _
           = do let declare_method = HsJSONPB.declareSchemaRef
@@ -394,19 +394,19 @@ instance HsJSONPB.ToSchema InvokeRequest where
                                                         ("content_type", invokeRequestContentType),
                                                         ("http_extension",
                                                          invokeRequestHttpExtension)]}})
- 
+
 data InvokeResponse = InvokeResponse{invokeResponseData ::
                                      Hs.Maybe Google.Protobuf.Any.Any,
                                      invokeResponseContentType :: Hs.Text}
                     deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData InvokeResponse
- 
+
 instance HsProtobuf.Named InvokeResponse where
         nameOf _ = (Hs.fromString "InvokeResponse")
- 
+
 instance HsProtobuf.HasDefault InvokeResponse
- 
+
 instance HsProtobuf.Message InvokeResponse where
         encodeMessage _
           InvokeResponse{invokeResponseData = invokeResponseData,
@@ -443,7 +443,7 @@ instance HsProtobuf.Message InvokeResponse where
                 (HsProtobufAST.Single "content_type")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB InvokeResponse where
         toJSONPB (InvokeResponse f1 f2)
           = (HsJSONPB.object
@@ -461,7 +461,7 @@ instance HsJSONPB.ToJSONPB InvokeResponse where
                      (f1)),
                 "content_type" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f2))])
- 
+
 instance HsJSONPB.FromJSONPB InvokeResponse where
         parseJSONPB
           = (HsJSONPB.withObject "InvokeResponse"
@@ -473,14 +473,14 @@ instance HsJSONPB.FromJSONPB InvokeResponse where
                     <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "content_type"))))
- 
+
 instance HsJSONPB.ToJSON InvokeResponse where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON InvokeResponse where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema InvokeResponse where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -506,19 +506,19 @@ instance HsJSONPB.ToSchema InvokeResponse where
                                                        [("data", invokeResponseData),
                                                         ("content_type",
                                                          invokeResponseContentType)]}})
- 
+
 data StreamPayload = StreamPayload{streamPayloadData ::
                                    Hs.ByteString,
                                    streamPayloadSeq :: Hs.Word64}
                    deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData StreamPayload
- 
+
 instance HsProtobuf.Named StreamPayload where
         nameOf _ = (Hs.fromString "StreamPayload")
- 
+
 instance HsProtobuf.HasDefault StreamPayload
- 
+
 instance HsProtobuf.Message StreamPayload where
         encodeMessage _
           StreamPayload{streamPayloadData = streamPayloadData,
@@ -549,7 +549,7 @@ instance HsProtobuf.Message StreamPayload where
                 (HsProtobufAST.Single "seq")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB StreamPayload where
         toJSONPB (StreamPayload f1 f2)
           = (HsJSONPB.object
@@ -563,7 +563,7 @@ instance HsJSONPB.ToJSONPB StreamPayload where
                   (Hs.coerce @(Hs.ByteString) @(HsProtobuf.Bytes Hs.ByteString)
                      (f1)),
                 "seq" .= f2])
- 
+
 instance HsJSONPB.FromJSONPB StreamPayload where
         parseJSONPB
           = (HsJSONPB.withObject "StreamPayload"
@@ -573,14 +573,14 @@ instance HsJSONPB.FromJSONPB StreamPayload where
                        @(Hs.ByteString)
                        (obj .: "data"))
                     <*> obj .: "seq"))
- 
+
 instance HsJSONPB.ToJSON StreamPayload where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON StreamPayload where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema StreamPayload where
         declareNamedSchema _
           = do let declare_data = HsJSONPB.declareSchemaRef
@@ -603,7 +603,7 @@ instance HsJSONPB.ToSchema StreamPayload where
                                                      HsJSONPB.insOrdFromList
                                                        [("data", streamPayloadData),
                                                         ("seq", streamPayloadSeq)]}})
- 
+
 data StateItem = StateItem{stateItemKey :: Hs.Text,
                            stateItemValue :: Hs.ByteString,
                            stateItemEtag :: Hs.Maybe Dapr.Proto.Common.V1.Common.Etag,
@@ -611,14 +611,14 @@ data StateItem = StateItem{stateItemKey :: Hs.Text,
                            stateItemOptions ::
                            Hs.Maybe Dapr.Proto.Common.V1.Common.StateOptions}
                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData StateItem
- 
+
 instance HsProtobuf.Named StateItem where
         nameOf _ = (Hs.fromString "StateItem")
- 
+
 instance HsProtobuf.HasDefault StateItem
- 
+
 instance HsProtobuf.Message StateItem where
         encodeMessage _
           StateItem{stateItemKey = stateItemKey,
@@ -700,7 +700,7 @@ instance HsProtobuf.Message StateItem where
                 (HsProtobufAST.Single "options")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB StateItem where
         toJSONPB (StateItem f1 f2 f3 f4 f5)
           = (HsJSONPB.object
@@ -738,7 +738,7 @@ instance HsJSONPB.ToJSONPB StateItem where
                   (Hs.coerce @(Hs.Maybe Dapr.Proto.Common.V1.Common.StateOptions)
                      @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StateOptions)
                      (f5))])
- 
+
 instance HsJSONPB.FromJSONPB StateItem where
         parseJSONPB
           = (HsJSONPB.withObject "StateItem"
@@ -765,14 +765,14 @@ instance HsJSONPB.FromJSONPB StateItem where
                        @(HsProtobuf.Nested Dapr.Proto.Common.V1.Common.StateOptions)
                        @(Hs.Maybe Dapr.Proto.Common.V1.Common.StateOptions)
                        (obj .: "options"))))
- 
+
 instance HsJSONPB.ToJSON StateItem where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON StateItem where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema StateItem where
         declareNamedSchema _
           = do let declare_key = HsJSONPB.declareSchemaRef
@@ -821,17 +821,17 @@ instance HsJSONPB.ToSchema StateItem where
                                                         ("etag", stateItemEtag),
                                                         ("metadata", stateItemMetadata),
                                                         ("options", stateItemOptions)]}})
- 
+
 newtype Etag = Etag{etagValue :: Hs.Text}
                deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData Etag
- 
+
 instance HsProtobuf.Named Etag where
         nameOf _ = (Hs.fromString "Etag")
- 
+
 instance HsProtobuf.HasDefault Etag
- 
+
 instance HsProtobuf.Message Etag where
         encodeMessage _ Etag{etagValue = etagValue}
           = (Hs.mconcat
@@ -848,7 +848,7 @@ instance HsProtobuf.Message Etag where
                 (HsProtobufAST.Single "value")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB Etag where
         toJSONPB (Etag f1)
           = (HsJSONPB.object
@@ -858,7 +858,7 @@ instance HsJSONPB.ToJSONPB Etag where
           = (HsJSONPB.pairs
                ["value" .=
                   (Hs.coerce @(Hs.Text) @(HsProtobuf.String Hs.Text) (f1))])
- 
+
 instance HsJSONPB.FromJSONPB Etag where
         parseJSONPB
           = (HsJSONPB.withObject "Etag"
@@ -866,14 +866,14 @@ instance HsJSONPB.FromJSONPB Etag where
                   (Hs.pure Etag) <*>
                     (HsProtobuf.coerceOver @(HsProtobuf.String Hs.Text) @(Hs.Text)
                        (obj .: "value"))))
- 
+
 instance HsJSONPB.ToJSON Etag where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON Etag where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema Etag where
         declareNamedSchema _
           = do let declare_value = HsJSONPB.declareSchemaRef
@@ -890,7 +890,7 @@ instance HsJSONPB.ToSchema Etag where
                                                    HsJSONPB._schemaProperties =
                                                      HsJSONPB.insOrdFromList
                                                        [("value", etagValue)]}})
- 
+
 data StateOptions = StateOptions{stateOptionsConcurrency ::
                                  HsProtobuf.Enumerated
                                    Dapr.Proto.Common.V1.Common.StateOptions_StateConcurrency,
@@ -898,14 +898,14 @@ data StateOptions = StateOptions{stateOptionsConcurrency ::
                                  HsProtobuf.Enumerated
                                    Dapr.Proto.Common.V1.Common.StateOptions_StateConsistency}
                   deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData StateOptions
- 
+
 instance HsProtobuf.Named StateOptions where
         nameOf _ = (Hs.fromString "StateOptions")
- 
+
 instance HsProtobuf.HasDefault StateOptions
- 
+
 instance HsProtobuf.Message StateOptions where
         encodeMessage _
           StateOptions{stateOptionsConcurrency = stateOptionsConcurrency,
@@ -935,27 +935,27 @@ instance HsProtobuf.Message StateOptions where
                 (HsProtobufAST.Single "consistency")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB StateOptions where
         toJSONPB (StateOptions f1 f2)
           = (HsJSONPB.object ["concurrency" .= f1, "consistency" .= f2])
         toEncodingPB (StateOptions f1 f2)
           = (HsJSONPB.pairs ["concurrency" .= f1, "consistency" .= f2])
- 
+
 instance HsJSONPB.FromJSONPB StateOptions where
         parseJSONPB
           = (HsJSONPB.withObject "StateOptions"
                (\ obj ->
                   (Hs.pure StateOptions) <*> obj .: "concurrency" <*>
                     obj .: "consistency"))
- 
+
 instance HsJSONPB.ToJSON StateOptions where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON StateOptions where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema StateOptions where
         declareNamedSchema _
           = do let declare_concurrency = HsJSONPB.declareSchemaRef
@@ -976,26 +976,26 @@ instance HsJSONPB.ToSchema StateOptions where
                                                      HsJSONPB.insOrdFromList
                                                        [("concurrency", stateOptionsConcurrency),
                                                         ("consistency", stateOptionsConsistency)]}})
- 
+
 data StateOptions_StateConcurrency = StateOptions_StateConcurrencyCONCURRENCY_UNSPECIFIED
                                    | StateOptions_StateConcurrencyCONCURRENCY_FIRST_WRITE
                                    | StateOptions_StateConcurrencyCONCURRENCY_LAST_WRITE
                                    deriving (Hs.Show, Hs.Eq, Hs.Generic, Hs.NFData)
- 
+
 instance HsProtobuf.Named StateOptions_StateConcurrency where
         nameOf _ = (Hs.fromString "StateOptions_StateConcurrency")
- 
+
 instance HsProtobuf.HasDefault StateOptions_StateConcurrency
- 
+
 instance Hs.Bounded StateOptions_StateConcurrency where
         minBound = StateOptions_StateConcurrencyCONCURRENCY_UNSPECIFIED
         maxBound = StateOptions_StateConcurrencyCONCURRENCY_LAST_WRITE
- 
+
 instance Hs.Ord StateOptions_StateConcurrency where
         compare x y
           = Hs.compare (HsProtobuf.fromProtoEnum x)
               (HsProtobuf.fromProtoEnum y)
- 
+
 instance HsProtobuf.ProtoEnum StateOptions_StateConcurrency where
         toProtoEnumMay 0
           = Hs.Just StateOptions_StateConcurrencyCONCURRENCY_UNSPECIFIED
@@ -1010,11 +1010,11 @@ instance HsProtobuf.ProtoEnum StateOptions_StateConcurrency where
           (StateOptions_StateConcurrencyCONCURRENCY_FIRST_WRITE) = 1
         fromProtoEnum (StateOptions_StateConcurrencyCONCURRENCY_LAST_WRITE)
           = 2
- 
+
 instance HsJSONPB.ToJSONPB StateOptions_StateConcurrency where
         toJSONPB x _ = HsJSONPB.enumFieldString x
         toEncodingPB x _ = HsJSONPB.enumFieldEncoding x
- 
+
 instance HsJSONPB.FromJSONPB StateOptions_StateConcurrency where
         parseJSONPB (HsJSONPB.String "CONCURRENCY_UNSPECIFIED")
           = Hs.pure StateOptions_StateConcurrencyCONCURRENCY_UNSPECIFIED
@@ -1024,35 +1024,35 @@ instance HsJSONPB.FromJSONPB StateOptions_StateConcurrency where
           = Hs.pure StateOptions_StateConcurrencyCONCURRENCY_LAST_WRITE
         parseJSONPB v
           = (HsJSONPB.typeMismatch "StateOptions_StateConcurrency" v)
- 
+
 instance HsJSONPB.ToJSON StateOptions_StateConcurrency where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON StateOptions_StateConcurrency where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsProtobuf.Finite StateOptions_StateConcurrency
- 
+
 data StateOptions_StateConsistency = StateOptions_StateConsistencyCONSISTENCY_UNSPECIFIED
                                    | StateOptions_StateConsistencyCONSISTENCY_EVENTUAL
                                    | StateOptions_StateConsistencyCONSISTENCY_STRONG
                                    deriving (Hs.Show, Hs.Eq, Hs.Generic, Hs.NFData)
- 
+
 instance HsProtobuf.Named StateOptions_StateConsistency where
         nameOf _ = (Hs.fromString "StateOptions_StateConsistency")
- 
+
 instance HsProtobuf.HasDefault StateOptions_StateConsistency
- 
+
 instance Hs.Bounded StateOptions_StateConsistency where
         minBound = StateOptions_StateConsistencyCONSISTENCY_UNSPECIFIED
         maxBound = StateOptions_StateConsistencyCONSISTENCY_STRONG
- 
+
 instance Hs.Ord StateOptions_StateConsistency where
         compare x y
           = Hs.compare (HsProtobuf.fromProtoEnum x)
               (HsProtobuf.fromProtoEnum y)
- 
+
 instance HsProtobuf.ProtoEnum StateOptions_StateConsistency where
         toProtoEnumMay 0
           = Hs.Just StateOptions_StateConsistencyCONSISTENCY_UNSPECIFIED
@@ -1066,11 +1066,11 @@ instance HsProtobuf.ProtoEnum StateOptions_StateConsistency where
         fromProtoEnum (StateOptions_StateConsistencyCONSISTENCY_EVENTUAL)
           = 1
         fromProtoEnum (StateOptions_StateConsistencyCONSISTENCY_STRONG) = 2
- 
+
 instance HsJSONPB.ToJSONPB StateOptions_StateConsistency where
         toJSONPB x _ = HsJSONPB.enumFieldString x
         toEncodingPB x _ = HsJSONPB.enumFieldEncoding x
- 
+
 instance HsJSONPB.FromJSONPB StateOptions_StateConsistency where
         parseJSONPB (HsJSONPB.String "CONSISTENCY_UNSPECIFIED")
           = Hs.pure StateOptions_StateConsistencyCONSISTENCY_UNSPECIFIED
@@ -1080,29 +1080,29 @@ instance HsJSONPB.FromJSONPB StateOptions_StateConsistency where
           = Hs.pure StateOptions_StateConsistencyCONSISTENCY_STRONG
         parseJSONPB v
           = (HsJSONPB.typeMismatch "StateOptions_StateConsistency" v)
- 
+
 instance HsJSONPB.ToJSON StateOptions_StateConsistency where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON StateOptions_StateConsistency where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsProtobuf.Finite StateOptions_StateConsistency
- 
+
 data ConfigurationItem = ConfigurationItem{configurationItemValue
                                            :: Hs.Text,
                                            configurationItemVersion :: Hs.Text,
                                            configurationItemMetadata :: Hs.Map Hs.Text Hs.Text}
                        deriving (Hs.Show, Hs.Eq, Hs.Ord, Hs.Generic)
- 
+
 instance Hs.NFData ConfigurationItem
- 
+
 instance HsProtobuf.Named ConfigurationItem where
         nameOf _ = (Hs.fromString "ConfigurationItem")
- 
+
 instance HsProtobuf.HasDefault ConfigurationItem
- 
+
 instance HsProtobuf.Message ConfigurationItem where
         encodeMessage _
           ConfigurationItem{configurationItemValue = configurationItemValue,
@@ -1150,7 +1150,7 @@ instance HsProtobuf.Message ConfigurationItem where
                 (HsProtobufAST.Single "metadata")
                 []
                 "")]
- 
+
 instance HsJSONPB.ToJSONPB ConfigurationItem where
         toJSONPB (ConfigurationItem f1 f2 f3)
           = (HsJSONPB.object
@@ -1172,7 +1172,7 @@ instance HsJSONPB.ToJSONPB ConfigurationItem where
                   (Hs.unsafeCoerce @(Hs.Map Hs.Text Hs.Text)
                      @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                      (f3))])
- 
+
 instance HsJSONPB.FromJSONPB ConfigurationItem where
         parseJSONPB
           = (HsJSONPB.withObject "ConfigurationItem"
@@ -1188,14 +1188,14 @@ instance HsJSONPB.FromJSONPB ConfigurationItem where
                        @(Hs.Map (HsProtobuf.String Hs.Text) (HsProtobuf.String Hs.Text))
                        @(Hs.Map Hs.Text Hs.Text)
                        (obj .: "metadata"))))
- 
+
 instance HsJSONPB.ToJSON ConfigurationItem where
         toJSON = HsJSONPB.toAesonValue
         toEncoding = HsJSONPB.toAesonEncoding
- 
+
 instance HsJSONPB.FromJSON ConfigurationItem where
         parseJSON = HsJSONPB.parseJSONPB
- 
+
 instance HsJSONPB.ToSchema ConfigurationItem where
         declareNamedSchema _
           = do let declare_value = HsJSONPB.declareSchemaRef
@@ -1227,4 +1227,3 @@ instance HsJSONPB.ToSchema ConfigurationItem where
                                                        [("value", configurationItemValue),
                                                         ("version", configurationItemVersion),
                                                         ("metadata", configurationItemMetadata)]}})
-
