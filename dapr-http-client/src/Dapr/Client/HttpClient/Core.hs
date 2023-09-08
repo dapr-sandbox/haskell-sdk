@@ -1,36 +1,40 @@
+{-# LANGUAGE TypeFamilies #-}
+{-# OPTIONS_GHC -Wno-orphans #-}
 -- |
 -- Module      : Dapr.Client.HttpClient.Req
 -- Description : Make http calls to public Dapr APIs
 -- Copyright   : (c)
 -- License     : Apache-2.0
 -- This module provides base method to call public Dapr APIs
-module Dapr.Client.HttpClient.Req where
+module Dapr.Client.HttpClient.Core where
 
 import Control.Monad.Catch
-import Control.Monad.Reader (MonadReader (ask), lift)
 import Dapr.Client.HttpClient.Internal
 import Dapr.Core.Types
 import Data.Data (Proxy (Proxy))
 import Data.Text (Text)
 import Network.HTTP.Req
+import Network.HTTP.Types (StdMethod)
 
-type DaprHttpClient a = DaprClient Req a
+newtype DaprHttpClient = DaprHttpClient
+  { daprHttpClientConfig :: DaprConfig
+  }
 
 -- | Method to make http calls to public Dapr APIs
-makeHttpRequest' ::
+makeHttpRequest ::
   ( HttpBodyAllowed (AllowsBody method) (ProvidesBody body),
     HttpMethod method,
     HttpBody body,
     HttpResponse response
   ) =>
-  DaprConfig ->
+  DaprHttpClient ->
   method ->
   [Text] ->
   body ->
   Proxy response ->
   Option 'Http ->
   Req (Either HttpException response)
-makeHttpRequest' config method subUrl reqBody responseHandler options = do
+makeHttpRequest (DaprHttpClient config) method subUrl reqBody responseHandler options = do
   let host = daprHost config
       apiVersion = daprApiVersion config
       defaultContentType = case httpMethodName (proxy method) of
@@ -49,18 +53,6 @@ makeHttpRequest' config method subUrl reqBody responseHandler options = do
     proxy :: a -> Proxy a
     proxy _ = Proxy
 
-makeHttpRequest ::
-  ( HttpBodyAllowed (AllowsBody method) (ProvidesBody body),
-    HttpMethod method,
-    HttpBody body,
-    HttpResponse response
-  ) =>
-  method ->
-  [Text] ->
-  body ->
-  Proxy response ->
-  Option 'Http ->
-  DaprHttpClient (Either HttpException response)
-makeHttpRequest method subUrl reqBody responseHandler options = do
-  config <- ask
-  lift $ makeHttpRequest' config method subUrl reqBody responseHandler options
+instance HttpMethod StdMethod where
+  type AllowsBody StdMethod = 'CanHaveBody
+  httpMethodName Proxy = "POST"

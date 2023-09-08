@@ -9,7 +9,6 @@
 module Dapr.Core.Types.Common where
 
 import Control.Exception (Exception)
-import Control.Monad.Reader
 import Dapr.Core.Types.Internal (customParseJSON, customToJSON)
 import Data.Aeson (FromJSON (parseJSON), FromJSONKey, ToJSON (toJSON), Value (String))
 import Data.Map (Map)
@@ -20,11 +19,13 @@ import Network.HTTP.Req (HttpException)
 
 -- | 'DaprConfig' daprConfig
 data DaprConfig = DaprConfig
-  { -- | Dapr host
+  { -- |
+    -- Host location of the Dapr sidecar.
+    -- Default is 127.0.0.1.
     daprHost :: Text,
-    -- | Dapr port
+    -- | Dapr port, default is 3500.
     daprPort :: Int,
-    -- | Dapr API version
+    -- | Dapr API version, default is v1.0
     daprApiVersion :: Text
   }
   deriving (Show)
@@ -33,20 +34,10 @@ data DaprConfig = DaprConfig
 defaultDaprConfig :: DaprConfig
 defaultDaprConfig =
   DaprConfig
-    { daprHost = "localhost",
+    { daprHost = "127.0.0.1",
       daprPort = 3500,
       daprApiVersion = "v1.0"
     }
-
--- | 'DaprClient' dapr client
-newtype DaprClient m a = DaprClient {runDaprClient :: ReaderT DaprConfig m a}
-  deriving
-    ( Functor,
-      Applicative,
-      Monad,
-      MonadTrans,
-      MonadReader DaprConfig
-    )
 
 -- | 'DaprClientError' is the exception for client request
 data DaprClientError
@@ -62,8 +53,7 @@ data DaprClientError
 
 instance Exception DaprClientError
 
--- | 'RemoteApp' represents the remote app
-newtype RemoteApp = RemoteApp {getRemoteAppId :: Text}
+newtype AppId = AppId {getAppId :: Text}
 
 -- | 'ExtendedMetadata' is a list of key-value pairs
 type ExtendedMetadata = Map Text Text

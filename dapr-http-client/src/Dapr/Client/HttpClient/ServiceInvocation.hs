@@ -7,29 +7,23 @@
 module Dapr.Client.HttpClient.ServiceInvocation where
 
 import Dapr.Client.HttpClient.Internal
-import Dapr.Client.HttpClient.Req
+import Dapr.Client.HttpClient.Core
 import Dapr.Core.Types
-import Data.Aeson (ToJSON)
 import Data.Bifunctor (bimap)
 import Data.CaseInsensitive (CI (original))
 import Data.Text.Encoding (decodeUtf8, encodeUtf8)
 import Network.HTTP.Req
 import Network.HTTP.Types (hContentType)
+import qualified Network.HTTP.Types.Method as Network
+import Data.ByteString.Lazy ( ByteString )
+import Data.Text (Text)
 
 -- | Invoke a method on a remote dapr app
-invokeServiceMethod ::
-  ( HttpBodyAllowed
-      (AllowsBody method)
-      (ProvidesBody payload),
-    HttpMethod method,
-    HttpBody payload
-  ) =>
-  InvokeServiceRequest method payload ->
-  DaprHttpClient (Either DaprClientError InvokeResponse)
-invokeServiceMethod InvokeServiceRequest {..} = do
-  let url = ["invoke", getRemoteAppId remoteApp, "method"] <> requestEndpoint
-      options = maybe mempty (header (original hContentType) . encodeUtf8) requestContentType <> mapQueryToParam requestQueryString
-  response <- makeHttpRequest httpMethod url reqeustData lbsResponse options
+invokeServiceImpl :: DaprHttpClient -> InvokeRequest -> Req (Either DaprClientError InvokeResponse)
+invokeServiceImpl client InvokeRequest {..} = do
+  let url = ["invoke", getAppId invokeRequestAppId, "method"] <> invokeRequestEndpoint
+      options = maybe mempty (header (original hContentType) . encodeUtf8) invokeRequestContentType <> mapQueryToParam invokeRequestQueryString
+  response <- makeHttpRequest' invokeRequestHttpMethod url invokeRequestData options
   return $ bimap DaprHttpException getInvokeResponse response
   where
     getInvokeResponse :: LbsResponse -> InvokeResponse
@@ -38,16 +32,13 @@ invokeServiceMethod InvokeServiceRequest {..} = do
           contentType = responseHeader response (original hContentType)
        in InvokeResponse content (maybe "text/plain" decodeUtf8 contentType)
 
--- | Invoke a method on a remote dapr app with JSON payload
-invokeServiceMethodWithJsonPayload ::
-  ( HttpBodyAllowed
-      (AllowsBody method)
-      'CanHaveBody,
-    HttpMethod method,
-    ToJSON payload
-  ) =>
-  InvokeServiceRequest method payload ->
-  DaprHttpClient (Either DaprClientError InvokeResponse)
-invokeServiceMethodWithJsonPayload (InvokeServiceRequest {..}) = do
-  let updatedRequest = InvokeServiceRequest remoteApp httpMethod requestEndpoint (ReqBodyJson reqeustData) requestContentType requestQueryString
-  invokeServiceMethod updatedRequest
+    makeHttpRequest' :: Network.StdMethod -> [Text] -> ByteString -> Option 'Http -> Req (Either HttpException LbsResponse)
+    makeHttpRequest' Network.CONNECT url _ options = makeHttpRequest client CONNECT url NoReqBody lbsResponse options
+    makeHttpRequest' Network.DELETE url _ options = makeHttpRequest client DELETE url NoReqBody lbsResponse options
+    makeHttpRequest' Network.GET url _ options = makeHttpRequest client GET url NoReqBody lbsResponse options
+    makeHttpRequest' Network.HEAD url _ options = makeHttpRequest client HEAD url NoReqBody lbsResponse options
+    makeHttpRequest' Network.OPTIONS url _ options = makeHttpRequest client OPTIONS url NoReqBody lbsResponse options
+    makeHttpRequest' Network.PATCH url _ options = makeHttpRequest client PATCH url NoReqBody lbsResponse options
+    makeHttpRequest' Network.POST url body options = makeHttpRequest client POST url (ReqBodyLbs body) lbsResponse options
+    makeHttpRequest' Network.PUT url body options = makeHttpRequest client PUT url (ReqBodyLbs body) lbsResponse options
+    makeHttpRequest' Network.TRACE url _ options = makeHttpRequest client TRACE url NoReqBody lbsResponse options

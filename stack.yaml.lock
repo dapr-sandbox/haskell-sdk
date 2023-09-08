@@ -3,7 +3,69 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    commit: 5beaf4ab206b5c82a2161dd0850e91b3663135ec
+    git: git@github.com:awakesecurity/proto3-suite.git
+    name: proto3-suite
+    pantry-tree:
+      sha256: b85d9dd10369518b7fa5a808cf96010f04d2c046b8fc2de3d94cc265db428f87
+      size: 6587
+    version: 0.6.0
+  original:
+    commit: 5beaf4ab206b5c82a2161dd0850e91b3663135ec
+    git: git@github.com:awakesecurity/proto3-suite.git
+- completed:
+    commit: ee6ca644eef86cc5f31da85fb48e10b20ab0e1a1
+    git: git@github.com:awakesecurity/proto3-wire.git
+    name: proto3-wire
+    pantry-tree:
+      sha256: d758e1818e58986a71221e50c17ed61a76241bc541c768cfd4938399b632f89c
+      size: 1788
+    version: 1.4.1
+  original:
+    commit: ee6ca644eef86cc5f31da85fb48e10b20ab0e1a1
+    git: git@github.com:awakesecurity/proto3-wire.git
+- completed:
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    name: grpc-haskell
+    pantry-tree:
+      sha256: 3aba0dc4035b820dd347625d93aff47363f6111d40eab33adf15bf1c42cd806c
+      size: 7563
+    subdir: .
+    version: 0.3.0
+  original:
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    subdir: .
+- completed:
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    name: grpc-haskell-core
+    pantry-tree:
+      sha256: b5e38573a3ac2435bcef7c64628f69ab6a4f85ec156e5da22ce3013fd88b8b63
+      size: 2532
+    subdir: core
+    version: 0.5.0
+  original:
+    commit: 9adf3b02b0164b64432f2868b6577b4f4c2c6980
+    git: git@github.com:awakesecurity/gRPC-haskell.git
+    subdir: core
+- completed:
+    hackage: large-generics-0.2.1@sha256:b62959dd068b38a42857af502980e66f0bc5c15d301d9939cf5fe2a662918658,2729
+    pantry-tree:
+      sha256: d0067319f8edd559de9055776c83ead9fce3ab28d7d7499ffa4f407e82221fd7
+      size: 1976
+  original:
+    hackage: large-generics-0.2.1
+- completed:
+    hackage: large-records-0.4@sha256:bbc93411f08294913beed13b3a16202b0d16c6b4870168878d872d53cb423bee,4131
+    pantry-tree:
+      sha256: 3c631e188be5b443f04c43cddc1670eebaf12d4357a02f6613ace06d8f7d9842
+      size: 2908
+  original:
+    hackage: large-records-0.4
 snapshots:
 - completed:
     sha256: 5a59b2a405b3aba3c00188453be172b85893cab8ebc352b1ef58b0eae5d248a2

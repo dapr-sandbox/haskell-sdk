@@ -54,17 +54,17 @@ library
   import: lib
   exposed-modules:
       Dapr.Client.HttpClient
-      Dapr.Client.HttpClient.Actor
-      Dapr.Client.HttpClient.Configuration
-      Dapr.Client.HttpClient.DistributedLock
-      Dapr.Client.HttpClient.Health
-      Dapr.Client.HttpClient.Metadata
-      Dapr.Client.HttpClient.PubSub
-      Dapr.Client.HttpClient.Req
-      Dapr.Client.HttpClient.Secrets
+      -- Dapr.Client.HttpClient.Actor
+      -- Dapr.Client.HttpClient.Configuration
+      -- Dapr.Client.HttpClient.DistributedLock
+      -- Dapr.Client.HttpClient.Health
+      -- Dapr.Client.HttpClient.Metadata
+      -- Dapr.Client.HttpClient.PubSub
+      Dapr.Client.HttpClient.Core
+      -- Dapr.Client.HttpClient.Secrets
       Dapr.Client.HttpClient.ServiceInvocation
-      Dapr.Client.HttpClient.StateManagement
-      Dapr.Client.HttpClient.OutputBinding
+      -- Dapr.Client.HttpClient.StateManagement
+      -- Dapr.Client.HttpClient.OutputBinding
   other-modules:
       Dapr.Client.HttpClient.Internal
   hs-source-dirs:

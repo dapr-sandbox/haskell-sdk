@@ -6,33 +6,38 @@
 -- Defines the types used by ServiceInvocation module.
 module Dapr.Core.Types.ServiceInvocation where
 
-import Dapr.Core.Types.Common (RemoteApp)
+import Dapr.Core.Types.Common (AppId)
 import qualified Data.ByteString.Lazy as L
 import Data.Text (Text)
-import Network.HTTP.Types
+import Network.HTTP.Types ( Query, StdMethod )
 
 -- | 'InvokeServiceRequest' represents the request message for Service invocation.
-data InvokeServiceRequest m a = InvokeServiceRequest
+data InvokeRequest = InvokeRequest
   { -- | Callee's app id.
-    remoteApp :: RemoteApp,
+    invokeRequestAppId :: AppId,
+
     -- | Http method, POST, PUT, GET, DELETE, etc
-    httpMethod :: m,
+    invokeRequestHttpMethod :: StdMethod,
+
     -- | The path which will be invoked by caller.
     --
     -- >>> ["api", "method"] => /api/method
-    requestEndpoint :: [Text],
+    invokeRequestEndpoint :: [Text],
+
     -- | The message which will be delivered to callee.
-    reqeustData :: a,
+    invokeRequestData :: L.ByteString,
+
     -- | The type of data content.
-    requestContentType :: Maybe Text,
+    invokeRequestContentType :: Maybe Text,
+
     -- | Optional, query string
-    requestQueryString :: Query
+    invokeRequestQueryString :: Query
   }
 
 -- | 'InvokeResponse' represents the response of Service invocation.
 data InvokeResponse = InvokeResponse
   { -- | Response data as byte string
-    responseData :: L.ByteString,
+    invokeResponseData :: L.ByteString,
     -- | The content type of response data
-    responseContentType :: Text
+    invokeResponseContentType :: Text
   }

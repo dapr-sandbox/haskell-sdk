@@ -10,7 +10,7 @@ author:             Qiao Wang
 maintainer:         wangqiao11@hotmail.com
 copyright:          2022 Qiao Wang
 category:           Web
-build-type:         Custom
+build-type:         Simple
 extra-source-files: ChangeLog.md
                   , README.md
                   , proto/**/*.proto
@@ -20,36 +20,25 @@ source-repository head
     type: git
     location: https://github.com/nodew/haskell-dapr
 
-custom-setup
-  setup-depends: base, Cabal, proto-lens-setup
-
 library
-    build-tool-depends: proto-lens-protoc:proto-lens-protoc
+    hs-source-dirs: src
     build-depends:
           base >=4.11 && <5
-        , proto-lens-runtime ^>=0.7.0
+        , bytestring >=0.10.6.0 && <0.12.0
+        , containers >=0.5 && < 0.7
+        , deepseq ==1.4.*
+        , proto3-suite >=0.4.3
+        , proto3-wire >=1.2.2
+        , text >= 0.2 && <1.3
+        , vector >=0.12.0.2 && <0.14
     exposed-modules:
-          Proto.Google.Protobuf.Any
-        , Proto.Google.Protobuf.Any_Fields
-        , Proto.Google.Protobuf.Empty
-        , Proto.Google.Protobuf.Empty_Fields
-        , Proto.Dapr.Proto.Common.V1.Common
-        , Proto.Dapr.Proto.Common.V1.Common_Fields
-        , Proto.Dapr.Proto.Runtime.V1.Dapr
-        , Proto.Dapr.Proto.Runtime.V1.Dapr_Fields
-        , Proto.Dapr.Proto.Runtime.V1.Appcallback
-        , Proto.Dapr.Proto.Runtime.V1.Appcallback_Fields
-    autogen-modules:
-          Proto.Google.Protobuf.Any
-        , Proto.Google.Protobuf.Any_Fields
-        , Proto.Google.Protobuf.Empty
-        , Proto.Google.Protobuf.Empty_Fields
-        , Proto.Dapr.Proto.Common.V1.Common
-        , Proto.Dapr.Proto.Common.V1.Common_Fields
-        , Proto.Dapr.Proto.Runtime.V1.Dapr
-        , Proto.Dapr.Proto.Runtime.V1.Dapr_Fields
-        , Proto.Dapr.Proto.Runtime.V1.Appcallback
-        , Proto.Dapr.Proto.Runtime.V1.Appcallback_Fields
+          Google.Protobuf.Any
+        , Google.Protobuf.Empty
+        , Google.Protobuf.Struct
+        , Google.Protobuf.Timestamp
+        , Dapr.Proto.Common.V1.Common
+        , Dapr.Proto.Runtime.V1.Appcallback
+        , Dapr.Proto.Runtime.V1.Dapr
     default-language: Haskell2010
 
 test-suite dapr-proto-test
