@@ -19,9 +19,9 @@ import Data.ByteString.Lazy ( ByteString )
 import Data.Text (Text)
 
 -- | Invoke a method on a remote dapr app
-invokeServiceImpl :: DaprHttpClient -> InvokeRequest -> Req (Either DaprClientError InvokeResponse)
-invokeServiceImpl client InvokeRequest {..} = do
-  let url = ["invoke", getAppId invokeRequestAppId, "method"] <> invokeRequestEndpoint
+invokeServiceImpl :: DaprHttpClient -> AppId -> InvokeRequest -> Req (Either DaprClientError InvokeResponse)
+invokeServiceImpl client appId InvokeRequest {..} = do
+  let url = ["invoke", getAppId appId, "method"] <> invokeRequestEndpoint
       options = maybe mempty (header (original hContentType) . encodeUtf8) invokeRequestContentType <> mapQueryToParam invokeRequestQueryString
   response <- makeHttpRequest' invokeRequestHttpMethod url invokeRequestData options
   return $ bimap DaprHttpException getInvokeResponse response

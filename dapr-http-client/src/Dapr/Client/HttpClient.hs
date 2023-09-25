@@ -8,7 +8,7 @@
 -- License     : Apache-2.0
 module Dapr.Client.HttpClient
   (
-    withHttpClient,
+    withDaprHttpClient,
     -- module Req,
     -- module Configuration,
     -- module DistributedLock,
@@ -43,8 +43,8 @@ import Dapr.Core.DaprClient
 import Dapr.Client.HttpClient.Core
 import Dapr.Client.HttpClient.ServiceInvocation (invokeServiceImpl)
 
-withHttpClient :: HttpConfig -> DaprConfig -> (DaprHttpClient -> Req a) -> IO a
-withHttpClient httpConfig config f = runReq httpConfig $ f (DaprHttpClient config)
+withDaprHttpClient :: forall a. HttpConfig -> DaprConfig -> (DaprHttpClient -> Req a) -> IO a
+withDaprHttpClient httpConfig config f = runReq httpConfig $ f (DaprHttpClient config)
 
 instance DaprClient DaprHttpClient where
   type CustomMonad DaprHttpClient = Req

@@ -6,17 +6,13 @@
 -- Defines the types used by ServiceInvocation module.
 module Dapr.Core.Types.ServiceInvocation where
 
-import Dapr.Core.Types.Common (AppId)
 import qualified Data.ByteString.Lazy as L
 import Data.Text (Text)
 import Network.HTTP.Types ( Query, StdMethod )
 
 -- | 'InvokeServiceRequest' represents the request message for Service invocation.
 data InvokeRequest = InvokeRequest
-  { -- | Callee's app id.
-    invokeRequestAppId :: AppId,
-
-    -- | Http method, POST, PUT, GET, DELETE, etc
+  { -- | Http method, POST, PUT, GET, DELETE, etc
     invokeRequestHttpMethod :: StdMethod,
 
     -- | The path which will be invoked by caller.
